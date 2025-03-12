@@ -1,0 +1,104 @@
+[gd_scene load_steps=5 format=3 uid="uid://dn1p21ab6dfx6"]
+
+[ext_resource type="Material" uid="uid://qrlpwrux0lid" path="res://UI&UX/BG.tres" id="1_amygn"]
+[ext_resource type="Script" uid="uid://bkedurlcru1e4" path="res://Build/NotificationLabel.gd" id="2_83ytx"]
+[ext_resource type="PackedScene" uid="uid://di7tvn5g3aomf" path="res://AIStudioCode/Editor/CodeEditor/CodeEditor.tscn" id="2_amygn"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_83ytx"]
+bg_color = Color(0.192157, 0.235294, 0.376471, 0.392157)
+
+[node name="Main" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BG" type="ColorRect" parent="."]
+material = ExtResource("1_amygn")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0765, 0.09365, 0.15, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="Box" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="OptionSide" type="Control" parent="MarginContainer/Box"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+
+[node name="EditorSide" type="Control" parent="MarginContainer/Box"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="CodeEditor" parent="MarginContainer/Box/EditorSide" instance=ExtResource("2_amygn")]
+layout_mode = 1
+
+[node name="GuideSide" type="Control" parent="MarginContainer/Box"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+
+[node name="HSplitContainer" type="HSplitContainer" parent="MarginContainer/Box/GuideSide"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GuideLabel" type="Label" parent="MarginContainer/Box/GuideSide/HSplitContainer" groups=["editor_guide"]]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(0.501961, 0.501961, 0.501961, 1)
+text = "Guide"
+vertical_alignment = 1
+
+[node name="ProgressBar" type="ProgressBar" parent="MarginContainer/Box/GuideSide/HSplitContainer"]
+clip_contents = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_styles/fill = SubResource("StyleBoxFlat_83ytx")
+max_value = 1.0
+value = 1.0
+show_percentage = false
+
+[node name="MessageLabel" type="Label" parent="MarginContainer/Box/GuideSide/HSplitContainer/ProgressBar" node_paths=PackedStringArray("progress_bar") groups=["editor_message"]]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.501961, 0.501961, 0.501961, 1)
+text = "Message"
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("2_83ytx")
+progress_bar = NodePath("..")
+
+[node name="ButtomLine" type="ColorRect" parent="MarginContainer/Box"]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+color = Color(0.2295, 0.28095, 0.45, 1)

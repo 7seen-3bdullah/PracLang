@@ -1,0 +1,45 @@
+[gd_scene load_steps=5 format=3 uid="uid://cte65xnmrr4rl"]
+
+[ext_resource type="Script" uid="uid://cucsmtfx406fn" path="res://UI&UX/MenuBox/CodeButton.gd" id="1_sxw08"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bipeb"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_md1nf"]
+bg_color = Color(0.0918, 0.11238, 0.18, 1)
+border_width_left = 4
+border_color = Color(0.231373, 0.282353, 0.45098, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_88h4p"]
+
+[node name="MenuButton" type="PanelContainer"]
+custom_minimum_size = Vector2(0, 50)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_sxw08")
+
+[node name="Button" type="Button" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_bipeb")
+theme_override_styles/hover = SubResource("StyleBoxFlat_md1nf")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_bipeb")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_bipeb")
+
+[node name="CodePreview" type="CodeEdit" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBoxEmpty_88h4p")
+theme_override_styles/read_only = SubResource("StyleBoxEmpty_88h4p")
+theme_override_styles/panel = SubResource("StyleBoxEmpty_88h4p")
+editable = false
+selecting_enabled = false
+scroll_fit_content_height = true
+scroll_fit_content_width = true
+gutters_draw_executing_lines = true
+gutters_draw_line_numbers = true
+gutters_zero_pad_line_numbers = true

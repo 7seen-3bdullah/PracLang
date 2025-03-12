@@ -15,6 +15,24 @@ run/main_scene="uid://drpct2kkmafve"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+GdScriptServer="*res://Autoload/GDScriptServer.gd"
+GuideServer="*res://Autoload/GuideServer.gd"
+WindowManager="*res://Autoload/WindowManager.gd"
+
+[display]
+
+window/subwindows/embed_subwindows=false
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/kanban_tasks/plugin.cfg")
+
+[file_customization]
+
+folder_colors={}
+
 [input]
 
 send={

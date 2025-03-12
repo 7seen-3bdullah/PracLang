@@ -1,0 +1,155 @@
+[gd_scene load_steps=8 format=3 uid="uid://di7tvn5g3aomf"]
+
+[ext_resource type="Script" uid="uid://dud7dvq61ab30" path="res://AIStudioCode/Editor/CodeEditor/CodeEditor.gd" id="1_tjscr"]
+[ext_resource type="Script" uid="uid://bl2url5a7jbhm" path="res://Build/FlexControl/FocusOutliner.gd" id="2_e28dc"]
+[ext_resource type="FontFile" uid="uid://b8yl2hi52l3my" path="res://UI&UX/Cascadia.tres" id="3_tjscr"]
+[ext_resource type="Script" uid="uid://dqm8oxu110ei5" path="res://AIStudioCode/Editor/CodeEditor/CodeEdit.gd" id="4_lxqrk"]
+[ext_resource type="Script" uid="uid://cfbvowu4g6u27" path="res://AIStudioCode/Editor/CodeEditor/CodeEditShortcut.gd" id="5_tjscr"]
+[ext_resource type="Script" uid="uid://brhkyw0lxvanf" path="res://Build/AIInterface.gd" id="6_7jpoq"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lqgxw"]
+
+[node name="CodeEditor" type="Control"]
+clip_contents = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_tjscr")
+source_language = "GDScript"
+metadata/_custom_type_script = "uid://di6ul5oiqo5hw"
+
+[node name="FocusOutliner" type="ColorRect" parent="." node_paths=PackedStringArray("_owner")]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+color = Color(0, 0, 0, 1)
+script = ExtResource("2_e28dc")
+width = null
+focus_color = Color(0.193492, 0.237013, 0.378105, 1)
+_owner = NodePath("..")
+metadata/_custom_type_script = "uid://cctynm5vrevbg"
+
+[node name="Split" type="VSplitContainer" parent="FocusOutliner"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+dragging_enabled = false
+dragger_visibility = 2
+
+[node name="Header" type="ColorRect" parent="FocusOutliner/Split"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+mouse_filter = 1
+color = Color(0, 0, 0, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="FocusOutliner/Split/Header"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="ChoicesBox" type="HBoxContainer" parent="FocusOutliner/Split/Header/MarginContainer"]
+layout_mode = 2
+
+[node name="GenCodeButton" type="Button" parent="FocusOutliner/Split/Header/MarginContainer/ChoicesBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(170, 0)
+layout_mode = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_lqgxw")
+text = "Generate Code"
+
+[node name="EditCodeButton" type="Button" parent="FocusOutliner/Split/Header/MarginContainer/ChoicesBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(170, 0)
+layout_mode = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_lqgxw")
+text = "Edit Code"
+
+[node name="GenCommentButton" type="Button" parent="FocusOutliner/Split/Header/MarginContainer/ChoicesBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(170, 0)
+layout_mode = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_lqgxw")
+text = "Generate Comment"
+
+[node name="TransLanguageButton" type="Button" parent="FocusOutliner/Split/Header/MarginContainer/ChoicesBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(170, 0)
+layout_mode = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_lqgxw")
+text = "Translate Language"
+
+[node name="CodeEdit" type="CodeEdit" parent="FocusOutliner/Split"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/selection_color = Color(0.306, 0.3746, 0.6, 0.588235)
+theme_override_fonts/font = ExtResource("3_tjscr")
+theme_override_font_sizes/font_size = 16
+theme_override_styles/focus = SubResource("StyleBoxEmpty_lqgxw")
+text = "func my_func() -> void:
+	pass"
+deselect_on_focus_loss_enabled = false
+minimap_draw = true
+caret_blink = true
+highlight_current_line = true
+line_folding = true
+gutters_draw_executing_lines = true
+gutters_draw_line_numbers = true
+gutters_zero_pad_line_numbers = true
+gutters_draw_fold_gutter = true
+code_completion_enabled = true
+indent_automatic = true
+auto_brace_completion_enabled = true
+auto_brace_completion_highlight_matching = true
+script = ExtResource("4_lxqrk")
+
+[node name="ShortcutNode" type="Node" parent="." node_paths=PackedStringArray("gui_control")]
+unique_name_in_owner = true
+physics_interpolation_mode = 2
+script = ExtResource("5_tjscr")
+gui_control = NodePath("../FocusOutliner/Split/CodeEdit")
+
+[node name="GenCodeInterface" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("6_7jpoq")
+metadata/_custom_type_script = "uid://dudb1l6f380jo"
+
+[node name="EditCodeInterface" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("6_7jpoq")
+metadata/_custom_type_script = "uid://dudb1l6f380jo"
+
+[node name="GenCommandInterface" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("6_7jpoq")
+use_history = false
+metadata/_custom_type_script = "uid://dudb1l6f380jo"
+
+[node name="TransLanguageInterface" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("6_7jpoq")
+use_history = false
+metadata/_custom_type_script = "uid://dudb1l6f380jo"
+
+[node name="PredictionInterface" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("6_7jpoq")
+use_history = false
+metadata/_custom_type_script = "uid://dudb1l6f380jo"
