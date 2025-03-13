@@ -4,6 +4,7 @@ signal result_pushed(error: int, response: Dictionary)
 signal error_pushed()
 
 @export var use_history:= true
+@export var try_again_on_failed: bool
 var chat_history: Array[Dictionary] = []
 
 @onready var http_request = HTTPRequest.new()
@@ -19,24 +20,23 @@ func _ready() -> void:
 
 func send_message(message: String) -> void:
 	chat_history.append({"role": "user", "content": [{"type": "text", "text": message}]})
+	request_ai()
+	if not use_history:
+		chat_history.clear()
+
+func request_ai() -> void:
 	var headers = [
 		"Authorization: Bearer " + API_KEY,
 		"Content-Type: application/json"
 	]
-	
 	var body = {
 		"model": "google/gemini-2.0-pro-exp-02-05:free",
 		"messages": chat_history
 	}
-	
 	var json_body = JSON.stringify(body)
 	var error = http_request.request(API_URL, headers, HTTPClient.METHOD_POST, json_body)
-	
 	if error != OK:
 		push_connection_error()
-	
-	if not use_history:
-		chat_history.clear()
 
 func _on_request_completed(result, response_code, headers, body) -> void:
 	if response_code == 200:
@@ -53,7 +53,18 @@ func push_result(error: int, response:= {}) -> void:
 	result_pushed.emit(error, response)
 
 func push_connection_error() -> void:
-	GuideServer.push_message("An error occurred while connecting to the AI model. Please try again.", 2)  
 	error_pushed.emit()
+	if try_again_on_failed:
+		GuideServer.push_message("Try to connect again", 0)
+		request_ai()
+	else:
+		GuideServer.push_message("An error occurred while connecting to the AI model. Please try again.", 2)  
+
+
+
+
+
+
+
 
 

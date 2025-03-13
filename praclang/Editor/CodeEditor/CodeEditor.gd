@@ -182,7 +182,7 @@ func imagine_code() -> void:
 	shortcut_node.set_enabled(false)
 	var prediction_times:= 5
 	var window_pos = get_window().position + Vector2i(get_global_mouse_position())
-	var window_size = Vector2i(300, 100)
+	var window_size = Vector2i(300, 80)
 	var window = WindowManager.popup_window(get_owner(), window_size, "Predictive code")
 	var predict_button = window.add_button("Predict")
 	var close_button = window.add_button("Close")

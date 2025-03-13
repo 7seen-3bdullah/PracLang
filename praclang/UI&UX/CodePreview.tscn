@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=3 uid="uid://ddcom0a5rlk4e"]
+
+[ext_resource type="FontFile" uid="uid://b8yl2hi52l3my" path="res://UI&UX/Cascadia.tres" id="1_ft34b"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_88h4p"]
+
+[node name="CodePreview" type="CodeEdit"]
+offset_right = 64.0
+offset_bottom = 24.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.411765, 0.411765, 0.411765, 1)
+theme_override_fonts/font = ExtResource("1_ft34b")
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxEmpty_88h4p")
+theme_override_styles/read_only = SubResource("StyleBoxEmpty_88h4p")
+theme_override_styles/panel = SubResource("StyleBoxEmpty_88h4p")
+editable = false
+autowrap_mode = 2
+scroll_fit_content_height = true
+scroll_fit_content_width = true
+gutters_draw_executing_lines = true
+gutters_draw_line_numbers = true
+gutters_zero_pad_line_numbers = true

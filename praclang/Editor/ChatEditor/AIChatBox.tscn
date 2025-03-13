@@ -1,10 +1,12 @@
-[gd_scene load_steps=6 format=3 uid="uid://d0seep5v1bevm"]
+[gd_scene load_steps=8 format=3 uid="uid://d0seep5v1bevm"]
 
 [ext_resource type="Script" uid="uid://brhkyw0lxvanf" path="res://Build/AIInterface.gd" id="1_2nv34"]
 [ext_resource type="Script" uid="uid://it6uyg8k6kbl" path="res://Editor/ChatEditor/AIChatBox.gd" id="1_ac3mo"]
 [ext_resource type="StyleBox" uid="uid://vfo2ttl7nvl0" path="res://UI&UX/Style/Focus.tres" id="2_tyr3i"]
 [ext_resource type="Script" uid="uid://bl2url5a7jbhm" path="res://Build/FlexControl/FocusOutliner.gd" id="2_up6qp"]
+[ext_resource type="Script" uid="uid://bdmf8incb2n6p" path="res://Build/ProcessingControl.gd" id="3_2pecy"]
 [ext_resource type="Script" uid="uid://bau0otx77bmty" path="res://Editor/ChatEditor/ChatBoxShortcut.gd" id="4_y485s"]
+[ext_resource type="Script" path="res://Build/TweenPlus.gd" id="6_8uo5l"]
 
 [node name="AIChatBox" type="Control"]
 custom_minimum_size = Vector2(300, 300)
@@ -76,15 +78,35 @@ theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Box/ChatBox/Margin"]
+unique_name_in_owner = true
 layout_mode = 2
 
-[node name="MessagesBox" type="VBoxContainer" parent="Box/ChatBox/Margin/ScrollContainer"]
+[node name="Margin" type="MarginContainer" parent="Box/ChatBox/Margin/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="MessagesBox" type="VBoxContainer" parent="Box/ChatBox/Margin/ScrollContainer/Margin"]
 unique_name_in_owner = true
-layout_direction = 3
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 2
 theme_override_constants/separation = 10
+
+[node name="ProcessingControl" type="ColorRect" parent="Box/ChatBox/Margin/ScrollContainer/Margin/MessagesBox"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+size_flags_horizontal = 0
+color = Color(0, 0, 0, 1)
+script = ExtResource("3_2pecy")
+radius = 10.0
+back_offset = 1.0
 
 [node name="MessageBox" type="ColorRect" parent="Box"]
 custom_minimum_size = Vector2(0, 48)
@@ -123,6 +145,7 @@ theme_override_styles/focus = ExtResource("2_tyr3i")
 text = "Send"
 
 [node name="ShortcutNode" type="Node" parent="." node_paths=PackedStringArray("gui_control")]
+unique_name_in_owner = true
 script = ExtResource("4_y485s")
 gui_control = NodePath("..")
 metadata/_custom_type_script = "uid://q1avmlqq8hos"
@@ -130,4 +153,9 @@ metadata/_custom_type_script = "uid://q1avmlqq8hos"
 [node name="MessageInterface" type="Node" parent="."]
 unique_name_in_owner = true
 script = ExtResource("1_2nv34")
+try_again_on_failed = true
 metadata/_custom_type_script = "uid://brhkyw0lxvanf"
+
+[node name="TweenPlus" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("6_8uo5l")

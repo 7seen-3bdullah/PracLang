@@ -24,7 +24,7 @@ func _ready() -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if not gui_control.focus_in:
+	if not enabled or not gui_control.focus_in:
 		return
 	if event is InputEventMouseButton:
 		if event.is_pressed():

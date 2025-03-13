@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://h2lhxkvnt2qh"]
+
+[ext_resource type="FontFile" uid="uid://b8yl2hi52l3my" path="res://UI&UX/Cascadia.tres" id="1_avmt0"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_88h4p"]
+
+[node name="MessagePreview" type="CodeEdit"]
+offset_right = 64.0
+offset_bottom = 24.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.411765, 0.411765, 0.411765, 1)
+theme_override_fonts/font = ExtResource("1_avmt0")
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxEmpty_88h4p")
+theme_override_styles/read_only = SubResource("StyleBoxEmpty_88h4p")
+theme_override_styles/panel = SubResource("StyleBoxEmpty_88h4p")
+editable = false
+selecting_enabled = false
+wrap_mode = 1
+scroll_fit_content_height = true

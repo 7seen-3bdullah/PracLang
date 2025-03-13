@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://b4h0dceaqgv0p"]
+[gd_scene load_steps=4 format=3 uid="uid://b4h0dceaqgv0p"]
 
 [ext_resource type="Script" uid="uid://c5i2qvdkuii3e" path="res://Editor/ChatEditor/MessageBox/MessageBox.gd" id="1_ifyp0"]
 [ext_resource type="StyleBox" uid="uid://bpjw1sl02te54" path="res://UI&UX/Style/UserMessageStyle.tres" id="1_iophh"]
+[ext_resource type="Script" path="res://Build/TweenPlus.gd" id="3_c76fe"]
 
 [node name="MessageBox" type="PanelContainer"]
 offset_right = 64.0
@@ -10,6 +11,7 @@ theme_override_styles/panel = ExtResource("1_iophh")
 script = ExtResource("1_ifyp0")
 
 [node name="Split" type="HSplitContainer" parent="."]
+unique_name_in_owner = true
 layout_mode = 2
 
 [node name="RoleRect" type="ColorRect" parent="Split"]
@@ -32,7 +34,9 @@ dragger_visibility = 2
 
 [node name="RoleLabel" type="Label" parent="Split/Margin/Split"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
+theme_override_font_sizes/font_size = 20
 text = "Role"
 autowrap_mode = 2
 
@@ -40,3 +44,7 @@ autowrap_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
+
+[node name="TweenPlus" type="Node" parent="Split"]
+unique_name_in_owner = true
+script = ExtResource("3_c76fe")

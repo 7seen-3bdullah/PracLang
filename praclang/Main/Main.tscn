@@ -64,6 +64,8 @@ layout_mode = 2
 
 [node name="CodeEditor" parent="MarginContainer/Box/EditorSide/HSplitContainer" instance=ExtResource("3_ps1la")]
 layout_mode = 2
+test = false
+enabled = false
 
 [node name="GuideSide" type="ColorRect" parent="MarginContainer/Box"]
 custom_minimum_size = Vector2(0, 40)

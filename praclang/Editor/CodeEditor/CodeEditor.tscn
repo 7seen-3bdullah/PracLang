@@ -20,7 +20,6 @@ script = ExtResource("1_tjscr")
 source_language = "GDScript"
 test = null
 enabled = null
-metadata/_custom_type_script = "uid://di6ul5oiqo5hw"
 
 [node name="FocusOutliner" type="ColorRect" parent="." node_paths=PackedStringArray("_owner")]
 unique_name_in_owner = true
@@ -34,7 +33,6 @@ color = Color(0, 0, 0, 0)
 script = ExtResource("2_e28dc")
 _owner = NodePath("..")
 focus_color = Color(0.193492, 0.237013, 0.378105, 1)
-metadata/_custom_type_script = "uid://cctynm5vrevbg"
 
 [node name="Split" type="VSplitContainer" parent="."]
 layout_mode = 1
@@ -129,27 +127,22 @@ gui_control = NodePath("..")
 [node name="GenCodeInterface" type="Node" parent="."]
 unique_name_in_owner = true
 script = ExtResource("6_7jpoq")
-metadata/_custom_type_script = "uid://dudb1l6f380jo"
 
 [node name="EditCodeInterface" type="Node" parent="."]
 unique_name_in_owner = true
 script = ExtResource("6_7jpoq")
-metadata/_custom_type_script = "uid://dudb1l6f380jo"
 
 [node name="GenCommandInterface" type="Node" parent="."]
 unique_name_in_owner = true
 script = ExtResource("6_7jpoq")
 use_history = false
-metadata/_custom_type_script = "uid://dudb1l6f380jo"
 
 [node name="TransLanguageInterface" type="Node" parent="."]
 unique_name_in_owner = true
 script = ExtResource("6_7jpoq")
 use_history = false
-metadata/_custom_type_script = "uid://dudb1l6f380jo"
 
 [node name="PredictionInterface" type="Node" parent="."]
 unique_name_in_owner = true
 script = ExtResource("6_7jpoq")
 use_history = false
-metadata/_custom_type_script = "uid://dudb1l6f380jo"
