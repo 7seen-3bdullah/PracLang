@@ -3,7 +3,6 @@ extends Node
 @onready var line_edit: LineEdit = $PanelContainer/VBoxContainer/LineEdit
 @onready var rich_text_label: RichTextLabel = $PanelContainer/VBoxContainer/ScrollContainer/RichTextLabel
 
-const OPENROUTER_API_KEY = "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"
 
 # User preferences (can be set via UI or other logic)
 var user_name = "Anas"

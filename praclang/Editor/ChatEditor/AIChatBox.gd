@@ -1,10 +1,12 @@
 extends FlexibleControl
 
+@export var current_session_data: SessionData
+
 @onready var shortcut_node: Node = %ShortcutNode
 @onready var message_interface: AIInterface = %MessageInterface
 @onready var tween_plus: TweenPlus = %TweenPlus
 
-@onready var message_line: LineEdit = %MessageLine
+@onready var message_line: TextEdit = %MessageLine
 @onready var send_message_button: Button = %SendMessageButton
 @onready var processing_control: ProcessingControl = %ProcessingControl
 @onready var messages_box: VBoxContainer = %MessagesBox
@@ -22,8 +24,8 @@ func _ready() -> void:
 	messages_box.child_entered_tree.connect(on_child_entered_tree)
 	
 	message_interface.result_pushed.connect(on_message_interface_result_pushed)
+	message_interface.error_result_pushed.connect(on_message_interface_error_result_pushed)
 	message_interface.error_pushed.connect(on_message_interface_error_pushed)
-	
 
 
 # -------------------------------
@@ -33,7 +35,9 @@ func on_focus_changed(is_focus: bool) -> void:
 	if is_focus:
 		await get_tree().process_frame
 		GuideServer.push_guides([
-			{"Send Message": "[Enter]"},
+			{"Send Message": "Enter"},
+			{"New Line": "Shift + Enter"},
+			{"Zoom In Out": "Control + 'Scroll Mouse Wheel'"}
 		])
 	else:
 		GuideServer.push_guides()
@@ -52,6 +56,8 @@ func send_message() -> void:
 	if not message:
 		GuideServer.push_message("Enter the message, then send", 1)
 		return
+	message_line.set_editable(false)
+	await get_tree().process_frame
 	message_interface.send_message(message)
 	message_line.clear()
 	add_message_box("User", [{"text": message}])
@@ -65,9 +71,15 @@ func on_message_interface_result_pushed(error: int, response: Dictionary) -> voi
 	var message = response.choices[0].message.content
 	add_message_box("AI", [{"text": message}])
 	processing_control.hide()
+	message_line.set_editable(true)
+
+func on_message_interface_error_result_pushed(error: int, response: Dictionary) -> void:
+	user_current_message.queue_free()
+	message_line.set_editable(true)
 
 func on_message_interface_error_pushed() -> void:
-	pass
+	user_current_message.queue_free()
+	message_line.set_editable(true)
 
 
 # -------------------------------
@@ -87,8 +99,7 @@ func add_message_box(role: String, messages_content: Array) -> void:
 		"AI":
 			message_box.setup(AI_MESSAGE_STYLE, Color.GRAY, role, messages_content)
 	messages_box.move_child(processing_control, messages_box.get_child_count()-1)
-
-
+	shortcut_node.update_zoom()
 
 
 

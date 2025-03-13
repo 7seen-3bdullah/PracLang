@@ -18,7 +18,7 @@ func popup_borderless_window(processing_node: Control, window_size:= Vector2(300
 	return window
 
 func create_processing_rect() -> ColorRect:
-	var rect = ColorRect.new()
+	var rect = ProcessingControl.new()
 	rect.color = Color(Color.BLACK, .5)
 	rect.set_anchors_preset(Control.PRESET_FULL_RECT)
 	return rect

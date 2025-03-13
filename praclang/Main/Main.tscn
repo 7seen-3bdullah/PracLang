@@ -61,8 +61,11 @@ split_offset = 400
 
 [node name="AIChatBox" parent="MarginContainer/Box/EditorSide/HSplitContainer" instance=ExtResource("2_amygn")]
 layout_mode = 2
+test = false
+enabled = false
 
 [node name="CodeEditor" parent="MarginContainer/Box/EditorSide/HSplitContainer" instance=ExtResource("3_ps1la")]
+visible = false
 layout_mode = 2
 test = false
 enabled = false

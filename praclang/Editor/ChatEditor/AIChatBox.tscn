@@ -1,15 +1,16 @@
-[gd_scene load_steps=8 format=3 uid="uid://d0seep5v1bevm"]
+[gd_scene load_steps=9 format=3 uid="uid://d0seep5v1bevm"]
 
 [ext_resource type="Script" uid="uid://brhkyw0lxvanf" path="res://Build/AIInterface.gd" id="1_2nv34"]
 [ext_resource type="Script" uid="uid://it6uyg8k6kbl" path="res://Editor/ChatEditor/AIChatBox.gd" id="1_ac3mo"]
 [ext_resource type="StyleBox" uid="uid://vfo2ttl7nvl0" path="res://UI&UX/Style/Focus.tres" id="2_tyr3i"]
 [ext_resource type="Script" uid="uid://bl2url5a7jbhm" path="res://Build/FlexControl/FocusOutliner.gd" id="2_up6qp"]
+[ext_resource type="PackedScene" uid="uid://leniqhvlxga" path="res://UI&UX/MenuBox/MenuBox.tscn" id="3_0wjpb"]
 [ext_resource type="Script" uid="uid://bdmf8incb2n6p" path="res://Build/ProcessingControl.gd" id="3_2pecy"]
 [ext_resource type="Script" uid="uid://bau0otx77bmty" path="res://Editor/ChatEditor/ChatBoxShortcut.gd" id="4_y485s"]
 [ext_resource type="Script" path="res://Build/TweenPlus.gd" id="6_8uo5l"]
 
 [node name="AIChatBox" type="Control"]
-custom_minimum_size = Vector2(300, 300)
+custom_minimum_size = Vector2(400, 400)
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -31,7 +32,7 @@ _owner = NodePath("..")
 focus_color = Color(0.192157, 0.235294, 0.376471, 1)
 metadata/_custom_type_script = "uid://bl2url5a7jbhm"
 
-[node name="Box" type="VBoxContainer" parent="."]
+[node name="ChatSide" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -39,14 +40,14 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Header" type="ColorRect" parent="Box"]
+[node name="Header" type="ColorRect" parent="ChatSide"]
 clip_contents = true
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 mouse_filter = 1
 color = Color(0.176471, 0.176471, 0.176471, 1)
 
-[node name="Margin" type="MarginContainer" parent="Box/Header"]
+[node name="Margin" type="MarginContainer" parent="ChatSide/Header"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -58,30 +59,56 @@ theme_override_constants/margin_top = 4
 theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 4
 
-[node name="ChoicesBox" type="HBoxContainer" parent="Box/Header/Margin"]
+[node name="ChoicesBox" type="HBoxContainer" parent="ChatSide/Header/Margin"]
 layout_mode = 2
 
-[node name="ChatBox" type="Panel" parent="Box"]
+[node name="Margin" type="MarginContainer" parent="ChatSide"]
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
 
-[node name="Margin" type="MarginContainer" parent="Box/ChatBox"]
+[node name="Split" type="HSplitContainer" parent="ChatSide/Margin"]
+layout_mode = 2
+size_flags_vertical = 3
+dragger_visibility = 2
+
+[node name="HistorySide" type="ColorRect" parent="ChatSide/Margin/Split"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="ChatSide/Margin/Split/HistorySide"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
 
-[node name="ScrollContainer" type="ScrollContainer" parent="Box/ChatBox/Margin"]
-unique_name_in_owner = true
+[node name="MenuBox" parent="ChatSide/Margin/Split/HistorySide/MarginContainer" instance=ExtResource("3_0wjpb")]
 layout_mode = 2
 
-[node name="Margin" type="MarginContainer" parent="Box/ChatBox/Margin/ScrollContainer"]
+[node name="ChatBox" type="Panel" parent="ChatSide/Margin/Split"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ScrollContainer" type="ScrollContainer" parent="ChatSide/Margin/Split/ChatBox"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Margin" type="MarginContainer" parent="ChatSide/Margin/Split/ChatBox/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -90,14 +117,14 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="MessagesBox" type="VBoxContainer" parent="Box/ChatBox/Margin/ScrollContainer/Margin"]
+[node name="MessagesBox" type="VBoxContainer" parent="ChatSide/Margin/Split/ChatBox/ScrollContainer/Margin"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 2
+size_flags_vertical = 3
 theme_override_constants/separation = 10
 
-[node name="ProcessingControl" type="ColorRect" parent="Box/ChatBox/Margin/ScrollContainer/Margin/MessagesBox"]
+[node name="ProcessingControl" type="ColorRect" parent="ChatSide/Margin/Split/ChatBox/ScrollContainer/Margin/MessagesBox"]
 unique_name_in_owner = true
 visible = false
 custom_minimum_size = Vector2(50, 50)
@@ -106,38 +133,33 @@ size_flags_horizontal = 0
 color = Color(0, 0, 0, 1)
 script = ExtResource("3_2pecy")
 radius = 10.0
-back_offset = 1.0
 
-[node name="MessageBox" type="ColorRect" parent="Box"]
-custom_minimum_size = Vector2(0, 48)
+[node name="MessageBox" type="PanelContainer" parent="ChatSide"]
 layout_mode = 2
-color = Color(0.176419, 0.176419, 0.176419, 1)
 
-[node name="Margin" type="MarginContainer" parent="Box/MessageBox"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="Margin" type="MarginContainer" parent="ChatSide/MessageBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 theme_override_constants/margin_left = 4
 theme_override_constants/margin_top = 4
 theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 4
 
-[node name="Split" type="HSplitContainer" parent="Box/MessageBox/Margin"]
+[node name="Split" type="HSplitContainer" parent="ChatSide/MessageBox/Margin"]
 layout_mode = 2
 dragging_enabled = false
 
-[node name="MessageLine" type="LineEdit" parent="Box/MessageBox/Margin/Split"]
+[node name="MessageLine" type="TextEdit" parent="ChatSide/MessageBox/Margin/Split"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/focus = ExtResource("2_tyr3i")
 placeholder_text = "Type your Message ..."
+scroll_fit_content_height = true
 caret_blink = true
 
-[node name="SendMessageButton" type="Button" parent="Box/MessageBox/Margin/Split"]
+[node name="SendMessageButton" type="Button" parent="ChatSide/MessageBox/Margin/Split"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
@@ -159,3 +181,5 @@ metadata/_custom_type_script = "uid://brhkyw0lxvanf"
 [node name="TweenPlus" type="Node" parent="."]
 unique_name_in_owner = true
 script = ExtResource("6_8uo5l")
+
+[editable path="ChatSide/Margin/Split/HistorySide/MarginContainer/MenuBox"]

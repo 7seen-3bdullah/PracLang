@@ -9,7 +9,7 @@ extends PanelContainer
 @onready var tween: TweenPlus = %TweenPlus
 
 
-const MESSAGE_PREVIEW = preload("res://UI&UX/MessagePreview.tscn")
+const CONTENT_PREVIEW = preload("res://UI&UX/ContentPreview.tscn")
 
 func setup(panel_style: StyleBox, role_color: Color, role_name: String,
 	messages_content: Array) -> void:
@@ -21,7 +21,7 @@ func setup(panel_style: StyleBox, role_color: Color, role_name: String,
 			var content = messages_content[index].values()[0]
 			var content_box = PanelContainer.new()
 			var content_margin = MarginContainer.new()
-			var content_preview = MESSAGE_PREVIEW.instantiate()
+			var content_preview = CONTENT_PREVIEW.instantiate()
 			content_preview.text = content
 			content_preview.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 			content_margin.add_theme_constant_override("margin_left", 4)
@@ -35,8 +35,8 @@ func setup(panel_style: StyleBox, role_color: Color, role_name: String,
 
 
 func _ready() -> void:
-	tween.tween(split, "position:y", [[10.0, .0], [.0, .2]], Tween.EASE_OUT, Tween.TRANS_QUAD)
-
+	tween.tween(split, "position:y", [[50.0, .0], [.0, .4]], Tween.EASE_OUT, Tween.TRANS_QUAD)
+	tween.tween(self, "modulate:a", [[.0, 1.0], [.0, .4]], Tween.EASE_OUT, Tween.TRANS_QUAD)
 
 
 

@@ -3,10 +3,10 @@ class_name ProcessingControl extends ColorRect
 
 @export var forward_color:= Color("3b4873")
 @export var back_color:= Color("3b487364")
-@export var radius: float = 20.0
+@export var radius: float = 30.0
 @export var width: float = 5.0
 @export var speed: float = .01
-@export var back_offset: float = .5
+@export var back_offset: float = 1.0
 @export_range(3, 100) var subdivision: int = 24
 
 func _process(delta: float) -> void:
