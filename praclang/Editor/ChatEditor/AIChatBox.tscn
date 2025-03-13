@@ -1,0 +1,130 @@
+[gd_scene load_steps=6 format=3 uid="uid://d0seep5v1bevm"]
+
+[ext_resource type="Script" uid="uid://brhkyw0lxvanf" path="res://Build/AIInterface.gd" id="1_2nv34"]
+[ext_resource type="Script" uid="uid://it6uyg8k6kbl" path="res://Editor/ChatEditor/AIChatBox.gd" id="1_ac3mo"]
+[ext_resource type="StyleBox" uid="uid://vfo2ttl7nvl0" path="res://UI&UX/Style/Focus.tres" id="2_tyr3i"]
+[ext_resource type="Script" uid="uid://bl2url5a7jbhm" path="res://Build/FlexControl/FocusOutliner.gd" id="2_up6qp"]
+[ext_resource type="Script" uid="uid://bau0otx77bmty" path="res://Editor/ChatEditor/ChatBoxShortcut.gd" id="4_y485s"]
+
+[node name="AIChatBox" type="Control"]
+custom_minimum_size = Vector2(300, 300)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ac3mo")
+
+[node name="FocusOutliner" type="ColorRect" parent="." node_paths=PackedStringArray("_owner")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 1, 1, 0)
+script = ExtResource("2_up6qp")
+_owner = NodePath("..")
+focus_color = Color(0.192157, 0.235294, 0.376471, 1)
+metadata/_custom_type_script = "uid://bl2url5a7jbhm"
+
+[node name="Box" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Header" type="ColorRect" parent="Box"]
+clip_contents = true
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+mouse_filter = 1
+color = Color(0.176471, 0.176471, 0.176471, 1)
+
+[node name="Margin" type="MarginContainer" parent="Box/Header"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="ChoicesBox" type="HBoxContainer" parent="Box/Header/Margin"]
+layout_mode = 2
+
+[node name="ChatBox" type="Panel" parent="Box"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Margin" type="MarginContainer" parent="Box/ChatBox"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Box/ChatBox/Margin"]
+layout_mode = 2
+
+[node name="MessageBox" type="VBoxContainer" parent="Box/ChatBox/Margin/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="MessageBox" type="ColorRect" parent="Box"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+color = Color(0.176419, 0.176419, 0.176419, 1)
+
+[node name="Margin" type="MarginContainer" parent="Box/MessageBox"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="Split" type="HSplitContainer" parent="Box/MessageBox/Margin"]
+layout_mode = 2
+dragging_enabled = false
+
+[node name="MessageLine" type="LineEdit" parent="Box/MessageBox/Margin/Split"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/focus = ExtResource("2_tyr3i")
+placeholder_text = "Type your Message ..."
+caret_blink = true
+
+[node name="SendMessageButton" type="Button" parent="Box/MessageBox/Margin/Split"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_styles/focus = ExtResource("2_tyr3i")
+text = "Send"
+
+[node name="ShortcutNode" type="Node" parent="." node_paths=PackedStringArray("gui_control")]
+script = ExtResource("4_y485s")
+gui_control = NodePath("..")
+metadata/_custom_type_script = "uid://q1avmlqq8hos"
+
+[node name="MessageInterface" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("1_2nv34")
+metadata/_custom_type_script = "uid://brhkyw0lxvanf"

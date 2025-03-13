@@ -8,7 +8,7 @@ func set_enabled(val: bool) -> void:
 	enabled = val
 func get_enabled() -> bool:
 	return enabled
-@export var gui_control: Control
+@export var gui_control: FlexibleControl
 
 const NONE_MASK: int = 0
 const CTRL_MASK: int = 268435456
@@ -20,10 +20,12 @@ var button_shortcuts: Dictionary[Array, Callable]
 
 
 func _ready() -> void:
-	gui_control.gui_input.connect(on_gui_input)
+	pass
 
 
-func on_gui_input(event: InputEvent) -> void:
+func _input(event: InputEvent) -> void:
+	if not gui_control.focus_in:
+		return
 	if event is InputEventMouseButton:
 		if event.is_pressed():
 			var key_mask = event.get_modifiers_mask()

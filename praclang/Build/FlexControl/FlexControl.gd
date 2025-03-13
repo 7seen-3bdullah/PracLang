@@ -27,7 +27,7 @@ var self_scene: Variant
 
 
 @export var test: bool
-
+@export var enabled: bool
 
 
 
@@ -51,7 +51,8 @@ func flexControl_setup():
 
 
 func _input(event: InputEvent) -> void:
-	flexControl_input(event)
+	if enabled:
+		flexControl_input(event)
 
 
 func flexControl_input(event: InputEvent) -> void:

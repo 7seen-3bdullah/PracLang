@@ -53,9 +53,7 @@ func on_focus_changed(is_focus: bool) -> void:
 			{"Zoom In Out": "'Scroll Mouse Wheel'"}
 		])
 	else:
-		GuideServer.push_guides([
-		{"": "'AI Studio Code' is a simple and efficient code editor powered by artificial intelligence, created during the SalamHack 2025 competition."}
-	])
+		GuideServer.push_guides()
 
 func on_generate_code_button_pressed() -> void:
 	generate_code()

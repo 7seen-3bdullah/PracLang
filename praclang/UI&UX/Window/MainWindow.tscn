@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://ck6ptst761qmk"]
 
 [ext_resource type="Script" uid="uid://v7y38d30kthr" path="res://UI&UX/Window/MainWindow.gd" id="1_rukrm"]
-[ext_resource type="Material" uid="uid://qrlpwrux0lid" path="res://UI&UX/BG.tres" id="2_f2v4f"]
+[ext_resource type="Material" uid="uid://qrlpwrux0lid" path="res://UI&UX/Style/BG.tres" id="2_f2v4f"]
 
 [node name="Window" type="Window"]
 initial_position = 1
