@@ -1,6 +1,7 @@
 class_name AIInterface extends Node
 
 signal result_pushed(error: int, response: Dictionary)
+signal error_pushed()
 
 @export var use_history:= true
 var chat_history: Array[Dictionary] = []
@@ -32,7 +33,7 @@ func send_message(message: String) -> void:
 	var error = http_request.request(API_URL, headers, HTTPClient.METHOD_POST, json_body)
 	
 	if error != OK:
-		print_connection_error()
+		push_connection_error()
 	
 	if not use_history:
 		chat_history.clear()
@@ -44,15 +45,15 @@ func _on_request_completed(result, response_code, headers, body) -> void:
 			if use_history:
 				chat_history.append(response["choices"][0]["message"])
 			push_result(response_code, response)
-		else: print_connection_error()
-	else: print_connection_error()
+		else: push_connection_error()
+	else: push_connection_error()
 
 
 func push_result(error: int, response:= {}) -> void:
 	result_pushed.emit(error, response)
 
-func print_connection_error() -> void:
+func push_connection_error() -> void:
 	GuideServer.push_message("An error occurred while connecting to the AI model. Please try again.", 2)  
-
+	error_pushed.emit()
 
 

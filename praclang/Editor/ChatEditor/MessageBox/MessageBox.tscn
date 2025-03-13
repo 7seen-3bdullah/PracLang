@@ -1,13 +1,12 @@
 [gd_scene load_steps=3 format=3 uid="uid://b4h0dceaqgv0p"]
 
 [ext_resource type="Script" uid="uid://c5i2qvdkuii3e" path="res://Editor/ChatEditor/MessageBox/MessageBox.gd" id="1_ifyp0"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ifyp0"]
+[ext_resource type="StyleBox" uid="uid://bpjw1sl02te54" path="res://UI&UX/Style/UserMessageStyle.tres" id="1_iophh"]
 
 [node name="MessageBox" type="PanelContainer"]
-offset_right = 192.0
-offset_bottom = 128.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_ifyp0")
+offset_right = 64.0
+offset_bottom = 31.0
+theme_override_styles/panel = ExtResource("1_iophh")
 script = ExtResource("1_ifyp0")
 
 [node name="Split" type="HSplitContainer" parent="."]
@@ -40,7 +39,3 @@ text = "Role"
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
-
-[node name="Panel" type="Panel" parent="Split/Margin/Split/Box"]
-custom_minimum_size = Vector2(0, 100)
-layout_mode = 2

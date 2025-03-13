@@ -4,12 +4,24 @@ extends FlexibleControl
 
 @onready var message_line: LineEdit = %MessageLine
 @onready var send_message_button: Button = %SendMessageButton
+@onready var messages_box: VBoxContainer = %MessagesBox
+
+var uploaded_message: Control
+
 
 func _ready() -> void:
 	super()
+	
 	focus_changed.connect(on_focus_changed)
+	
 	send_message_button.pressed.connect(send_message)
+	
 	message_interface.result_pushed.connect(on_message_interface_result_pushed)
+	message_interface.error_pushed.connect(on_message_interface_error_pushed)
+
+
+# -------------------------------
+
 
 func on_focus_changed(is_focus: bool) -> void:
 	if is_focus:
@@ -21,6 +33,8 @@ func on_focus_changed(is_focus: bool) -> void:
 		GuideServer.push_guides()
 
 
+# -------------------------------
+
 
 func send_message() -> void:
 	var message = message_line.get_text()
@@ -29,20 +43,36 @@ func send_message() -> void:
 		return
 	message_interface.send_message(message)
 	message_line.clear()
-	add_message_box("User", [
-		{"text": message},
-	])
+	add_message_box("User", [{"text": message}])
+
+
+# -------------------------------
+
 
 func on_message_interface_result_pushed(error: int, response: Dictionary) -> void:
-	print(response.choices[0].message)
+	var message = response.choices[0].message.content
+	add_message_box("AI", [{"text": message}])
+
+func on_message_interface_error_pushed() -> void:
+	uploaded_message.queue_free()
 
 
+# -------------------------------
 
 
 var MESSAGE_BOX = preload("res://Editor/ChatEditor/MessageBox/MessageBox.tscn")
-func add_message_box(role: String, message_content: Array) -> void:
+const AI_MESSAGE_STYLE = preload("res://UI&UX/Style/AIMessageStyle.tres")
+const USER_MESSAGE_STYLE = preload("res://UI&UX/Style/UserMessageStyle.tres")
+
+func add_message_box(role: String, messages_content: Array) -> void:
 	var message_box = MESSAGE_BOX.instantiate()
-	
+	messages_box.add_child(message_box)
+	match role:
+		"User":
+			message_box.setup(USER_MESSAGE_STYLE, Color("3b4873"), role, messages_content)
+			uploaded_message = message_box
+		"AI":
+			message_box.setup(AI_MESSAGE_STYLE, Color.GRAY, role, messages_content)
 
 
 

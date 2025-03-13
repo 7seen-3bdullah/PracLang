@@ -6,7 +6,7 @@ extends PanelContainer
 
 
 func setup(panel_style: StyleBox, role_color: Color, role_name: String,
-	messages_content: Array[Dictionary]) -> void:
+	messages_content: Array) -> void:
 		self.add_theme_stylebox_override("panel", panel_style)
 		role_rect.color = role_color
 		role_label.text = role_name
