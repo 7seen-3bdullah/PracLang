@@ -14,7 +14,15 @@ func setup(panel_style: StyleBox, role_color: Color, role_name: String,
 			var key = messages_content[index].keys()[0]
 			var content = messages_content[index].values()[0]
 			var content_box = PanelContainer.new()
+			var content_margin = MarginContainer.new()
 			var content_label = Label.new()
-			content_label.set_text(content)
-			content_box.add_child(content_label)
+			content_label.text = content
+			content_label.autowrap_mode = TextServer.AUTOWRAP_WORD
+			content_margin.add_theme_constant_override("margin_left", 4)
+			content_margin.add_theme_constant_override("margin_top", 4)
+			content_margin.add_theme_constant_override("margin_right", 4)
+			content_margin.add_theme_constant_override("margin_bottom", 4)
+			content_box.custom_minimum_size = Vector2.ONE * 80.0
+			content_margin.add_child(content_label)
+			content_box.add_child(content_margin)
 			box.add_child(content_box)
