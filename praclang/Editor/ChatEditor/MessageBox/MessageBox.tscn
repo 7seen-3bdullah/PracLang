@@ -9,6 +9,7 @@
 [node name="MessageBox" type="PanelContainer"]
 offset_right = 64.0
 offset_bottom = 31.0
+mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxEmpty_iophh")
 script = ExtResource("1_ifyp0")
 
@@ -21,11 +22,13 @@ dragging_enabled = false
 unique_name_in_owner = true
 custom_minimum_size = Vector2(4, 0)
 layout_mode = 2
+mouse_filter = 1
 color = Color(0.231373, 0.282353, 0.45098, 1)
 
 [node name="Panel" type="PanelContainer" parent="Split"]
 unique_name_in_owner = true
 layout_mode = 2
+mouse_filter = 1
 theme_override_styles/panel = ExtResource("1_iophh")
 
 [node name="Margin" type="MarginContainer" parent="Split/Panel"]
@@ -44,6 +47,7 @@ dragger_visibility = 2
 unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
+mouse_filter = 1
 theme_override_font_sizes/font_size = 20
 text = "Role"
 autowrap_mode = 2

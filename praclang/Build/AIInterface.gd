@@ -8,7 +8,7 @@ signal error_pushed()
 @export_multiline var directions: String
 @export var use_history:= true
 @export var try_again_on_failed: bool
-var chat_history: Array[Dictionary] = []
+var chat_history: Array = []
 
 @onready var http_request = HTTPRequest.new()
 
@@ -40,7 +40,7 @@ func send_message(message: String) -> void:
 
 func request_ai() -> void:
 	var headers = [
-		"Authorization: Bearer " + API_KEY2,
+		"Authorization: Bearer " + API_KEY3,
 		"Content-Type: application/json"
 	]
 	var body = {

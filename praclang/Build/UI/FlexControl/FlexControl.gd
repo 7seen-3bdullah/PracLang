@@ -40,6 +40,14 @@ var self_scene: Variant
 
 func _ready() -> void:
 	flexControl_setup()
+	mouse_entered.connect(on_mouse_entered)
+	mouse_exited.connect(on_mouse_exited)
+
+func on_mouse_entered() -> void:
+	focus_in = true
+
+func on_mouse_exited() -> void:
+	focus_in = false
 
 func flexControl_setup():
 	self_scene = load(scene_file_path)
@@ -53,7 +61,6 @@ func flexControl_setup():
 func _input(event: InputEvent) -> void:
 	if enabled:
 		flexControl_input(event)
-
 
 func flexControl_input(event: InputEvent) -> void:
 	

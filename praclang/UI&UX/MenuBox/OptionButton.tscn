@@ -1,7 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://cte65xnmrr4rl"]
+[gd_scene load_steps=5 format=3 uid="uid://d37xq02tholh4"]
 
-[ext_resource type="Script" uid="uid://cucsmtfx406fn" path="res://UI&UX/MenuBox/CodeButton.gd" id="1_sxw08"]
-[ext_resource type="PackedScene" uid="uid://ddcom0a5rlk4e" path="res://UI&UX/CodePreview.tscn" id="2_v3koa"]
+[ext_resource type="Script" uid="uid://bwnanjwktmi0i" path="res://UI&UX/MenuBox/OptionButton.gd" id="1_ymiua"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ymiua"]
+bg_color = Color(0.09, 0.114, 0.18, 0.588235)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bipeb"]
 
@@ -12,12 +14,9 @@ border_color = Color(0.231373, 0.282353, 0.45098, 1)
 
 [node name="MenuButton" type="PanelContainer"]
 custom_minimum_size = Vector2(0, 50)
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("1_sxw08")
+offset_bottom = 50.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_ymiua")
+script = ExtResource("1_ymiua")
 
 [node name="Button" type="Button" parent="."]
 unique_name_in_owner = true
@@ -26,9 +25,3 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_bipeb")
 theme_override_styles/hover = SubResource("StyleBoxFlat_md1nf")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_bipeb")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_bipeb")
-
-[node name="CodePreview" parent="." instance=ExtResource("2_v3koa")]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_font_sizes/font_size = 15
-selecting_enabled = false

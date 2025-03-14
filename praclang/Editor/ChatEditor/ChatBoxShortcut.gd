@@ -8,6 +8,7 @@ extends ShortcutNode
 
 func _ready() -> void:
 	super()
+	create_key_shortcut(CTRL_MASK, KEY_A, chat_box.create_new_session)
 	create_key_shortcut(NONE_MASK, KEY_ENTER, chat_box.send_message)
 	create_key_shortcut(SHIFT_MASK, KEY_ENTER, new_line)
 	create_button_shortcut(CTRL_MASK, MOUSE_BUTTON_WHEEL_UP, change_zoom.bind(.1))

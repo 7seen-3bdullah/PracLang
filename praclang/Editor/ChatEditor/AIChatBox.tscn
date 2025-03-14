@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://d0seep5v1bevm"]
+[gd_scene load_steps=9 format=3 uid="uid://d0seep5v1bevm"]
 
 [ext_resource type="Script" uid="uid://brhkyw0lxvanf" path="res://Build/AIInterface.gd" id="1_2nv34"]
 [ext_resource type="Script" uid="uid://it6uyg8k6kbl" path="res://Editor/ChatEditor/AIChatBox.gd" id="1_ac3mo"]
@@ -9,14 +9,6 @@
 [ext_resource type="Script" uid="uid://bau0otx77bmty" path="res://Editor/ChatEditor/ChatBoxShortcut.gd" id="4_y485s"]
 [ext_resource type="Script" uid="uid://vjj86spceuoj" path="res://Build/TweenPlus.gd" id="6_8uo5l"]
 
-[sub_resource type="SystemFont" id="SystemFont_0wjpb"]
-font_names = PackedStringArray("Segoe UI Historic", "Segoe UI Symbol")
-subpixel_positioning = 0
-multichannel_signed_distance_field = true
-
-[sub_resource type="Theme" id="Theme_4c2pl"]
-default_font = SubResource("SystemFont_0wjpb")
-
 [node name="AIChatBox" type="Control"]
 custom_minimum_size = Vector2(400, 400)
 layout_mode = 3
@@ -25,7 +17,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = SubResource("Theme_4c2pl")
 script = ExtResource("1_ac3mo")
 user_name = "Omar TOP"
 mother_language = "Arabic"
@@ -47,6 +38,7 @@ focus_color = Color(0.192157, 0.235294, 0.376471, 1)
 metadata/_custom_type_script = "uid://bl2url5a7jbhm"
 
 [node name="ChatSide" type="VBoxContainer" parent="."]
+clip_contents = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -59,7 +51,7 @@ clip_contents = true
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 mouse_filter = 1
-color = Color(0.176471, 0.176471, 0.176471, 1)
+color = Color(0.117647, 0.117647, 0.133333, 1)
 
 [node name="Margin" type="MarginContainer" parent="ChatSide/Header"]
 layout_mode = 1
@@ -92,6 +84,7 @@ dragger_visibility = 2
 [node name="HistorySide" type="ColorRect" parent="ChatSide/Margin/Split"]
 custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
+mouse_filter = 1
 color = Color(0, 0, 0, 1)
 
 [node name="MarginContainer" type="MarginContainer" parent="ChatSide/Margin/Split/HistorySide"]
@@ -106,26 +99,36 @@ theme_override_constants/margin_top = 4
 theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 4
 
-[node name="MenuBox" parent="ChatSide/Margin/Split/HistorySide/MarginContainer" instance=ExtResource("3_0wjpb")]
+[node name="Box" type="VBoxContainer" parent="ChatSide/Margin/Split/HistorySide/MarginContainer"]
 layout_mode = 2
 
-[node name="NewSessionButton" type="Button" parent="ChatSide/Margin/Split/HistorySide/MarginContainer/MenuBox/Scroll/Box" index="0"]
+[node name="NewSessionButton" type="Button" parent="ChatSide/Margin/Split/HistorySide/MarginContainer/Box"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
+mouse_filter = 1
 theme_override_font_sizes/font_size = 20
 theme_override_styles/focus = ExtResource("2_tyr3i")
 text = "New Session"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ChatSide/Margin/Split/HistorySide/MarginContainer/MenuBox/Scroll/Box" index="1"]
-layout_mode = 2
-
-[node name="VBoxContainer2" type="VBoxContainer" parent="ChatSide/Margin/Split/HistorySide/MarginContainer/MenuBox/Scroll/Box" index="2"]
-layout_mode = 2
-
-[node name="ChatBox" type="Panel" parent="ChatSide/Margin/Split"]
+[node name="SessionsBox" parent="ChatSide/Margin/Split/HistorySide/MarginContainer/Box" instance=ExtResource("3_0wjpb")]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
+mouse_filter = 1
+
+[node name="MistakesBox" parent="ChatSide/Margin/Split/HistorySide/MarginContainer/Box" instance=ExtResource("3_0wjpb")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 1
+
+[node name="ChatBox" type="Panel" parent="ChatSide/Margin/Split"]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 1
 
 [node name="VSplitContainer" type="VSplitContainer" parent="ChatSide/Margin/Split/ChatBox"]
 layout_mode = 1
@@ -150,6 +153,16 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
+[node name="NoSessionMessage" type="Label" parent="ChatSide/Margin/Split/ChatBox/VSplitContainer/ScrollContainer/Margin"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0.392157)
+theme_override_font_sizes/font_size = 20
+text = "No Session here, choose anyone from left side
+or create a new one by pressing 'Control + A'"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="MessagesBox" type="VBoxContainer" parent="ChatSide/Margin/Split/ChatBox/VSplitContainer/ScrollContainer/Margin"]
 unique_name_in_owner = true
 layout_mode = 2
@@ -169,6 +182,7 @@ radius = 10.0
 
 [node name="MessageBox" type="PanelContainer" parent="ChatSide/Margin/Split/ChatBox/VSplitContainer"]
 layout_mode = 2
+mouse_filter = 1
 
 [node name="Margin" type="MarginContainer" parent="ChatSide/Margin/Split/ChatBox/VSplitContainer/MessageBox"]
 layout_mode = 2
@@ -187,6 +201,7 @@ dragging_enabled = false
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_filter = 1
 theme_override_font_sizes/font_size = 20
 theme_override_styles/focus = ExtResource("2_tyr3i")
 placeholder_text = "Type your Message ..."
@@ -198,7 +213,7 @@ caret_blink = true
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
-theme_override_font_sizes/font_size = 20
+mouse_filter = 1
 theme_override_styles/focus = ExtResource("2_tyr3i")
 text = "Send"
 
@@ -217,5 +232,3 @@ metadata/_custom_type_script = "uid://brhkyw0lxvanf"
 [node name="TweenPlus" type="Node" parent="."]
 unique_name_in_owner = true
 script = ExtResource("6_8uo5l")
-
-[editable path="ChatSide/Margin/Split/HistorySide/MarginContainer/MenuBox"]
