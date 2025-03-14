@@ -3,6 +3,7 @@ extends Node
 @onready var line_edit: LineEdit = $PanelContainer/VBoxContainer/LineEdit
 @onready var rich_text_label: RichTextLabel = $PanelContainer/VBoxContainer/ScrollContainer/RichTextLabel
 
+const OPENROUTER_API_KEY = "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"
 
 # User preferences (can be set via UI or other logic)
 var user_name = "Anas"
@@ -20,22 +21,23 @@ func _ready():
 
 func start_conversation():
 	# Create a system message to define the AI's behavior
+	
 	var system_message = (
 		"You are a {character} helping the user practice {language}. " +
-		"The user's level in the language is {level}. " +
+		"The user level in the language is {level}. " +
 		"Start a conversation in {language} that is appropriate for their level. " +
 		"Keep the conversation engaging and educational. " +
-		"The user's name is {name}"+
+		"The user name is {name}"+
 		"If the user makes mistakes, gently correct them and explain the correct usage,
 		and before correcting any mistake print [Mistake], and use the {mother_language} while correcting."+
 		"use short sentences [10 words maximum], and don't ask more than one question in the message"+
 		"never stop the simulation until the user sends [stpsim] and never tell him how to stop the simulation"
 	).format({
 		"character": ai_character,
-		"language": user_language,
+		"language": help_language,
 		"level": user_level,
 		"name":user_name,
-		"mother_language":help_language
+		"mother_language": user_language
 	})
 	
 	# Initialize the conversation history with the system message and AI's greeting

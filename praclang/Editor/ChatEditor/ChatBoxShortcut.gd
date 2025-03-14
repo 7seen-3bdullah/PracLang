@@ -3,7 +3,7 @@ extends ShortcutNode
 @onready var chat_box: Control = $".."
 @onready var message_line: TextEdit = %MessageLine
 
-var current_zoom: float = 1.0
+@export var current_zoom: float = 1.3
 
 
 func _ready() -> void:

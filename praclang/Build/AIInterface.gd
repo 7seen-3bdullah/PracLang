@@ -5,6 +5,7 @@ signal error_result_pushed(error: int, response: Dictionary)
 signal error_pushed()
 
 @export var api_key: String
+@export_multiline var directions: String
 @export var use_history:= true
 @export var try_again_on_failed: bool
 var chat_history: Array[Dictionary] = []
@@ -12,19 +13,24 @@ var chat_history: Array[Dictionary] = []
 @onready var http_request = HTTPRequest.new()
 
 const API_URL = "https://openrouter.ai/api/v1/chat/completions"
-
 const API_KEY = "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" # from Omar TOP account
 const API_KEY2 = "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" # from Omar TOP account 2
 const API_KEY3 = "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" # from DMG4 account
 
 
 func _ready() -> void:
-	add_to_group("ai_interface")
 	add_child(http_request)
 	http_request.request_completed.connect(_on_request_completed)
+	add_to_group("ai_interface")
+	if directions:
+		setup_directions(directions)
 
-func setup_directions(directions: Array[Dictionary]) -> void:
-	chat_history = directions
+func setup_directions(directions: String) -> void:
+	chat_history.append({
+		"role": "system",
+		"content": directions
+	})
+	request_ai()
 
 func send_message(message: String) -> void:
 	chat_history.append({"role": "user", "content": [{"type": "text", "text": message}]})
@@ -34,7 +40,7 @@ func send_message(message: String) -> void:
 
 func request_ai() -> void:
 	var headers = [
-		"Authorization: Bearer " + API_KEY,
+		"Authorization: Bearer " + API_KEY2,
 		"Content-Type: application/json"
 	]
 	var body = {

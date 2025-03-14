@@ -1,18 +1,21 @@
-[gd_scene load_steps=4 format=3 uid="uid://b4h0dceaqgv0p"]
+[gd_scene load_steps=5 format=3 uid="uid://b4h0dceaqgv0p"]
 
 [ext_resource type="Script" uid="uid://c5i2qvdkuii3e" path="res://Editor/ChatEditor/MessageBox/MessageBox.gd" id="1_ifyp0"]
 [ext_resource type="StyleBox" uid="uid://bpjw1sl02te54" path="res://UI&UX/Style/UserMessageStyle.tres" id="1_iophh"]
-[ext_resource type="Script" path="res://Build/TweenPlus.gd" id="3_c76fe"]
+[ext_resource type="Script" uid="uid://vjj86spceuoj" path="res://Build/TweenPlus.gd" id="3_c76fe"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_iophh"]
 
 [node name="MessageBox" type="PanelContainer"]
 offset_right = 64.0
 offset_bottom = 31.0
-theme_override_styles/panel = ExtResource("1_iophh")
+theme_override_styles/panel = SubResource("StyleBoxEmpty_iophh")
 script = ExtResource("1_ifyp0")
 
 [node name="Split" type="HSplitContainer" parent="."]
 unique_name_in_owner = true
 layout_mode = 2
+dragging_enabled = false
 
 [node name="RoleRect" type="ColorRect" parent="Split"]
 unique_name_in_owner = true
@@ -20,19 +23,24 @@ custom_minimum_size = Vector2(4, 0)
 layout_mode = 2
 color = Color(0.231373, 0.282353, 0.45098, 1)
 
-[node name="Margin" type="MarginContainer" parent="Split"]
+[node name="Panel" type="PanelContainer" parent="Split"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_styles/panel = ExtResource("1_iophh")
+
+[node name="Margin" type="MarginContainer" parent="Split/Panel"]
 layout_mode = 2
 theme_override_constants/margin_left = 8
 theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 8
 theme_override_constants/margin_bottom = 8
 
-[node name="Split" type="VSplitContainer" parent="Split/Margin"]
+[node name="Split" type="VSplitContainer" parent="Split/Panel/Margin"]
 layout_mode = 2
 dragging_enabled = false
 dragger_visibility = 2
 
-[node name="RoleLabel" type="Label" parent="Split/Margin/Split"]
+[node name="RoleLabel" type="Label" parent="Split/Panel/Margin/Split"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
@@ -40,7 +48,7 @@ theme_override_font_sizes/font_size = 20
 text = "Role"
 autowrap_mode = 2
 
-[node name="Box" type="VBoxContainer" parent="Split/Margin/Split"]
+[node name="Box" type="VBoxContainer" parent="Split/Panel/Margin/Split"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3

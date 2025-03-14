@@ -1,20 +1,17 @@
-[gd_scene load_steps=3 format=3 uid="uid://h2lhxkvnt2qh"]
+[gd_scene load_steps=2 format=3 uid="uid://h2lhxkvnt2qh"]
 
-[ext_resource type="FontFile" uid="uid://b8yl2hi52l3my" path="res://UI&UX/Cascadia.tres" id="1_nnqgd"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_88h4p"]
+[ext_resource type="StyleBox" uid="uid://vfo2ttl7nvl0" path="res://UI&UX/Style/Focus.tres" id="2_1tgyf"]
 
 [node name="ContentPreview" type="CodeEdit" groups=["zoomable_text"]]
 offset_right = 64.0
-offset_bottom = 24.0
-mouse_filter = 2
-theme_override_colors/font_color = Color(0.411765, 0.411765, 0.411765, 1)
-theme_override_fonts/font = ExtResource("1_nnqgd")
+offset_bottom = 27.0
+theme_override_colors/font_readonly_color = Color(0.800491, 0.800491, 0.800491, 1)
+theme_override_colors/selection_color = Color(0, 0, 0, 0.784314)
 theme_override_font_sizes/font_size = 18
-theme_override_styles/normal = SubResource("StyleBoxEmpty_88h4p")
-theme_override_styles/read_only = SubResource("StyleBoxEmpty_88h4p")
-theme_override_styles/panel = SubResource("StyleBoxEmpty_88h4p")
+theme_override_styles/normal = ExtResource("2_1tgyf")
+theme_override_styles/read_only = ExtResource("2_1tgyf")
+theme_override_styles/panel = ExtResource("2_1tgyf")
 editable = false
-wrap_mode = 1
 scroll_fit_content_height = true
+scroll_fit_content_width = true
 metadata/main_zoom = 18
