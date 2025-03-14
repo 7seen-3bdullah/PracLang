@@ -3,9 +3,9 @@
 [ext_resource type="Script" uid="uid://brhkyw0lxvanf" path="res://Build/AIInterface.gd" id="1_2nv34"]
 [ext_resource type="Script" uid="uid://it6uyg8k6kbl" path="res://Editor/ChatEditor/AIChatBox.gd" id="1_ac3mo"]
 [ext_resource type="StyleBox" uid="uid://vfo2ttl7nvl0" path="res://UI&UX/Style/Focus.tres" id="2_tyr3i"]
-[ext_resource type="Script" uid="uid://bl2url5a7jbhm" path="res://Build/FlexControl/FocusOutliner.gd" id="2_up6qp"]
+[ext_resource type="Script" uid="uid://bl2url5a7jbhm" path="res://Build/UI/FlexControl/FocusOutliner.gd" id="2_up6qp"]
 [ext_resource type="PackedScene" uid="uid://leniqhvlxga" path="res://UI&UX/MenuBox/MenuBox.tscn" id="3_0wjpb"]
-[ext_resource type="Script" uid="uid://bdmf8incb2n6p" path="res://Build/ProcessingControl.gd" id="3_2pecy"]
+[ext_resource type="Script" uid="uid://bdmf8incb2n6p" path="res://Build/UI/ProcessingControl.gd" id="3_2pecy"]
 [ext_resource type="Script" uid="uid://bau0otx77bmty" path="res://Editor/ChatEditor/ChatBoxShortcut.gd" id="4_y485s"]
 [ext_resource type="Script" uid="uid://vjj86spceuoj" path="res://Build/TweenPlus.gd" id="6_8uo5l"]
 
@@ -28,10 +28,10 @@ grow_vertical = 2
 theme = SubResource("Theme_4c2pl")
 script = ExtResource("1_ac3mo")
 user_name = "Omar TOP"
-mother_language = "English"
-learning_language = "Arabic"
-user_level = "Beginner"
-ai_character = "CowBoy"
+mother_language = "Arabic"
+learning_language = "English"
+user_level = "Very Beginner"
+ai_character = "citizen"
 
 [node name="FocusOutliner" type="ColorRect" parent="." node_paths=PackedStringArray("_owner")]
 layout_mode = 1
@@ -107,6 +107,20 @@ theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 4
 
 [node name="MenuBox" parent="ChatSide/Margin/Split/HistorySide/MarginContainer" instance=ExtResource("3_0wjpb")]
+layout_mode = 2
+
+[node name="NewSessionButton" type="Button" parent="ChatSide/Margin/Split/HistorySide/MarginContainer/MenuBox/Scroll/Box" index="0"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+theme_override_styles/focus = ExtResource("2_tyr3i")
+text = "New Session"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ChatSide/Margin/Split/HistorySide/MarginContainer/MenuBox/Scroll/Box" index="1"]
+layout_mode = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="ChatSide/Margin/Split/HistorySide/MarginContainer/MenuBox/Scroll/Box" index="2"]
 layout_mode = 2
 
 [node name="ChatBox" type="Panel" parent="ChatSide/Margin/Split"]

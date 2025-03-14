@@ -42,6 +42,7 @@ func setup(panel_style: StyleBox, role_color: Color, role_name: String, messages
 				var title = message_data.title
 				var title_label = Label.new()
 				title_label.set_text(title)
+				title_label.add_theme_font_size_override("font_size", 20)
 				box.add_child(title_label)
 			if message_data.has("custom_color"):
 				var custom_color = message_data.custom_color

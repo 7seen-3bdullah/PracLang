@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://di7tvn5g3aomf"]
 
 [ext_resource type="Script" uid="uid://dud7dvq61ab30" path="res://Editor/CodeEditor/CodeEditor.gd" id="1_tjscr"]
-[ext_resource type="Script" uid="uid://bl2url5a7jbhm" path="res://Build/FlexControl/FocusOutliner.gd" id="2_e28dc"]
+[ext_resource type="Script" uid="uid://bl2url5a7jbhm" path="res://Build/UI/FlexControl/FocusOutliner.gd" id="2_e28dc"]
 [ext_resource type="StyleBox" uid="uid://vfo2ttl7nvl0" path="res://UI&UX/Style/Focus.tres" id="3_e28dc"]
 [ext_resource type="FontFile" uid="uid://b8yl2hi52l3my" path="res://UI&UX/Cascadia.tres" id="3_tjscr"]
 [ext_resource type="Script" uid="uid://dqm8oxu110ei5" path="res://Editor/CodeEditor/CodeEdit.gd" id="4_lxqrk"]
