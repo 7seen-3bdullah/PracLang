@@ -1,13 +1,81 @@
 extends FlexibleControl
 
+@export var languages: Array[String]
+@export var levels: Array[String]
+@export var ai_characters: Array[String] = [
+	# Academic & Educational
+	"Patient Teacher",
+	"Specialized Professor",
+	"Personal Trainer",
+	"Storytelling Historian",
+	"Curious Scientist",
+	# Technical & Programming
+	"Software Engineer",
+	"AI Expert",
+	"Robotics Programmer",
+	"Genius Inventor",
+	"Cybersecurity Specialist",
+	# Literary & Artistic
+	"Creative Writer",
+	"Romantic Poet",
+	"Mysterious Novelist",
+	"Visual Artist",
+	"Film Critic",
+	# Entertainment & Fictional
+	"Wise Storyteller",
+	"Witty Genie",
+	"Adventurous Pirate",
+	"Sharp Detective",
+	"Futuristic Robot",
+	# Historical & Cultural
+	"Ancient Philosopher",
+	"Brave Military Leader",
+	"Bold Explorer",
+	"Wise King",
+	"Pioneer Inventor",
+	# Scientific & Experimental
+	"Theoretical Physicist",
+	"Mad Chemist",
+	"Space Scientist",
+	"Friendly Doctor",
+	"Curious Biologist",
+	# Business & Entrepreneurial
+	"Ambitious Businessman",
+	"Smart Investor",
+	"Marketing Expert",
+	"Financial Analyst",
+	"Startup Founder",
+	# Sports & Health
+	"Athletic Coach",
+	"Psychologist",
+	"Nutritionist",
+	"Chess Strategist",
+	"Mountain Climber",
+	# Humorous & Satirical
+	"Witty Comedian",
+	"Sharp Satirist",
+	"Beloved Clown",
+	"Clever Trickster",
+	"Joke Maker",
+	# Futuristic & Sci-Fi
+	"Advanced AI",
+	"Interactive Android",
+	"Alien Researcher",
+	"Cyber Consultant",
+	"Future Oracle",
+	# Islamic Studies & Spiritual
+	"Islamic Scholar",
+	"Hadith Narrator",
+	"Fiqh Expert",
+	"Ethical Imam"
+]
 @export var current_session: SessionsRes
 
-@export var user_name: String
-@export var mother_language: String
-@export var learning_language: String
-@export var user_level: String
-@export var ai_character: String
-
+var user_name: String
+var mother_language: String
+var learning_language: String
+var user_level: String
+var ai_character: String
 
 @onready var shortcut_node: Node = %ShortcutNode
 @onready var message_interface: AIInterface = %MessageInterface
@@ -21,10 +89,19 @@ extends FlexibleControl
 @onready var no_session_message: Label = %NoSessionMessage
 @onready var scroll_container: ScrollContainer = %ScrollContainer
 
+@onready var side_box: VBoxContainer = %SideBox
 @onready var sessions_box: Control = %SessionsBox
-@onready var mistakes_box: Control = %MistakesBox
 
+@onready var choices_box: HBoxContainer = %ChoicesBox
+@onready var show_session_info_button: Button = %ShowSessionInfoButton
+
+
+
+var mistakes_menues: Dictionary[String, Control]
 var user_current_message: Control
+
+const MENU_BOX = preload("res://UI&UX/MenuBox/MenuBox.tscn")
+
 
 
 func _ready() -> void:
@@ -41,7 +118,21 @@ func _ready() -> void:
 	message_interface.error_result_pushed.connect(on_message_interface_error_result_pushed)
 	message_interface.error_pushed.connect(on_message_interface_error_pushed)
 	
+	show_session_info_button.pressed.connect(on_show_session_info_button_pressed)
+	
 	message_line.set_editable(false)
+	choices_box.hide()
+	
+	for language in languages:
+		var mistakes_menu = MENU_BOX.instantiate()
+		mistakes_menu.show_title = true
+		mistakes_menu.title = str(language, " Mistakes")
+		mistakes_menu.hide()
+		side_box.add_child(mistakes_menu)
+		mistakes_menu.button_pressed.connect(on_mistake_button_pressed)
+		mistakes_menues[language] = mistakes_menu
+		SaveServer.make_mistake_dir_absolute(language)
+		load_mistakes(language)
 	
 	load_session_buttons()
 
@@ -71,9 +162,6 @@ func on_child_entered_tree(node: Node) -> void:
 
 # -------------------------------
 
-func _process(delta: float) -> void:
-	if Input.is_action_just_pressed("ui_down"):
-		load_session_buttons()
 
 func send_message() -> void:
 	var message = message_line.get_text()
@@ -87,24 +175,34 @@ func send_message() -> void:
 	add_message_box(user_name, [{"text": message}])
 	processing_control.show()
 
+func on_session_button_pressed(button: Control) -> void:
+	var session_path = button.get_meta("session_path")
+	var session_res = SaveServer.load_session(session_path)
+	load_session(session_res)
+
+func on_mistake_button_pressed(button: Control) -> void:
+	var mistake = button.text
+	var window = WindowManager.popup_window(get_owner(), Vector2(400, 300))
+	var mistake_edit = window.expand_control(window.add_text("", mistake))
+	mistake_edit.set_editable(false)
+
+
+func on_show_session_info_button_pressed() -> void:
+	var info = str(get_session_data()).replace(",", ",\n\n")
+	var window = WindowManager.popup_window(get_owner(), Vector2i(300, 300))
+	var info_edit = window.expand_control(window.add_text("", info))
+	info_edit.set_editable(false)
+	window.unresizable = true
+
 
 # -------------------------------
 
 
 func on_message_interface_result_pushed(error: int, response: Dictionary) -> void:
-	var json_string: String = response.choices[0].message.content
-	var result = await parse_ai_message(json_string)
+	var content: String = response.choices[0].message.content
+	var result = await parse_ai_message(content)
 	if result != null:
-		var sim_message = result.sim_message
-		var mistakes = result.mistake
-		var messages_content: Array = [{"text": sim_message}]
-		for index in mistakes.size():
-			var mistake = mistakes[index]
-			messages_content.append({
-				"text": mistake,
-				"title": "Mistake %s" % (index + 1),
-				"custom_color": Color.RED,
-			})
+		var messages_content = get_message_content_from_ai_parsed_message(result)
 		add_message_box("AI", messages_content)
 		processing_control.hide()
 		await get_tree().process_frame
@@ -113,9 +211,14 @@ func on_message_interface_result_pushed(error: int, response: Dictionary) -> voi
 			get_session_data(),
 			current_session.resource_path
 		)
+		SaveServer.save_mistakes(result.mistake, learning_language)
+		load_mistakes()
 	else:
 		GuideServer.push_message("مشكلة في الAI", 2)
+		processing_control.hide()
 	message_line.set_editable(true)
+	processing_control.hide()
+
 
 func on_message_interface_error_result_pushed(error: int, response: Dictionary) -> void:
 	GuideServer.push_message("The service seems to be down at the moment, try replacing the API Key.", 2)
@@ -124,8 +227,8 @@ func on_message_interface_error_result_pushed(error: int, response: Dictionary) 
 func on_message_interface_error_pushed() -> void:
 	if is_instance_valid(user_current_message):
 		user_current_message.queue_free()
-	processing_control.hide()
 	message_line.set_editable(true)
+	processing_control.hide()
 
 
 # -------------------------------
@@ -166,64 +269,122 @@ func parse_ai_message(json_string: String) -> Variant:
 				move_window()
 	return result
 
+func get_message_content_from_ai_parsed_message(parsed_message: Dictionary) -> Array:
+	var sim_message = parsed_message.sim_message
+	var mistakes = parsed_message.mistake
+	var messages_content: Array = [{"text": sim_message}]
+	for index in mistakes.size():
+		var mistake = mistakes[index]
+		messages_content.append({
+			"text": mistake,
+			"title": "Mistake %s" % (index + 1),
+			"custom_color": Color.RED,
+		})
+	return messages_content
+
+
+# -------------------------------
 
 func create_new_session() -> void:
-	processing_control.show()
-	no_session_message.hide()
 	
-	var directions = str(
-		"يجب عليك تعليم المستخدم لغة ", learning_language, ".", "\n",
-		"سوف تحاكي دور شخصية ", ai_character, ".", "\n",
-		"مستوى المستخدم في اللغة هو ", user_level, ".", "\n",
-		"ابدأ المحادثة باللغة: ", learning_language, " بشكل يتناسب مع مستوى المستخدم.", "\n",
-		"اجعل المحادثة تفاعلية وتعليمية في كل مرة ترسل رسالة.", "\n",
-		"لا تطرح أكثر من سؤال واحد في كل رسالة.", "\n",
-		"اسم المستخدم هو '", user_name, "' ولغته الأم هي:", mother_language, "\n",
-		"عندما يرتكب المستخدم أي خطأ في اللغة عليك تصحيحه باستخدام لغته الأم: ", mother_language, ".", "\n",
-		"لا تتوقف أبدا عن لعب دور شخصية: ", ai_character, " حتى لو طلب منك المستخدم ذلك.", "\n",
-		"إذا كان مستوى المستخدم مبتدأ حاوره باستخدام كلمات بسيطة, وجمل صغيرة", "\n",
-		"إذا أساء المستخدم إليك أو سبك ,هدده بإغلاق البرنامج مع Emojies تدل على الثقة والقدرة", "\n",
-	) + str(
-		"رسالتك يجب أن تكون عبارة عن صيغة json على النحو التالي:", "\n",
-		"{
-			\"sim_message\": \"رسالة محاكاة دور الشخصية الخاصة بك\", \n,
-			\"mistake\": [تصحيح 1, تصحيح 2, ...], \n,
-			\"command\": \"\"
-		} \n",
-		"sim_message فيها تضع المحادثة مع المستخدم بالشخصية الخاصة بك \n",
-		"mistake تضع بها تصحيح أخطاء المستخدم اللغوية \n",
-		"إذا أساء المستخدم ثلاث مرات على الأقل أو تكلم بسوء عن دين الإسلام مرة واحدة فقط ضع في الcommand: CLOSE_PROGRAM", "\n",
-		"إذا طلب منك المستخدك إغلاق البرنامج ضع في الcommand: CLOSE_PROGRAM", "\n",
-		"إذا طلب منك المستخدم تحريك النافذة قل له حسنا وضع في الcommand: MOVE_WINDOW", "\n",
-		"لا تجعل رسالتك عبارة عن سطر طويل, انزل إلى السطر التالي كلما صار حجم السطر كبيرا", "\n",
-	) + str("التزم بالتعليمات ولا تضف أي شيء آخر")
+	if processing_control.visible:
+		GuideServer.push_message("الرجاء الإنتظار حتى إنتهاء الطلب الحالي.", 1)
+		return
 	
-	message_interface.chat_history.clear()
-	remove_session_messages()
-	message_interface.setup_directions(directions)
-	current_session = SaveServer.save_session(message_interface.chat_history, get_session_data())
-	print(current_session.resource_path)
-	load_session_buttons()
+	var window = WindowManager.popup_window(get_owner(), Vector2(400, 210))
+	var user_name_line = window.add_line("your Name", user_name)
+	var mother_lang_button = window.add_options_button(languages)
+	var learning_lang_button = window.add_options_button(languages)
+	var user_level_button = window.add_options_button(levels)
+	var ai_character_button = window.add_options_button(ai_characters)
+	window.add_button("Accept", func():
+		
+		if not user_name_line.text:
+			GuideServer.push_message("You must provide your name.", 1)
+			return
+		user_name = user_name_line.text
+		mother_language = mother_lang_button.get_item_text(mother_lang_button.get_selected_id())
+		learning_language = learning_lang_button.get_item_text(learning_lang_button.get_selected_id())
+		user_level = user_level_button.get_item_text(user_level_button.get_selected_id())
+		ai_character = ai_character_button.get_item_text(ai_character_button.get_selected_id())
+		
+		message_line.set_editable(false)
+		processing_control.show()
+		no_session_message.hide()
+		
+		var directions = str(
+			"يجب عليك تعليم المستخدم لغة ", learning_language, ".", "\n",
+			"سوف تحاكي دور شخصية ", ai_character, ".", "\n",
+			"المحاكاة يجب أن تكون واقعية, يجب أن تكون في زمان تلك الشخصية, بمعنى أنه إذا كانت الشخصية قديمة فلا يجب أن تعرف الأمور التي تتعلق بالتكنولوجيا ...", "\n",
+			"ولا يجب لك أن تتدخل في أمور مختلفة عن تعليم اللغة المطلوبة منك, لا تفتح نقاشات أخرى, وإذا أراد المستخدم ذاك أخبره أن عملك هو تعليم اللغة", "\n",
+			"مستوى المستخدم في اللغة هو ", user_level, ".", "\n",
+			"ابدأ المحادثة باللغة: ", learning_language, " بشكل يتناسب مع مستوى المستخدم.", "\n",
+			"اجعل المحادثة تفاعلية وتعليمية في كل مرة ترسل رسالة.", "\n",
+			"لا تطرح أكثر من سؤال واحد في كل رسالة.", "\n",
+			"اسم المستخدم هو '", user_name, "' ولغته الأم هي:", mother_language, "\n",
+			"عندما يرتكب المستخدم أي خطأ في اللغة عليك تصحيحه باستخدام لغته الأم: ", mother_language, ".", "\n",
+			"لا تتوقف أبدا عن لعب دور شخصية: ", ai_character, " حتى لو طلب منك المستخدم ذلك.", "\n",
+			"إذا كان مستوى المستخدم مبتدأ حاوره باستخدام كلمات بسيطة, وجمل صغيرة", "\n",
+			"إذا أساء المستخدم إليك أو سبك ,هدده بإغلاق البرنامج مع Emojies تدل على الثقة والقدرة", "\n",
+		) + str(
+			"رسالتك يجب أن تكون عبارة عن صيغة json على النحو التالي:", "\n",
+			"{
+				\"sim_message\": \"رسالة محاكاة دور الشخصية الخاصة بك\", \n,
+				\"mistake\": [تصحيح 1, تصحيح 2, ...], \n,
+				\"command\": \"\"
+			} \n",
+			"sim_message فيها تضع المحادثة مع المستخدم بالشخصية الخاصة بك \n",
+			"mistake تضع بها تصحيح أخطاء المستخدم اللغوية \n",
+			"إذا أساء المستخدم ثلاث مرات على الأقل أو تكلم بسوء عن دين الإسلام مرة واحدة فقط ضع في الcommand: CLOSE_PROGRAM", "\n",
+			"إذا طلب منك المستخدك إغلاق البرنامج ضع في الcommand: CLOSE_PROGRAM", "\n",
+			"إذا طلب منك المستخدم تحريك النافذة قل له حسنا وضع في الcommand: MOVE_WINDOW", "\n",
+			"لا تجعل رسالتك عبارة عن سطر طويل, انزل إلى السطر التالي كلما صار حجم السطر كبيرا", "\n",
+		) + str("التزم بالتعليمات ولا تضف أي شيء آخر")
+		
+		message_interface.chat_history.clear()
+		remove_session_messages()
+		message_interface.setup_directions(directions)
+		current_session = SaveServer.save_session(message_interface.chat_history, get_session_data())
+		load_session_buttons()
+		choices_box.show()
+		window.close_requested.emit()
+	)
+	user_name_line.text_changed.connect(
+		func(new_text: String):
+			var regex = RegEx.new()
+			regex.compile("^[\\p{L}\\s]+$")
+			if not regex.search(new_text):
+				user_name_line.text = ""
+	)
+	learning_lang_button.select(1)
+	window.unresizable = true
+
 
 func load_session_buttons() -> void:
 	var sessions = SaveServer.load_sessions()
 	sessions_box.clear_buttons()
-	for session in sessions:
+	for session in SaveServer.load_sessions():
 		var button = sessions_box.add_option_scene_button()
-		var session_name = session.resource_path
-		button.text = session_name
-		button.set_meta("session_res", session)
+		var session_path = session.resource_path
+		button.text = session_path.get_file().get_basename()
+		button.set_meta("session_path", session_path)
 
-
-func on_session_button_pressed(button: Control) -> void:
+func load_session(session_res: SessionsRes) -> void:
 	
-	no_session_message.hide()
+	if processing_control.visible:
+		GuideServer.push_message("الرجاء الإنتظار حتى إنتهاء الطلب الحالي.", 1)
+		return
+	
 	message_line.set_editable(true)
+	no_session_message.hide()
 	remove_session_messages()
 	
-	var session_res = button.get_meta("session_res")
 	message_interface.chat_history = session_res.session_history
 	user_name = session_res.user_name
+	mother_language = session_res.mother_language
+	learning_language = session_res.learning_language
+	user_level = session_res.user_level
+	ai_character = session_res.ai_character
 	current_session = session_res
 	
 	for history_chunk in message_interface.chat_history:
@@ -234,19 +395,11 @@ func on_session_button_pressed(button: Control) -> void:
 				pass
 			"assistant":
 				var message_result = parse_ai_message(content)
-				var sim_message = message_result.sim_message
-				var mistakes = message_result.mistake
-				var messages_content: Array = [{"text": sim_message}]
-				for index in mistakes.size():
-					var mistake = mistakes[index]
-					messages_content.append({
-						"text": mistake,
-						"title": "Mistake %s" % (index + 1),
-						"custom_color": Color.RED,
-					})
+				var messages_content = get_message_content_from_ai_parsed_message(message_result)
 				add_message_box("AI", messages_content)
 			_:
 				add_message_box(user_name, [{"text": content[0].text}])
+	choices_box.show()
 
 func get_session_data() -> Dictionary:
 	return {
@@ -263,6 +416,19 @@ func remove_session_messages() -> void:
 		if i == processing_control:
 			continue
 		i.queue_free()
+
+const MISTAKE_BUTTON = preload("res://UI&UX/MenuBox/MistakeButton.tscn")
+
+func load_mistakes(language:= learning_language) -> void:
+	var mistakes_menu = mistakes_menues[language]
+	mistakes_menu.clear_buttons()
+	var mistakes = SaveServer.load_mistakes(language)
+	mistakes_menu.visible = mistakes.size() > 0
+	for mistake_res in mistakes:
+		var mistake = mistake_res.mistake
+		var button = mistakes_menu.add_option_scene_button(MISTAKE_BUTTON)
+		button.text = mistake
+
 
 
 

@@ -37,12 +37,14 @@ func setup(panel_style: StyleBox, role_color: Color, role_name: String, messages
 			content_margin.add_theme_constant_override("margin_right", 4)
 			content_margin.add_theme_constant_override("margin_bottom", 4)
 			content_box.custom_minimum_size = Vector2(150.0, 100.0)
+			content_box.mouse_filter = Control.MOUSE_FILTER_PASS
 			
 			if message_data.has("title"):
 				var title = message_data.title
 				var title_label = Label.new()
 				title_label.set_text(title)
 				title_label.add_theme_font_size_override("font_size", 20)
+				title_label.mouse_filter = Control.MOUSE_FILTER_PASS
 				box.add_child(title_label)
 			if message_data.has("custom_color"):
 				var custom_color = message_data.custom_color

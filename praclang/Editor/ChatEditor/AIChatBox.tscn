@@ -18,11 +18,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ac3mo")
-user_name = "Omar TOP"
-mother_language = "Arabic"
-learning_language = "English"
-user_level = "Very Beginner"
-ai_character = "citizen"
+languages = Array[String](["Arabic", "English", "French", "German", "Hindi", "Italian", "Japanese", "Mandarin Chinese", "Russian", "Spanish"])
+levels = Array[String](["Very Beginner", "Beginner", "Intermediate", "Advanced", "Expert", "Master"])
 
 [node name="FocusOutliner" type="ColorRect" parent="." node_paths=PackedStringArray("_owner")]
 layout_mode = 1
@@ -66,7 +63,16 @@ theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 4
 
 [node name="ChoicesBox" type="HBoxContainer" parent="ChatSide/Header/Margin"]
+unique_name_in_owner = true
 layout_mode = 2
+
+[node name="ShowSessionInfoButton" type="Button" parent="ChatSide/Header/Margin/ChoicesBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(170, 0)
+layout_mode = 2
+mouse_filter = 1
+theme_override_styles/focus = ExtResource("2_tyr3i")
+text = "Show Session Info"
 
 [node name="Margin" type="MarginContainer" parent="ChatSide"]
 layout_mode = 2
@@ -87,22 +93,28 @@ layout_mode = 2
 mouse_filter = 1
 color = Color(0, 0, 0, 1)
 
-[node name="MarginContainer" type="MarginContainer" parent="ChatSide/Margin/Split/HistorySide"]
+[node name="ScrollContainer" type="ScrollContainer" parent="ChatSide/Margin/Split/HistorySide"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+horizontal_scroll_mode = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="ChatSide/Margin/Split/HistorySide/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
 theme_override_constants/margin_left = 4
 theme_override_constants/margin_top = 4
 theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 4
 
-[node name="Box" type="VBoxContainer" parent="ChatSide/Margin/Split/HistorySide/MarginContainer"]
+[node name="SideBox" type="VBoxContainer" parent="ChatSide/Margin/Split/HistorySide/ScrollContainer/MarginContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 
-[node name="NewSessionButton" type="Button" parent="ChatSide/Margin/Split/HistorySide/MarginContainer/Box"]
+[node name="NewSessionButton" type="Button" parent="ChatSide/Margin/Split/HistorySide/ScrollContainer/MarginContainer/SideBox"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
@@ -111,18 +123,12 @@ theme_override_font_sizes/font_size = 20
 theme_override_styles/focus = ExtResource("2_tyr3i")
 text = "New Session"
 
-[node name="SessionsBox" parent="ChatSide/Margin/Split/HistorySide/MarginContainer/Box" instance=ExtResource("3_0wjpb")]
+[node name="SessionsBox" parent="ChatSide/Margin/Split/HistorySide/ScrollContainer/MarginContainer/SideBox" instance=ExtResource("3_0wjpb")]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_vertical = 3
 mouse_filter = 1
-
-[node name="MistakesBox" parent="ChatSide/Margin/Split/HistorySide/MarginContainer/Box" instance=ExtResource("3_0wjpb")]
-unique_name_in_owner = true
-visible = false
-layout_mode = 2
-size_flags_vertical = 3
-mouse_filter = 1
+show_title = true
+title = "Sessions"
 
 [node name="ChatBox" type="Panel" parent="ChatSide/Margin/Split"]
 custom_minimum_size = Vector2(400, 0)

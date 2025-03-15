@@ -1,0 +1,33 @@
+[gd_scene load_steps=5 format=3 uid="uid://ckn1q7pbd0fmn"]
+
+[ext_resource type="Script" uid="uid://bwnanjwktmi0i" path="res://UI&UX/MenuBox/OptionButton.gd" id="1_g4l0r"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g4l0r"]
+bg_color = Color(0.18, 0.072, 0.0738, 0.588235)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bipeb"]
+content_margin_left = 10.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vonwv"]
+bg_color = Color(0.18, 0.0648, 0.06672, 1)
+border_width_left = 4
+border_color = Color(0.63, 0.1764, 0.18396, 1)
+expand_margin_left = 10.0
+
+[node name="MenuButton" type="PanelContainer"]
+custom_minimum_size = Vector2(0, 50)
+offset_right = 340.0
+offset_bottom = 50.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_g4l0r")
+script = ExtResource("1_g4l0r")
+
+[node name="Button" type="Button" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_bipeb")
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_vonwv")
+theme_override_styles/hover = SubResource("StyleBoxFlat_vonwv")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_bipeb")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_bipeb")
+alignment = 0
+text_overrun_behavior = 3

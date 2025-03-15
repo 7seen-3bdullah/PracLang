@@ -40,7 +40,7 @@ func send_message(message: String) -> void:
 
 func request_ai() -> void:
 	var headers = [
-		"Authorization: Bearer " + API_KEY3,
+		"Authorization: Bearer " + API_KEY,
 		"Content-Type: application/json"
 	]
 	var body = {

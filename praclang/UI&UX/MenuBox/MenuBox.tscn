@@ -1,25 +1,66 @@
-[gd_scene load_steps=2 format=3 uid="uid://leniqhvlxga"]
+[gd_scene load_steps=5 format=3 uid="uid://leniqhvlxga"]
 
 [ext_resource type="Script" uid="uid://c7wjh68cvk2wk" path="res://UI&UX/MenuBox/MenuBox.gd" id="1_jg2io"]
+[ext_resource type="StyleBox" uid="uid://vfo2ttl7nvl0" path="res://UI&UX/Style/Focus.tres" id="2_dae4j"]
 
-[node name="MenuBox" type="Control"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jg2io"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jg2io"]
+bg_color = Color(0.140447, 0.140447, 0.140447, 1)
+
+[node name="MenuBox" type="PanelContainer"]
+theme_override_styles/panel = SubResource("StyleBoxEmpty_jg2io")
 script = ExtResource("1_jg2io")
 
-[node name="Scroll" type="ScrollContainer" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="Margin" type="MarginContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
 
-[node name="Box" type="VBoxContainer" parent="Scroll"]
+[node name="Split" type="VSplitContainer" parent="Margin"]
+layout_mode = 2
+dragging_enabled = false
+dragger_visibility = 2
+
+[node name="TitleBox" type="PanelContainer" parent="Margin/Split"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_jg2io")
+metadata/title_box = false
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Margin/Split/TitleBox"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="CollapseButton" type="Button" parent="Margin/Split/TitleBox/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_styles/focus = ExtResource("2_dae4j")
+text = "Collapse"
+
+[node name="Title" type="Label" parent="Margin/Split/TitleBox/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 1
+text = "Title"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Split" type="HSplitContainer" parent="Margin/Split"]
+layout_mode = 2
+dragger_visibility = 2
+
+[node name="Control" type="ColorRect" parent="Margin/Split/Split"]
+custom_minimum_size = Vector2(10, 0)
+layout_mode = 2
+color = Color(0.141176, 0.141176, 0.141176, 1)
+
+[node name="Box" type="VBoxContainer" parent="Margin/Split/Split"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3

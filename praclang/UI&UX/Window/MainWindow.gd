@@ -27,11 +27,21 @@ func add_text(placeholder: String, text: String, on_edit = null) -> TextEdit:
 	box.add_child(text_edit)
 	return text_edit
 
-func add_button(text: String, on_edit = null) -> Button:
+func add_button(text: String, on_pressed = null) -> Button:
 	var button = Button.new()
 	button.text = text
-	if on_edit:
-		button.pressed.connect(on_edit)
+	if on_pressed:
+		button.pressed.connect(on_pressed)
+	theme_control(button)
+	box.add_child(button)
+	return button
+
+func add_options_button(options: Array[String], on_item_selected = null) -> OptionButton:
+	var button = OptionButton.new()
+	for option in options:
+		button.add_item(option)
+	if on_item_selected:
+		button.item_selected.connect(on_item_selected)
 	theme_control(button)
 	box.add_child(button)
 	return button
@@ -44,7 +54,6 @@ func add_scene(packed_scene: PackedScene) -> Control:
 
 func remove_control(index: int) -> void:
 	box.get_child(index).queue_free()
-
 
 
 func theme_control(control: Control) -> void:
