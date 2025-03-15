@@ -22,6 +22,7 @@ languages = Array[String](["Arabic", "English", "French", "German", "Hindi", "It
 levels = Array[String](["Very Beginner", "Beginner", "Intermediate", "Advanced", "Expert", "Master"])
 
 [node name="FocusOutliner" type="ColorRect" parent="." node_paths=PackedStringArray("_owner")]
+z_index = 1
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
