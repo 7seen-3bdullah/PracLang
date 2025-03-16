@@ -3,6 +3,9 @@ extends Node
 const SESSION_SAVE_PATH:= "res://Save/Sessions/"
 const MISTAKES_SAVE_PATH:= "res://Save/Mistakes/"
 
+
+
+
 func save_session(history: Array, data: Dictionary, file_path:= "") -> SessionsRes:
 	var sessions_filenames = get_sessions_filenames()
 	var save_path = (SESSION_SAVE_PATH + generate_file_name(sessions_filenames, "session_") + ".res") if not file_path else file_path
@@ -29,6 +32,14 @@ func load_sessions() -> Array[SessionsRes]:
 			resources.append(res)
 	return resources
 
+func delete_session(path: String) -> void:
+	DirAccess.remove_absolute(path)
+
+
+
+
+
+
 func save_mistakes(mistakes: Array, language_for: String) -> void:
 	var mistakes_filenames = get_mistakes_files(language_for)
 	for mistake in mistakes:
@@ -48,8 +59,15 @@ func load_mistakes(language_for: String) -> Array[MistakeRes]:
 			resources.append(res)
 	return resources
 
+func delete_mistake(mistake_path: String) -> void:
+	DirAccess.remove_absolute(mistake_path)
+
 func make_mistake_dir_absolute(language_for: String) -> void:
 	DirAccess.make_dir_absolute(MISTAKES_SAVE_PATH + language_for)
+
+
+
+
 
 
 func get_sessions_filenames() -> Array:
@@ -57,6 +75,10 @@ func get_sessions_filenames() -> Array:
 
 func get_mistakes_files(language_for: String) -> Array:
 	return DirAccess.get_files_at(MISTAKES_SAVE_PATH + language_for)
+
+
+
+
 
 
 func generate_file_name(old_files: Array, file_custom_preffix:= "") -> String:

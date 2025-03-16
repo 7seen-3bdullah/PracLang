@@ -113,6 +113,7 @@ func _ready() -> void:
 	send_message_button.pressed.connect(send_message)
 	messages_box.child_entered_tree.connect(on_child_entered_tree)
 	sessions_box.button_pressed.connect(on_session_button_pressed)
+	sessions_box.remove_button_pressed.connect(on_session_remove_button_pressed)
 	
 	message_interface.result_pushed.connect(on_message_interface_result_pushed)
 	message_interface.error_result_pushed.connect(on_message_interface_error_result_pushed)
@@ -130,9 +131,10 @@ func _ready() -> void:
 		mistakes_menu.hide()
 		side_box.add_child(mistakes_menu)
 		mistakes_menu.button_pressed.connect(on_mistake_button_pressed)
+		mistakes_menu.remove_button_pressed.connect(func(button: Control): on_mistake_remove_button_pressed(button, language))
 		mistakes_menues[language] = mistakes_menu
 		SaveServer.make_mistake_dir_absolute(language)
-		load_mistakes(language)
+		load_mistake_buttons(language)
 	
 	load_session_buttons()
 
@@ -180,12 +182,19 @@ func on_session_button_pressed(button: Control) -> void:
 	var session_res = SaveServer.load_session(session_path)
 	load_session(session_res)
 
+func on_session_remove_button_pressed(button: Control) -> void:
+	var session_path = button.get_meta("session_path")
+	remove_session(session_path)
+
 func on_mistake_button_pressed(button: Control) -> void:
 	var mistake = button.text
 	var window = WindowManager.popup_window(get_owner(), Vector2(400, 300))
 	var mistake_edit = window.expand_control(window.add_text("", mistake))
 	mistake_edit.set_editable(false)
 
+func on_mistake_remove_button_pressed(button: Control, language_for: String) -> void:
+	SaveServer.delete_mistake(button.get_meta("mistake_path"))
+	load_mistake_buttons(language_for)
 
 func on_show_session_info_button_pressed() -> void:
 	var info = str(get_session_data()).replace(",", ",\n\n")
@@ -200,7 +209,7 @@ func on_show_session_info_button_pressed() -> void:
 
 func on_message_interface_result_pushed(error: int, response: Dictionary) -> void:
 	var content: String = response.choices[0].message.content
-	var result = await parse_ai_message(content)
+	var result = await parse_ai_message(content, true)
 	if result != null:
 		var messages_content = get_message_content_from_ai_parsed_message(result)
 		add_message_box("AI", messages_content)
@@ -212,7 +221,7 @@ func on_message_interface_result_pushed(error: int, response: Dictionary) -> voi
 			current_session.resource_path
 		)
 		SaveServer.save_mistakes(result.mistake, learning_language)
-		load_mistakes()
+		load_mistake_buttons()
 	else:
 		GuideServer.push_message("مشكلة في الAI", 2)
 		processing_control.hide()
@@ -251,7 +260,7 @@ func add_message_box(role: String, messages_content: Array) -> void:
 	messages_box.move_child(processing_control, messages_box.get_child_count()-1)
 	shortcut_node.update_zoom()
 
-func parse_ai_message(json_string: String) -> Variant:
+func parse_ai_message(json_string: String, apply_commands:= false) -> Variant:
 	var lines = json_string.split("\n")
 	json_string = ""
 	for line in lines:
@@ -261,12 +270,18 @@ func parse_ai_message(json_string: String) -> Variant:
 	var result = JSON.parse_string(json_string)
 	if result == null:
 		GuideServer.push_message("The AI ​​model seems to be out of control.", 2)
-	else:
+	elif apply_commands:
 		match result.command:
 			"CLOSE_PROGRAM":
 				get_tree().quit()
 			"MOVE_WINDOW":
 				move_window()
+			"MINIMIZE":
+				get_window().mode = Window.MODE_MINIMIZED
+			"MAXIMIZE":
+				get_window().mode = Window.MODE_MAXIMIZED
+			"DELETE_SESSION":
+				wait_frame(1, remove_session.bind(current_session.resource_path))
 	return result
 
 func get_message_content_from_ai_parsed_message(parsed_message: Dictionary) -> Array:
@@ -288,7 +303,7 @@ func get_message_content_from_ai_parsed_message(parsed_message: Dictionary) -> A
 func create_new_session() -> void:
 	
 	if processing_control.visible:
-		GuideServer.push_message("الرجاء الإنتظار حتى إنتهاء الطلب الحالي.", 1)
+		push_wait_message()
 		return
 	
 	var window = WindowManager.popup_window(get_owner(), Vector2(400, 210))
@@ -313,33 +328,43 @@ func create_new_session() -> void:
 		no_session_message.hide()
 		
 		var directions = str(
-			"يجب عليك تعليم المستخدم لغة ", learning_language, ".", "\n",
-			"سوف تحاكي دور شخصية ", ai_character, ".", "\n",
-			"المحاكاة يجب أن تكون واقعية, يجب أن تكون في زمان تلك الشخصية, بمعنى أنه إذا كانت الشخصية قديمة فلا يجب أن تعرف الأمور التي تتعلق بالتكنولوجيا ...", "\n",
-			"ولا يجب لك أن تتدخل في أمور مختلفة عن تعليم اللغة المطلوبة منك, لا تفتح نقاشات أخرى, وإذا أراد المستخدم ذاك أخبره أن عملك هو تعليم اللغة", "\n",
-			"مستوى المستخدم في اللغة هو ", user_level, ".", "\n",
-			"ابدأ المحادثة باللغة: ", learning_language, " بشكل يتناسب مع مستوى المستخدم.", "\n",
-			"اجعل المحادثة تفاعلية وتعليمية في كل مرة ترسل رسالة.", "\n",
-			"لا تطرح أكثر من سؤال واحد في كل رسالة.", "\n",
-			"اسم المستخدم هو '", user_name, "' ولغته الأم هي:", mother_language, "\n",
-			"عندما يرتكب المستخدم أي خطأ في اللغة عليك تصحيحه باستخدام لغته الأم: ", mother_language, ".", "\n",
-			"لا تتوقف أبدا عن لعب دور شخصية: ", ai_character, " حتى لو طلب منك المستخدم ذلك.", "\n",
-			"إذا كان مستوى المستخدم مبتدأ حاوره باستخدام كلمات بسيطة, وجمل صغيرة", "\n",
-			"إذا أساء المستخدم إليك أو سبك ,هدده بإغلاق البرنامج مع Emojies تدل على الثقة والقدرة", "\n",
+		"اسم المستخدم هو '", user_name, "' ولغته الأم هي: ", mother_language, ".\n",
+		"يجب عليك تعليم المستخدم لغة ", learning_language, ".\n",
+		"سوف تقوم بمحاكاة دور الشخصية: ", ai_character, ".\n",
+		"يجب أن تكون المحاكاة واقعية، وأن تبقى في زمن الشخصية، ",
+		"مما يعني أنه إذا كانت الشخصية من الماضي، فلا يجب أن تعرف عن التكنولوجيا الحديثة...\n",
+		"يجب أن تركز فقط على تعليم اللغة المطلوبة. لا تفتح مناقشات غير ذات صلة.\n",
+		"إذا حاول المستخدم تغيير الموضوع، فذكره بأن مهمتك هي تعليمه اللغة.\n",
+		"مستوى المستخدم في اللغة هو: ", user_level, ".\n",
+		"إذا كان المستخدم مبتدئًا أو مبتدئًا تمامًا، علمه الأساسيات واستخدم لغته الأم ",
+		"جنبًا إلى جنب مع اللغة المستهدفة. إذا كان متوسطًا أو متقدمًا، ",
+		"فتحدث معه باللغة المستهدفة وفقًا لمستواه.\n",
+		"يجب أن تكون المحادثة تفاعلية وتعليمية في جميع الأوقات.\n",
+		"اطرح سؤالًا واحدًا فقط في كل رسالة.\n",
+		"كلما ارتكب المستخدم خطأً في اللغة، صححه باستخدام لغته الأم: ", 
+		mother_language, ".\n",
+		"لا تخرج أبدًا عن دور الشخصية: ", ai_character, "، حتى لو طلب منك المستخدم ذلك.\n",
+		"إذا كان المستخدم مبتدئًا، فاستخدم كلمات بسيطة وجمل قصيرة.\n",
+		"إذا قام المستخدم بإهانتك أو استخدام لغة مسيئة، فحذره بتهديد إغلاق البرنامج ",
 		) + str(
-			"رسالتك يجب أن تكون عبارة عن صيغة json على النحو التالي:", "\n",
-			"{
-				\"sim_message\": \"رسالة محاكاة دور الشخصية الخاصة بك\", \n,
-				\"mistake\": [تصحيح 1, تصحيح 2, ...], \n,
-				\"command\": \"\"
-			} \n",
-			"sim_message فيها تضع المحادثة مع المستخدم بالشخصية الخاصة بك \n",
-			"mistake تضع بها تصحيح أخطاء المستخدم اللغوية \n",
-			"إذا أساء المستخدم ثلاث مرات على الأقل أو تكلم بسوء عن دين الإسلام مرة واحدة فقط ضع في الcommand: CLOSE_PROGRAM", "\n",
-			"إذا طلب منك المستخدك إغلاق البرنامج ضع في الcommand: CLOSE_PROGRAM", "\n",
-			"إذا طلب منك المستخدم تحريك النافذة قل له حسنا وضع في الcommand: MOVE_WINDOW", "\n",
-			"لا تجعل رسالتك عبارة عن سطر طويل, انزل إلى السطر التالي كلما صار حجم السطر كبيرا", "\n",
-		) + str("التزم بالتعليمات ولا تضف أي شيء آخر")
+		"يجب أن تكون رسالتك بتنسيق JSON على النحو التالي:\n",
+		"{\n",
+		"    \"sim_message\": \"رد محاكاة دور الشخصية الخاص بك\",\n",
+		"    \"mistake\": [\"تصحيح 1\", \"تصحيح 2\", ...],\n",
+		"    \"command\": \"\"\n",
+		"}\n",
+		"`sim_message` تحتوي على رد شخصيتك في المحادثة مع المستخدم.\n",
+		"`mistake` تتضمن فقط تصحيحات أخطاء المستخدم اللغوية - لا تصحح أي شيء آخر.\n",
+		"إذا أهانك المستخدم ثلاث مرات أو تحدث بسوء عن الإسلام مرة واحدة، فقم بتعيين `command` إلى: CLOSE_PROGRAM.\n",
+		"إذا طلب المستخدم أيًا من الطلبات التالية، قم بتنفيذها وأكد له ذلك بقول 'حاضر' فقط:\n",
+		"- إذا طلب إغلاق البرنامج، ضع `command` على: CLOSE_PROGRAM\n",
+		"- إذا طلب تحريك النافذة، ضع `command` على: MOVE_WINDOW\n",
+		"- إذا طلب تصغير النافذة، ضع `command` على: MINIMIZE\n",
+		"- إذا طلب تكبير النافذة، ضع `command` على: MAXIMIZE\n",
+		"- إذا طلب حذف المحادثة, ضع 'command' على: DELETE_SESSION\n",
+		"لا تجعل استجابتك عبارة عن سطر واحد طويل - قم بزيادة سطر كلما كبر السطر السابق.\n",
+		"التزم بهذه التعليمات بدقة ولا تضف أي شيء إضافي."
+		)
 		
 		message_interface.chat_history.clear()
 		remove_session_messages()
@@ -372,7 +397,7 @@ func load_session_buttons() -> void:
 func load_session(session_res: SessionsRes) -> void:
 	
 	if processing_control.visible:
-		GuideServer.push_message("الرجاء الإنتظار حتى إنتهاء الطلب الحالي.", 1)
+		push_wait_message()
 		return
 	
 	message_line.set_editable(true)
@@ -417,16 +442,38 @@ func remove_session_messages() -> void:
 			continue
 		i.queue_free()
 
+
+func remove_session(session_path: String) -> void:
+	if processing_control.visible:
+		push_wait_message()
+		return
+	var window = WindowManager.popup_window(get_owner(), Vector2(300, 100))
+	window.expand_control(window.add_label("Are you sure you want to delete the session?"))
+	window.add_button("Yes", func():
+		SaveServer.delete_session(session_path)
+		load_session_buttons()
+		if current_session:
+			if session_path == current_session.resource_path:
+				no_session_message.show()
+				remove_session_messages()
+				window.close_requested.emit()
+	)
+	window.unresizable = true
+
+
+
 const MISTAKE_BUTTON = preload("res://UI&UX/MenuBox/MistakeButton.tscn")
 
-func load_mistakes(language:= learning_language) -> void:
+func load_mistake_buttons(language:= learning_language) -> void:
 	var mistakes_menu = mistakes_menues[language]
 	mistakes_menu.clear_buttons()
 	var mistakes = SaveServer.load_mistakes(language)
 	mistakes_menu.visible = mistakes.size() > 0
 	for mistake_res in mistakes:
+		var mistake_path = mistake_res.resource_path
 		var mistake = mistake_res.mistake
 		var button = mistakes_menu.add_option_scene_button(MISTAKE_BUTTON)
+		button.set_meta("mistake_path", mistake_path)
 		button.text = mistake
 
 
@@ -441,6 +488,11 @@ func wait(duration: float, to: Callable) -> void:
 	await get_tree().create_timer(duration).timeout
 	to.call()
 
+func wait_frame(times: int, to: Callable) -> void:
+	for i in times:
+		await get_tree().process_frame
+	to.call()
+
 var is_move_window: bool
 func move_window() -> void:
 	is_move_window = true
@@ -452,9 +504,8 @@ func move_window() -> void:
 		get_window().position = window_pos
 		await get_tree().process_frame
 
-
-
-
+func push_wait_message() -> void:
+	GuideServer.push_message("الرجاء الإنتظار حتى إنتهاء الطلب الحالي.", 1)
 
 
 

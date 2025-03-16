@@ -6,6 +6,13 @@ extends Window
 func _ready() -> void:
 	close_requested.connect(queue_free)
 
+func add_label(text: String, font_color:= Color.WHITE) -> Label:
+	var label = Label.new()
+	label.set_text(text)
+	label.set_autowrap_mode(TextServer.AUTOWRAP_WORD)
+	label.add_theme_color_override("font_color", font_color)
+	box.add_child(label)
+	return label
 
 func add_line(placeholder: String, text: String, on_edit = null) -> LineEdit:
 	var line = LineEdit.new()

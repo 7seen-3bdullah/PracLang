@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://ckn1q7pbd0fmn"]
+[gd_scene load_steps=6 format=3 uid="uid://ckn1q7pbd0fmn"]
 
 [ext_resource type="Script" uid="uid://bwnanjwktmi0i" path="res://UI&UX/MenuBox/OptionButton.gd" id="1_g4l0r"]
+[ext_resource type="StyleBox" uid="uid://vfo2ttl7nvl0" path="res://UI&UX/Style/Focus.tres" id="2_vonwv"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g4l0r"]
 bg_color = Color(0.18, 0.072, 0.0738, 0.588235)
@@ -21,9 +22,15 @@ offset_bottom = 50.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_g4l0r")
 script = ExtResource("1_g4l0r")
 
-[node name="Button" type="Button" parent="."]
+[node name="Split" type="HSplitContainer" parent="."]
+layout_mode = 2
+dragging_enabled = false
+dragger_visibility = 2
+
+[node name="Button" type="Button" parent="Split"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
 theme_override_styles/focus = SubResource("StyleBoxEmpty_bipeb")
 theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_vonwv")
 theme_override_styles/hover = SubResource("StyleBoxFlat_vonwv")
@@ -31,3 +38,9 @@ theme_override_styles/pressed = SubResource("StyleBoxEmpty_bipeb")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_bipeb")
 alignment = 0
 text_overrun_behavior = 3
+
+[node name="RemoveButton" type="Button" parent="Split"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_styles/focus = ExtResource("2_vonwv")
+text = "Delete"

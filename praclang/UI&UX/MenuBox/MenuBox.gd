@@ -1,6 +1,7 @@
 extends Control
 
 signal button_pressed(button: Control)
+signal remove_button_pressed(button: Control)
 
 @export var show_title: bool = false
 @export var title: String
@@ -26,12 +27,15 @@ func _ready() -> void:
 func add_option_scene_button(packed_scene: PackedScene = OPTION_BUTTON) -> Control:
 	var button = packed_scene.instantiate()
 	button.pressed.connect(on_button_pressed)
+	button.remove_pressed.connect(on_remove_button_pressed)
 	box.add_child(button)
 	button.button_group = button_group
 	return button
 
 func on_button_pressed(button: Control) -> void:
 	button_pressed.emit(button)
+func on_remove_button_pressed(button: Control) -> void:
+	remove_button_pressed.emit(button)
 
 func clear_buttons() -> void:
 	for i in box.get_children():

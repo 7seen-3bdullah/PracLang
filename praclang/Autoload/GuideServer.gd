@@ -14,7 +14,7 @@ var message_history: Array[Dictionary]
 func push_guides(guides: Array[Dictionary] = []) -> void:
 	if not guides:
 		guides = [
-			{"": "'AI Studio Code' is a simple and efficient code editor powered by artificial intelligence, created during the SalamHack 2025 competition."}
+			{"": ""}
 		]
 	var result_guide: String
 	var guide_labels = get_tree().get_nodes_in_group(GUIDE_GROUP)

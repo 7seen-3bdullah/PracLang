@@ -65,7 +65,7 @@ theme_override_constants/margin_bottom = 4
 [node name="Box" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 
-[node name="TabContainer" type="TabContainer" parent="MarginContainer/Box"]
+[node name="TabBox" type="TabContainer" parent="MarginContainer/Box"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_colors/font_unselected_color = Color(1, 1, 1, 0.352941)
@@ -77,11 +77,11 @@ theme_override_styles/tab_selected = SubResource("StyleBoxFlat_hh5pf")
 tab_alignment = 1
 current_tab = 0
 
-[node name="Learning Lang" parent="MarginContainer/Box/TabContainer" instance=ExtResource("2_amygn")]
+[node name="Learning Lang" parent="MarginContainer/Box/TabBox" instance=ExtResource("2_amygn")]
 layout_mode = 2
 metadata/_tab_index = 0
 
-[node name="Coding" parent="MarginContainer/Box/TabContainer" instance=ExtResource("3_ps1la")]
+[node name="Coding" parent="MarginContainer/Box/TabBox" instance=ExtResource("3_ps1la")]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 1
