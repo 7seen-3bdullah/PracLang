@@ -7,8 +7,8 @@
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_iophh"]
 
 [node name="MessageBox" type="PanelContainer"]
-offset_right = 64.0
-offset_bottom = 31.0
+offset_right = 182.0
+offset_bottom = 44.0
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxEmpty_iophh")
 script = ExtResource("1_ifyp0")

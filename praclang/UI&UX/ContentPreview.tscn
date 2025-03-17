@@ -15,6 +15,7 @@ theme_override_styles/focus = ExtResource("2_1tgyf")
 theme_override_styles/read_only = ExtResource("2_1tgyf")
 theme_override_styles/panel = ExtResource("2_1tgyf")
 editable = false
+autowrap_mode = 1
 scroll_fit_content_height = true
 scroll_fit_content_width = true
 script = ExtResource("2_lfmyd")

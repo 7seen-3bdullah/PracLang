@@ -6,6 +6,11 @@ signal remove_pressed(button: Control)
 @onready var button: Button = %Button
 @onready var remove_button: Button = %RemoveButton
 
+var button_pressed: bool:
+	set(val):
+		button_pressed = val
+		button.button_pressed = val
+
 var removable:= true:
 	set(val):
 		removable = val

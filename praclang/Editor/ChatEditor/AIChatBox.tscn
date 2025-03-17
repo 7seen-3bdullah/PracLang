@@ -10,6 +10,7 @@
 [ext_resource type="Script" uid="uid://vjj86spceuoj" path="res://Build/TweenPlus.gd" id="6_8uo5l"]
 
 [node name="AIChatBox" type="Control"]
+clip_contents = true
 custom_minimum_size = Vector2(400, 400)
 layout_mode = 3
 anchors_preset = 15
@@ -49,7 +50,7 @@ clip_contents = true
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 mouse_filter = 1
-color = Color(0.117647, 0.117647, 0.133333, 1)
+color = Color(0.054902, 0.054902, 0.054902, 1)
 
 [node name="Margin" type="MarginContainer" parent="ChatSide/Header"]
 layout_mode = 1
@@ -132,6 +133,7 @@ show_title = true
 title = "Sessions"
 
 [node name="ChatBox" type="Panel" parent="ChatSide/Margin/Split"]
+clip_contents = true
 custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 size_flags_vertical = 3
@@ -150,6 +152,7 @@ dragging_enabled = false
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
+horizontal_scroll_mode = 0
 
 [node name="Margin" type="MarginContainer" parent="ChatSide/Margin/Split/ChatBox/VSplitContainer/ScrollContainer"]
 layout_mode = 2

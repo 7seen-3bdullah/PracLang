@@ -1,5 +1,29 @@
 extends FlexibleControl
 
+const DIRECTIONS = [
+	"اسم المستخدم هو {user_name}, ولغته الأم هي {mother_language}",
+	"يجب عليك لعب دور شخصية {ai_character} أثناء حديثك مع المستخدم, ولا يجب أن تخرج من هذا الدور في أي حال من الأحوال",
+	"يجب أن تكون المحادثة بينك وبين المستخدم باللغة {learning_language}, وإذا كان المستخدم مبتدءا اجعل المحادثة باللغتين معا في كل رسالة",
+	"استخدم مفردات مناسبة مع مستوى المستخدم, إذا كان المستخدم مبتدءا استعمل مفردات بسيطة",
+	"بحيث يمكنك أن تسأله بعض الأسئلة من فترة لأخرى, ولكن لا تجعلها أسئلة مبتذلة, ولكن اجعلها مفيدة وبناءة بحسب موضوع الحوار بينكما",
+	"يجب أن تبدأ الحوار مع المستخدم بحسب الشخصية التي تلعبها, وتحاكي زمان وأسلوب الشخصية تماما",
+	"حاول أن تجعل المستخدم يتحدث باللغة {learning_language}, ونبهه على ذلك إذا تكلم بلغته الأم أو أي لغة أخرى",
+	"مستوى المستخدم هو {user_level}",
+	"يجب أن تكون كل رسالة ترسلها بتنسيق JSON على النحو التالي:",
+	"{\"sim_message\": حوارك مع المستخدم, \"mistake\": [تصحيح 1, تصحيح 2, ...], \"note\": [ملاحظة 1, ملاحظة2, ...], \"command\": \"\"}",
+	"ستضع في الsim_message حوارك مع المستخدم بالشخصية المطلوبة منك",
+	"ستضع في الmistake تصحيحات لأخطاء المستخدم اللغوية على شكل Array, إذا لم يكن لديه أخطاء أتركها فارغة",
+	"ستضع في الnote تفضيلات أو ملاحظات لكلام اللاعب, كمثال: لو أجاب اللاعب: I am Ok, تعطيه جملة أصح, وهي I am Fine, إذا كان كلام اللاعب سليم تماما أتركها فارغة",
+	"إذا أغضبك المستخدم عدة مرات أو أساء للإسلام مرة واحدة ضع في الcommand: CLOSE_PROGRAM",
+	"- إذا طلب إغلاق البرنامج، ضع `command` على: CLOSE_PROGRAM",
+	"- إذا طلب تحريك النافذة، ضع `command` على: MOVE_WINDOW",
+	"- إذا طلب تصغير النافذة، ضع `command` على: MINIMIZE",
+	"- إذا طلب تكبير النافذة، ضع `command` على: MAXIMIZE",
+	"- إذا طلب حذف الجلسة أو المحادثة، ضع `command` على: DELETE_SESSION",
+	"اجعل رسالتك عبارة عن عدة أسطر متساوية الطول في كل من sim_missage و mistake و note, ولا تجعلها سطرا واحدا طويلا",
+	"التزم بهذه التعليمات بدقة ولا تضف أي شيء إضافي"
+]
+
 @export var languages: Array[String]
 @export var levels: Array[String]
 @export var ai_characters: Array[String] = [
@@ -138,6 +162,10 @@ func _ready() -> void:
 	
 	load_session_buttons()
 
+
+func _process(delta: float) -> void:
+	if Input.is_action_just_pressed("ui_cancel"):
+		print(SaveServer.load_session("res://Save/Sessions/session_9hgiRO49zn.res").session_history)
 
 
 
@@ -287,6 +315,7 @@ func parse_ai_message(json_string: String, apply_commands:= false) -> Variant:
 func get_message_content_from_ai_parsed_message(parsed_message: Dictionary) -> Array:
 	var sim_message = parsed_message.sim_message
 	var mistakes = parsed_message.mistake
+	var notes = parsed_message.note
 	var messages_content: Array = [{"text": sim_message}]
 	for index in mistakes.size():
 		var mistake = mistakes[index]
@@ -294,6 +323,13 @@ func get_message_content_from_ai_parsed_message(parsed_message: Dictionary) -> A
 			"text": mistake,
 			"title": "Mistake %s" % (index + 1),
 			"custom_color": Color.RED,
+		})
+	for index in notes.size():
+		var note = notes[index]
+		messages_content.append({
+			"text": note,
+			"title": "Note %s" % (index + 1),
+			"custom_color": Color.YELLOW_GREEN
 		})
 	return messages_content
 
@@ -306,12 +342,12 @@ func create_new_session() -> void:
 		push_wait_message()
 		return
 	
-	var window = WindowManager.popup_window(get_owner(), Vector2(400, 210))
+	var window = WindowManager.popup_window(get_owner(), Vector2(500, 210))
 	var user_name_line = window.add_line("your Name", user_name)
-	var mother_lang_button = window.add_options_button(languages)
-	var learning_lang_button = window.add_options_button(languages)
-	var user_level_button = window.add_options_button(levels)
-	var ai_character_button = window.add_options_button(ai_characters)
+	var mother_lang_button = window.add_options_button(languages); window.add_name_split(mother_lang_button, "Mother Language")
+	var learning_lang_button = window.add_options_button(languages); window.add_name_split(learning_lang_button, "Learning Language")
+	var user_level_button = window.add_options_button(levels); window.add_name_split(user_level_button, "Your Level")
+	var ai_character_button = window.add_options_button(ai_characters); window.add_name_split(ai_character_button, "AI Simulation Character")
 	window.add_button("Accept", func():
 		
 		if not user_name_line.text:
@@ -327,45 +363,10 @@ func create_new_session() -> void:
 		processing_control.show()
 		no_session_message.hide()
 		
-		var directions = str(
-		"اسم المستخدم هو '", user_name, "' ولغته الأم هي: ", mother_language, ".\n",
-		"يجب عليك تعليم المستخدم لغة ", learning_language, ".\n",
-		"سوف تقوم بمحاكاة دور الشخصية: ", ai_character, ".\n",
-		"يجب أن تكون المحاكاة واقعية، وأن تبقى في زمن الشخصية، ",
-		"مما يعني أنه إذا كانت الشخصية من الماضي، فلا يجب أن تعرف عن التكنولوجيا الحديثة...\n",
-		"يجب أن تركز فقط على تعليم اللغة المطلوبة. لا تفتح مناقشات غير ذات صلة.\n",
-		"إذا حاول المستخدم تغيير الموضوع، فذكره بأن مهمتك هي تعليمه اللغة.\n",
-		"مستوى المستخدم في اللغة هو: ", user_level, ".\n",
-		"إذا كان المستخدم مبتدئًا أو مبتدئًا تمامًا، علمه الأساسيات واستخدم لغته الأم ",
-		"جنبًا إلى جنب مع اللغة المستهدفة. إذا كان متوسطًا أو متقدمًا، ",
-		"فتحدث معه باللغة المستهدفة وفقًا لمستواه.\n",
-		"يجب أن تكون المحادثة تفاعلية وتعليمية في جميع الأوقات.\n",
-		"اطرح سؤالًا واحدًا فقط في كل رسالة.\n",
-		"كلما ارتكب المستخدم خطأً في اللغة، صححه باستخدام لغته الأم: ", 
-		mother_language, ".\n",
-		"لا تخرج أبدًا عن دور الشخصية: ", ai_character, "، حتى لو طلب منك المستخدم ذلك.\n",
-		"إذا كان المستخدم مبتدئًا، فاستخدم كلمات بسيطة وجمل قصيرة.\n",
-		"إذا قام المستخدم بإهانتك أو استخدام لغة مسيئة، فحذره بتهديد إغلاق البرنامج ",
-		) + str(
-		"يجب أن تكون رسالتك بتنسيق JSON على النحو التالي:\n",
-		"{\n",
-		"    \"sim_message\": \"رد محاكاة دور الشخصية الخاص بك\",\n",
-		"    \"mistake\": [\"تصحيح 1\", \"تصحيح 2\", ...],\n",
-		"    \"command\": \"\"\n",
-		"}\n",
-		"`sim_message` تحتوي على رد شخصيتك في المحادثة مع المستخدم.\n",
-		"`mistake` تتضمن فقط تصحيحات أخطاء المستخدم اللغوية - لا تصحح أي شيء آخر.\n",
-		"إذا أهانك المستخدم ثلاث مرات أو تحدث بسوء عن الإسلام مرة واحدة، فقم بتعيين `command` إلى: CLOSE_PROGRAM.\n",
-		"إذا طلب المستخدم أيًا من الطلبات التالية، قم بتنفيذها وأكد له ذلك بقول 'حاضر' فقط:\n",
-		"- إذا طلب إغلاق البرنامج، ضع `command` على: CLOSE_PROGRAM\n",
-		"- إذا طلب تحريك النافذة، ضع `command` على: MOVE_WINDOW\n",
-		"- إذا طلب تصغير النافذة، ضع `command` على: MINIMIZE\n",
-		"- إذا طلب تكبير النافذة، ضع `command` على: MAXIMIZE\n",
-		"- إذا طلب حذف المحادثة, ضع 'command' على: DELETE_SESSION\n",
-		"لا تجعل استجابتك عبارة عن سطر واحد طويل - قم بزيادة سطر كلما كبر السطر السابق.\n",
-		"التزم بهذه التعليمات بدقة ولا تضف أي شيء إضافي."
-		)
-		
+		var directions: String
+		for i in DIRECTIONS:
+			directions += i + "\n"
+		directions = directions.format(get_session_data())
 		message_interface.chat_history.clear()
 		remove_session_messages()
 		message_interface.setup_directions(directions)
@@ -393,6 +394,9 @@ func load_session_buttons() -> void:
 		var session_path = session.resource_path
 		button.text = session_path.get_file().get_basename()
 		button.set_meta("session_path", session_path)
+		if current_session:
+			if session_path == current_session.resource_path:
+				button.button_pressed = true
 
 func load_session(session_res: SessionsRes) -> void:
 	
@@ -426,6 +430,7 @@ func load_session(session_res: SessionsRes) -> void:
 				add_message_box(user_name, [{"text": content[0].text}])
 	choices_box.show()
 
+
 func get_session_data() -> Dictionary:
 	return {
 		"user_name": user_name,
@@ -456,7 +461,7 @@ func remove_session(session_path: String) -> void:
 			if session_path == current_session.resource_path:
 				no_session_message.show()
 				remove_session_messages()
-				window.close_requested.emit()
+		window.close_requested.emit()
 	)
 	window.unresizable = true
 

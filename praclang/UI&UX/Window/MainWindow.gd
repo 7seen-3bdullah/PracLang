@@ -59,6 +59,17 @@ func add_scene(packed_scene: PackedScene) -> Control:
 	box.add_child(scene)
 	return scene
 
+func add_name_split(control: Control, name: String, enable_dragging:= false) -> SplitContainer:
+	var split = SplitContainer.new()
+	split.dragging_enabled = enable_dragging
+	box.add_child(split)
+	var label = add_label(name, Color.GRAY)
+	label.reparent(split); label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	control.reparent(split); control.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	return split
+
+
+
 func remove_control(index: int) -> void:
 	box.get_child(index).queue_free()
 

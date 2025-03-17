@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://di7tvn5g3aomf"]
+[gd_scene load_steps=8 format=3 uid="uid://di7tvn5g3aomf"]
 
 [ext_resource type="Script" uid="uid://dud7dvq61ab30" path="res://Editor/CodeEditor/CodeEditor.gd" id="1_tjscr"]
 [ext_resource type="Script" uid="uid://bl2url5a7jbhm" path="res://Build/UI/FlexControl/FocusOutliner.gd" id="2_e28dc"]
@@ -8,20 +8,9 @@
 [ext_resource type="Script" uid="uid://cfbvowu4g6u27" path="res://Editor/CodeEditor/CodeEditShortcut.gd" id="5_tjscr"]
 [ext_resource type="Script" uid="uid://brhkyw0lxvanf" path="res://Build/AIInterface.gd" id="6_7jpoq"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e28dc"]
-bg_color = Color(0, 0, 0, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qpqyo"]
-content_margin_left = 10.0
-content_margin_top = 5.0
-content_margin_right = 10.0
-content_margin_bottom = 5.0
-bg_color = Color(0.117647, 0.117647, 0.133333, 1)
-border_width_top = 4
-border_color = Color(0.360784, 0.427451, 0.639216, 1)
-
 [node name="CodeEditor" type="Control"]
-custom_minimum_size = Vector2(300, 300)
+clip_contents = true
+custom_minimum_size = Vector2(400, 400)
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -59,7 +48,7 @@ clip_contents = true
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 mouse_filter = 1
-color = Color(0.117647, 0.117647, 0.133333, 1)
+color = Color(0.054902, 0.054902, 0.054902, 1)
 
 [node name="Margin" type="MarginContainer" parent="Box/Header"]
 layout_mode = 1
@@ -75,12 +64,6 @@ theme_override_constants/margin_bottom = 4
 
 [node name="ChoicesBox" type="HBoxContainer" parent="Box/Header/Margin"]
 layout_mode = 2
-
-[node name="FileButton" type="MenuButton" parent="Box/Header/Margin/ChoicesBox"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 20
-theme_override_styles/focus = ExtResource("3_e28dc")
-text = "File"
 
 [node name="GenCodeButton" type="Button" parent="Box/Header/Margin/ChoicesBox"]
 unique_name_in_owner = true
@@ -122,18 +105,7 @@ theme_override_constants/margin_top = 4
 theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 4
 
-[node name="TabBox" type="TabContainer" parent="Box/Margin"]
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_colors/font_unselected_color = Color(1, 1, 1, 0.352941)
-theme_override_colors/font_selected_color = Color(0.362079, 0.428255, 0.640726, 1)
-theme_override_font_sizes/font_size = 20
-theme_override_styles/tab_focus = ExtResource("3_e28dc")
-theme_override_styles/panel = SubResource("StyleBoxFlat_e28dc")
-theme_override_styles/tab_selected = SubResource("StyleBoxFlat_qpqyo")
-current_tab = 0
-
-[node name="CodeEdit" type="CodeEdit" parent="Box/Margin/TabBox"]
+[node name="CodeEdit" type="CodeEdit" parent="Box/Margin"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -158,7 +130,6 @@ indent_automatic = true
 auto_brace_completion_enabled = true
 auto_brace_completion_highlight_matching = true
 script = ExtResource("4_lxqrk")
-metadata/_tab_index = 0
 
 [node name="ShortcutNode" type="Node" parent="." node_paths=PackedStringArray("gui_control")]
 unique_name_in_owner = true
