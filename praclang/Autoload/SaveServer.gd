@@ -39,15 +39,20 @@ func delete_session(path: String) -> void:
 
 
 
+func save_mistake(mistake: String, type: int, mistakes_filenames: Array, language_for: String) -> void:
+	var save_path = MISTAKES_SAVE_PATH + language_for + "/" + generate_file_name(mistakes_filenames, "mistake_") + ".res"
+	var mistake_res = MistakeRes.new()
+	mistake_res.mistake = mistake
+	mistake_res.type = type
+	ResourceSaver.save(mistake_res, save_path)
 
-func save_mistakes(mistakes: Array, language_for: String) -> void:
+func save_mistakes(mistakes: Array, notes: Array, language_for: String) -> void:
 	var mistakes_filenames = get_mistakes_files(language_for)
 	for mistake in mistakes:
-		var save_path = MISTAKES_SAVE_PATH + language_for + "/" + generate_file_name(mistakes_filenames, "mistake_") + ".res"
-		var mistake_res = MistakeRes.new()
-		print(mistake_res)
-		mistake_res.mistake = mistake
-		ResourceSaver.save(mistake_res, save_path)
+		save_mistake(mistake, 0, mistakes_filenames, language_for)
+	for note in notes:
+		save_mistake(note, 1, mistakes_filenames, language_for)
+
 
 func load_mistakes(language_for: String) -> Array[MistakeRes]:
 	var mistakes_filenames = get_mistakes_files(language_for)

@@ -86,16 +86,21 @@ theme_override_constants/margin_bottom = 4
 
 [node name="Split" type="HSplitContainer" parent="ChatSide/Margin"]
 layout_mode = 2
+dragger_visibility = 2
+
+[node name="Split" type="HSplitContainer" parent="ChatSide/Margin/Split"]
+layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 3
 dragger_visibility = 2
 
-[node name="HistorySide" type="ColorRect" parent="ChatSide/Margin/Split"]
-custom_minimum_size = Vector2(400, 0)
+[node name="HistorySide" type="ColorRect" parent="ChatSide/Margin/Split/Split"]
+custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 mouse_filter = 1
 color = Color(0, 0, 0, 1)
 
-[node name="ScrollContainer" type="ScrollContainer" parent="ChatSide/Margin/Split/HistorySide"]
+[node name="ScrollContainer" type="ScrollContainer" parent="ChatSide/Margin/Split/Split/HistorySide"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -104,7 +109,7 @@ grow_horizontal = 2
 grow_vertical = 2
 horizontal_scroll_mode = 0
 
-[node name="MarginContainer" type="MarginContainer" parent="ChatSide/Margin/Split/HistorySide/ScrollContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="ChatSide/Margin/Split/Split/HistorySide/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/margin_left = 4
@@ -112,11 +117,11 @@ theme_override_constants/margin_top = 4
 theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 4
 
-[node name="SideBox" type="VBoxContainer" parent="ChatSide/Margin/Split/HistorySide/ScrollContainer/MarginContainer"]
+[node name="SideBox" type="VBoxContainer" parent="ChatSide/Margin/Split/Split/HistorySide/ScrollContainer/MarginContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="NewSessionButton" type="Button" parent="ChatSide/Margin/Split/HistorySide/ScrollContainer/MarginContainer/SideBox"]
+[node name="NewSessionButton" type="Button" parent="ChatSide/Margin/Split/Split/HistorySide/ScrollContainer/MarginContainer/SideBox"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
@@ -125,21 +130,21 @@ theme_override_font_sizes/font_size = 20
 theme_override_styles/focus = ExtResource("2_tyr3i")
 text = "New Session"
 
-[node name="SessionsBox" parent="ChatSide/Margin/Split/HistorySide/ScrollContainer/MarginContainer/SideBox" instance=ExtResource("3_0wjpb")]
+[node name="SessionsBox" parent="ChatSide/Margin/Split/Split/HistorySide/ScrollContainer/MarginContainer/SideBox" instance=ExtResource("3_0wjpb")]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 1
 show_title = true
 title = "Sessions"
 
-[node name="ChatBox" type="Panel" parent="ChatSide/Margin/Split"]
+[node name="ChatBox" type="Panel" parent="ChatSide/Margin/Split/Split"]
 clip_contents = true
 custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 1
 
-[node name="VSplitContainer" type="VSplitContainer" parent="ChatSide/Margin/Split/ChatBox"]
+[node name="VSplitContainer" type="VSplitContainer" parent="ChatSide/Margin/Split/Split/ChatBox"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -148,13 +153,13 @@ grow_horizontal = 2
 grow_vertical = 2
 dragging_enabled = false
 
-[node name="ScrollContainer" type="ScrollContainer" parent="ChatSide/Margin/Split/ChatBox/VSplitContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="ChatSide/Margin/Split/Split/ChatBox/VSplitContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 
-[node name="Margin" type="MarginContainer" parent="ChatSide/Margin/Split/ChatBox/VSplitContainer/ScrollContainer"]
+[node name="Margin" type="MarginContainer" parent="ChatSide/Margin/Split/Split/ChatBox/VSplitContainer/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -163,7 +168,7 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="NoSessionMessage" type="Label" parent="ChatSide/Margin/Split/ChatBox/VSplitContainer/ScrollContainer/Margin"]
+[node name="NoSessionMessage" type="Label" parent="ChatSide/Margin/Split/Split/ChatBox/VSplitContainer/ScrollContainer/Margin"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 0.392157)
@@ -173,14 +178,14 @@ or create a new one by pressing 'Control + A'"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MessagesBox" type="VBoxContainer" parent="ChatSide/Margin/Split/ChatBox/VSplitContainer/ScrollContainer/Margin"]
+[node name="MessagesBox" type="VBoxContainer" parent="ChatSide/Margin/Split/Split/ChatBox/VSplitContainer/ScrollContainer/Margin"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 10
 
-[node name="ProcessingControl" type="ColorRect" parent="ChatSide/Margin/Split/ChatBox/VSplitContainer/ScrollContainer/Margin/MessagesBox"]
+[node name="ProcessingControl" type="ColorRect" parent="ChatSide/Margin/Split/Split/ChatBox/VSplitContainer/ScrollContainer/Margin/MessagesBox"]
 unique_name_in_owner = true
 visible = false
 custom_minimum_size = Vector2(50, 50)
@@ -190,11 +195,11 @@ color = Color(0, 0, 0, 1)
 script = ExtResource("3_2pecy")
 radius = 10.0
 
-[node name="MessageBox" type="PanelContainer" parent="ChatSide/Margin/Split/ChatBox/VSplitContainer"]
+[node name="MessageBox" type="PanelContainer" parent="ChatSide/Margin/Split/Split/ChatBox/VSplitContainer"]
 layout_mode = 2
 mouse_filter = 1
 
-[node name="Margin" type="MarginContainer" parent="ChatSide/Margin/Split/ChatBox/VSplitContainer/MessageBox"]
+[node name="Margin" type="MarginContainer" parent="ChatSide/Margin/Split/Split/ChatBox/VSplitContainer/MessageBox"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -203,11 +208,11 @@ theme_override_constants/margin_top = 4
 theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 4
 
-[node name="Split" type="HSplitContainer" parent="ChatSide/Margin/Split/ChatBox/VSplitContainer/MessageBox/Margin"]
+[node name="Split" type="HSplitContainer" parent="ChatSide/Margin/Split/Split/ChatBox/VSplitContainer/MessageBox/Margin"]
 layout_mode = 2
 dragging_enabled = false
 
-[node name="MessageLine" type="TextEdit" parent="ChatSide/Margin/Split/ChatBox/VSplitContainer/MessageBox/Margin/Split"]
+[node name="MessageLine" type="TextEdit" parent="ChatSide/Margin/Split/Split/ChatBox/VSplitContainer/MessageBox/Margin/Split"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -219,13 +224,19 @@ wrap_mode = 1
 scroll_fit_content_height = true
 caret_blink = true
 
-[node name="SendMessageButton" type="Button" parent="ChatSide/Margin/Split/ChatBox/VSplitContainer/MessageBox/Margin/Split"]
+[node name="SendMessageButton" type="Button" parent="ChatSide/Margin/Split/Split/ChatBox/VSplitContainer/MessageBox/Margin/Split"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 mouse_filter = 1
 theme_override_styles/focus = ExtResource("2_tyr3i")
 text = "Send"
+
+[node name="SessionInfoSide" type="ColorRect" parent="ChatSide/Margin/Split"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+color = Color(0, 0, 0, 1)
 
 [node name="ShortcutNode" type="Node" parent="." node_paths=PackedStringArray("gui_control")]
 unique_name_in_owner = true

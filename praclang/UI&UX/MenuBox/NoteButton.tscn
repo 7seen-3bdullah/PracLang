@@ -1,9 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://ckn1q7pbd0fmn"]
+[gd_scene load_steps=6 format=3 uid="uid://cpc4yf7lyv7x6"]
 
-[ext_resource type="Script" uid="uid://bwnanjwktmi0i" path="res://UI&UX/MenuBox/OptionButton.gd" id="1_g4l0r"]
-[ext_resource type="StyleBox" uid="uid://do172awjfnxp" path="res://UI&UX/Style/ErrorBG.tres" id="1_n7fv4"]
-[ext_resource type="StyleBox" uid="uid://vfo2ttl7nvl0" path="res://UI&UX/Style/Focus.tres" id="2_vonwv"]
-[ext_resource type="StyleBox" uid="uid://cxrhnsakac8ha" path="res://UI&UX/Style/ErrorHovered.tres" id="3_0xnpj"]
+[ext_resource type="StyleBox" uid="uid://y6d355j76ijv" path="res://UI&UX/Style/NoteBG.tres" id="1_fbpy3"]
+[ext_resource type="Script" uid="uid://bwnanjwktmi0i" path="res://UI&UX/MenuBox/OptionButton.gd" id="2_frpua"]
+[ext_resource type="StyleBox" uid="uid://d04k3qkq4685a" path="res://UI&UX/Style/NoteHovered.tres" id="3_frpua"]
+[ext_resource type="StyleBox" uid="uid://vfo2ttl7nvl0" path="res://UI&UX/Style/Focus.tres" id="4_ony6i"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bipeb"]
 content_margin_left = 10.0
@@ -12,8 +12,8 @@ content_margin_left = 10.0
 custom_minimum_size = Vector2(0, 50)
 offset_right = 340.0
 offset_bottom = 50.0
-theme_override_styles/panel = ExtResource("1_n7fv4")
-script = ExtResource("1_g4l0r")
+theme_override_styles/panel = ExtResource("1_fbpy3")
+script = ExtResource("2_frpua")
 
 [node name="Split" type="HSplitContainer" parent="."]
 layout_mode = 2
@@ -25,8 +25,8 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/focus = SubResource("StyleBoxEmpty_bipeb")
-theme_override_styles/hover_pressed = ExtResource("3_0xnpj")
-theme_override_styles/hover = ExtResource("3_0xnpj")
+theme_override_styles/hover_pressed = ExtResource("3_frpua")
+theme_override_styles/hover = ExtResource("3_frpua")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_bipeb")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_bipeb")
 alignment = 0
@@ -35,5 +35,5 @@ text_overrun_behavior = 3
 [node name="RemoveButton" type="Button" parent="Split"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_styles/focus = ExtResource("2_vonwv")
+theme_override_styles/focus = ExtResource("4_ony6i")
 text = "Delete"

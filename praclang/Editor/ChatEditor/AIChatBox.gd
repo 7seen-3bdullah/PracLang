@@ -3,7 +3,7 @@ extends FlexibleControl
 const DIRECTIONS = [
 	"اسم المستخدم هو {user_name}, ولغته الأم هي {mother_language}",
 	"يجب عليك لعب دور شخصية {ai_character} أثناء حديثك مع المستخدم, ولا يجب أن تخرج من هذا الدور في أي حال من الأحوال",
-	"يجب أن تكون المحادثة بينك وبين المستخدم باللغة {learning_language}, وإذا كان المستخدم مبتدءا اجعل المحادثة باللغتين معا في كل رسالة",
+	"يجب أن تكون المحادثة بينك وبين المستخدم باللغة {learning_language}, وإذا كان المستخدم مبتدءا اجعل المحادثة باللغة ال{mother_language} و {learning_language} معا في كل رسالة",
 	"استخدم مفردات مناسبة مع مستوى المستخدم, إذا كان المستخدم مبتدءا استعمل مفردات بسيطة",
 	"بحيث يمكنك أن تسأله بعض الأسئلة من فترة لأخرى, ولكن لا تجعلها أسئلة مبتذلة, ولكن اجعلها مفيدة وبناءة بحسب موضوع الحوار بينكما",
 	"يجب أن تبدأ الحوار مع المستخدم بحسب الشخصية التي تلعبها, وتحاكي زمان وأسلوب الشخصية تماما",
@@ -176,7 +176,7 @@ func on_focus_changed(is_focus: bool) -> void:
 	if is_focus:
 		await get_tree().process_frame
 		GuideServer.push_guides([
-			{"New Session": "Control + A"},
+			{"New Session": "Control + N"},
 			{"Send Message": "Enter"},
 			{"New Line": "Shift + Enter"},
 			{"Zoom In Out": "Control + 'Scroll Mouse Wheel'"}
@@ -248,7 +248,7 @@ func on_message_interface_result_pushed(error: int, response: Dictionary) -> voi
 			get_session_data(),
 			current_session.resource_path
 		)
-		SaveServer.save_mistakes(result.mistake, learning_language)
+		SaveServer.save_mistakes(result.mistake, result.note, learning_language)
 		load_mistake_buttons()
 	else:
 		GuideServer.push_message("مشكلة في الAI", 2)
@@ -468,6 +468,7 @@ func remove_session(session_path: String) -> void:
 
 
 const MISTAKE_BUTTON = preload("res://UI&UX/MenuBox/MistakeButton.tscn")
+const NOTE_BUTTON = preload("res://UI&UX/MenuBox/NoteButton.tscn")
 
 func load_mistake_buttons(language:= learning_language) -> void:
 	var mistakes_menu = mistakes_menues[language]
@@ -477,7 +478,7 @@ func load_mistake_buttons(language:= learning_language) -> void:
 	for mistake_res in mistakes:
 		var mistake_path = mistake_res.resource_path
 		var mistake = mistake_res.mistake
-		var button = mistakes_menu.add_option_scene_button(MISTAKE_BUTTON)
+		var button = mistakes_menu.add_option_scene_button(MISTAKE_BUTTON if mistake_res.type == 0 else NOTE_BUTTON)
 		button.set_meta("mistake_path", mistake_path)
 		button.text = mistake
 
