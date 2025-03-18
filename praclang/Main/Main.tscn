@@ -70,6 +70,9 @@ layout_mode = 2
 [node name="Learning Lang" parent="MarginContainer/Box" instance=ExtResource("2_amygn")]
 layout_mode = 2
 size_flags_vertical = 3
+ai_characters = null
+test = null
+enabled = null
 
 [node name="Coding" parent="MarginContainer/Box" instance=ExtResource("3_ps1la")]
 visible = false

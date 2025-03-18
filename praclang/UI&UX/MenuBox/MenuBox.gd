@@ -25,6 +25,11 @@ func _ready() -> void:
 	title_box.visible = show_title
 	title_label.text = title
 	collapse_button.pressed.connect(on_collapse_button_pressed)
+	box.child_entered_tree.connect(update_counter)
+	box.child_exiting_tree.connect(update_counter)
+
+func update_counter(node: Node) -> void:
+	counter.set_text(str(box.get_child_count()))
 
 func add_option_scene_button(packed_scene: PackedScene = OPTION_BUTTON) -> Control:
 	var button = packed_scene.instantiate()
@@ -33,7 +38,6 @@ func add_option_scene_button(packed_scene: PackedScene = OPTION_BUTTON) -> Contr
 		button.remove_pressed.connect(on_remove_button_pressed)
 	box.add_child(button)
 	button.button_group = button_group
-	counter.set_text(str(box.get_child_count()))
 	return button
 
 func on_button_pressed(button: Control) -> void:
