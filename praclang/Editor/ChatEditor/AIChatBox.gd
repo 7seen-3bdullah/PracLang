@@ -129,6 +129,7 @@ var user_current_message: Control
 var completion_index: int
 
 var can_change_session:= true
+var previous_text: String = ""
 
 const MENU_BOX = preload("res://UI&UX/MenuBox/MenuBox.tscn")
 const COMPLETION_BOX = preload("res://UI&UX/CompletionBox.tscn")
@@ -180,13 +181,17 @@ func _ready() -> void:
 
 
 
+# -------------------------------
 
-
-
-
-
-
-
+func _input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed:
+		if event.keycode == KEY_ENTER:
+			return
+		await get_tree().process_frame
+		var current_text = message_line.get_text()
+		if current_text != previous_text:
+			previous_text = current_text
+			Sounds.Typing_Sound()
 
 # -------------------------------
 
@@ -243,6 +248,10 @@ func send_message() -> void:
 	var message = message_line.get_text()
 	if not message:
 		GuideServer.push_message("Enter the message, then send", 1)
+		
+		
+		GlobalTween.Shacke(message_line, 50, 0.05)
+		
 		return
 	message_line.set_editable(false)
 	await get_tree().process_frame
@@ -250,6 +259,8 @@ func send_message() -> void:
 	message_line.clear()
 	add_message_box(user_name, [{"text": message}])
 	processing_control.show()
+	
+	Sounds.Send_Message_Sound(0.7, -15.0)
 
 func on_session_button_pressed(button: Control) -> void:
 	var session_path = button.get_meta("session_path")
@@ -259,16 +270,22 @@ func on_session_button_pressed(button: Control) -> void:
 func on_session_remove_button_pressed(button: Control) -> void:
 	var session_path = button.get_meta("session_path")
 	remove_session(session_path)
+	
+	Sounds.Click_Sound(1,-10)
 
 func on_mistake_button_pressed(button: Control) -> void:
 	var mistake = button.text
 	var window = WindowManager.popup_window(get_owner(), Vector2(400, 300))
 	var mistake_edit = window.expand_control(window.add_text("", mistake))
 	mistake_edit.set_editable(false)
+	
+	Sounds.Click_Sound(1,-10)
 
 func on_mistake_remove_button_pressed(button: Control, language_for: String) -> void:
 	SaveServer.delete_mistake(button.get_meta("mistake_path"))
 	load_mistake_buttons(language_for)
+	
+	Sounds.Click_Sound(1,-10)
 
 
 func on_about_button_pressed() -> void:
@@ -279,6 +296,8 @@ func on_about_button_pressed() -> void:
 	In this program, we used the Gemini 2.0 Experimental Pro model."))
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	window.unresizable = true
+	
+	Sounds.Click_Sound(1,-10)
 
 
 func on_show_session_info_button_pressed() -> void:
@@ -343,6 +362,13 @@ func on_message_interface_result_pushed(error: int, response: Dictionary) -> voi
 		processing_control.hide()
 	message_line.set_editable(true)
 	processing_control.hide()
+	
+	#صوت
+	if !result.mistake:
+		Sounds.Send_Message_Sound(1.9, -10.0)
+	else:
+		#صوت
+		Sounds.Error_sound("mistake")
 
 
 func on_message_interface_error_result_pushed(error: int, response: Dictionary) -> void:
@@ -389,6 +415,9 @@ const USER_MESSAGE_STYLE = preload("res://UI&UX/Style/UserMessageStyle.tres")
 func add_message_box(role: String, messages_content: Array) -> void:
 	var message_box = MESSAGE_BOX.instantiate()
 	messages_box.add_child(message_box)
+	
+	GlobalTween.Scosh(message_box, Vector2(1.5,0.7), 0.1)
+	
 	match role:
 		user_name:
 			message_box.setup(USER_MESSAGE_STYLE, Color("3b4873"), role, messages_content)
@@ -731,20 +760,3 @@ func show_certificate() -> void:
 		"بسم الله الرحمن الرحيم\nAll praise is due to Allah, by whose grace good deeds are completed\nA session has been completed at level {user_level} in the language: {learning_language}"
 		.format(get_session_data())
 	)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

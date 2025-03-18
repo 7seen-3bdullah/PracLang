@@ -2,9 +2,22 @@ extends Window
 
 @onready var box: VBoxContainer = %Box
 
+var previous_text: String = ""
 
 func _ready() -> void:
 	close_requested.connect(queue_free)
+
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed:
+		if event.keycode == KEY_ENTER:
+			return
+		await get_tree().process_frame
+		var focus_owner = get_viewport().gui_get_focus_owner()
+		var current_text = focus_owner.text if (focus_owner and focus_owner is LineEdit) else ""
+		if current_text != previous_text:
+			previous_text = current_text
+			Sounds.Typing_Sound()
 
 func add_label(text: String, font_color:= Color.WHITE) -> Label:
 	var label = Label.new()
@@ -28,6 +41,8 @@ func add_text(placeholder: String, text: String, on_edit = null) -> CopiedCodeEd
 	var text_edit = CopiedCodeEdit.new()
 	text_edit.placeholder_text = placeholder
 	text_edit.text = text
+	
+	
 	if on_edit:
 		text_edit.text_changed.connect(on_edit)
 	theme_control(text_edit)
@@ -47,8 +62,16 @@ func add_options_button(options: Array[String], on_item_selected = null) -> Opti
 	var button = OptionButton.new()
 	for option in options:
 		button.add_item(option)
+	
+	# تشغيل الصوت عند الضغط على الزر لفتح القائمة
+	button.pressed.connect(func(): Sounds.Click_Sound(1, -10))
+	
+	# تشغيل الصوت عند اختيار عنصر من القائمة
+	button.item_selected.connect(func(_idx): Sounds.Click_Sound(1, -10))
+	
 	if on_item_selected:
 		button.item_selected.connect(on_item_selected)
+	
 	theme_control(button)
 	box.add_child(button)
 	return button
@@ -82,8 +105,5 @@ func expand_control(control: Control, apply_vertical:= true, apply_horizontal:= 
 		control.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	if apply_horizontal:
 		control.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	
 	return control
-
-
-
-

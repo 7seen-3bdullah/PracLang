@@ -54,10 +54,3 @@ func on_collapse_button_pressed() -> void:
 		collapse_button.icon = EXPAND
 	else:
 		collapse_button.icon = COLLAPSE
-
-
-
-
-
-
-

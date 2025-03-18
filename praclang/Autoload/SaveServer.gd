@@ -101,12 +101,3 @@ func random_characters(length: int) -> String:
 		var random_index = randi() % possible_chars.length()
 		characters += possible_chars[random_index]
 	return characters
-
-
-
-
-
-
-
-
-

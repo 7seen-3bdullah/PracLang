@@ -36,6 +36,15 @@ func _ready() -> void:
 
 func on_button_pressed() -> void:
 	pressed.emit(self)
+	
+	Sounds.Click_Sound(1,-5)
 
 func on_remove_button_pressed() -> void:
 	remove_pressed.emit(self)
+	
+	Sounds.Click_Sound(1,-5)
+
+
+func _mouse_entered() -> void:
+	#صوت ضغط الزر
+	Sounds.Click_Sound(2,-15)

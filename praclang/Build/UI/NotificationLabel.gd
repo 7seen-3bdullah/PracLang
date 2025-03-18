@@ -46,12 +46,10 @@ func show_notification_label() -> void:
 	show()
 	if progress_bar:
 		progress_bar.show()
+	
+	#صوت
+	Sounds.Error_sound("error")
 func hide_notification_label() -> void:
 	hide()
 	if progress_bar:
 		progress_bar.hide()
-
-
-
-
-

@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://leniqhvlxga"]
+[gd_scene load_steps=7 format=3 uid="uid://leniqhvlxga"]
 
 [ext_resource type="Script" uid="uid://c7wjh68cvk2wk" path="res://UI&UX/MenuBox/MenuBox.gd" id="1_jg2io"]
 [ext_resource type="StyleBox" uid="uid://vfo2ttl7nvl0" path="res://UI&UX/Style/Focus.tres" id="2_dae4j"]
 [ext_resource type="Texture2D" uid="uid://bb01u3ra357fx" path="res://UI&UX/Icon/Expand.png" id="3_yb3qc"]
+[ext_resource type="Script" uid="uid://ctkd03tme7vg2" path="res://sounds/ButtonClick.gd" id="4_8ycck"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jg2io"]
 
@@ -45,6 +46,7 @@ layout_mode = 2
 theme_override_styles/focus = ExtResource("2_dae4j")
 icon = ExtResource("3_yb3qc")
 expand_icon = true
+script = ExtResource("4_8ycck")
 
 [node name="Title" type="Label" parent="Margin/Split/TitleBox/HBoxContainer"]
 unique_name_in_owner = true
@@ -77,3 +79,6 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+
+[connection signal="button_up" from="Margin/Split/TitleBox/HBoxContainer/CollapseButton" to="Margin/Split/TitleBox/HBoxContainer/CollapseButton" method="_on_collapse_button_button_up"]
+[connection signal="mouse_entered" from="Margin/Split/TitleBox/HBoxContainer/CollapseButton" to="Margin/Split/TitleBox/HBoxContainer/CollapseButton" method="_on_collapse_button_mouse_entered"]

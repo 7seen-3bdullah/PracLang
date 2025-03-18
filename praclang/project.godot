@@ -23,6 +23,8 @@ GdScriptServer="*res://Autoload/GDScriptServer.gd"
 GuideServer="*res://Autoload/GuideServer.gd"
 WindowManager="*res://Autoload/WindowManager.gd"
 SaveServer="*res://Autoload/SaveServer.gd"
+Sounds="*res://sounds/Sounds.gd"
+GlobalTween="*res://sounds/tween.gd"
 
 [display]
 

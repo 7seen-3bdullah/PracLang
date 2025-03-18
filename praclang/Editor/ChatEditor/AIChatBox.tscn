@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://d0seep5v1bevm"]
+[gd_scene load_steps=17 format=3 uid="uid://d0seep5v1bevm"]
 
 [ext_resource type="Script" uid="uid://brhkyw0lxvanf" path="res://Build/AIInterface.gd" id="1_2nv34"]
 [ext_resource type="Script" uid="uid://it6uyg8k6kbl" path="res://Editor/ChatEditor/AIChatBox.gd" id="1_ac3mo"]
@@ -13,6 +13,7 @@
 [ext_resource type="Script" uid="uid://bqn2vtoqd7th5" path="res://Build/UI/CopiedCodeEdit.gd" id="6_4c2pl"]
 [ext_resource type="Script" uid="uid://vjj86spceuoj" path="res://Build/TweenPlus.gd" id="6_8uo5l"]
 [ext_resource type="Texture2D" uid="uid://dgylskboyhg4e" path="res://UI&UX/Icon/sned.png" id="6_88tw3"]
+[ext_resource type="Script" uid="uid://ctkd03tme7vg2" path="res://sounds/ButtonClick.gd" id="7_nbwxm"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3s4cm"]
 border_width_left = 6
@@ -173,6 +174,7 @@ theme_override_constants/outline_size = 2
 theme_override_font_sizes/font_size = 20
 theme_override_styles/focus = ExtResource("2_tyr3i")
 text = "New Session"
+script = ExtResource("7_nbwxm")
 
 [node name="SessionsBox" parent="ChatSide/Margin/Split/Split/HistorySide/ScrollContainer/MarginContainer/SideBox" instance=ExtResource("3_0wjpb")]
 unique_name_in_owner = true
@@ -403,3 +405,6 @@ metadata/_custom_type_script = "uid://brhkyw0lxvanf"
 [node name="TweenPlus" type="Node" parent="."]
 unique_name_in_owner = true
 script = ExtResource("6_8uo5l")
+
+[connection signal="button_up" from="ChatSide/Margin/Split/Split/HistorySide/ScrollContainer/MarginContainer/SideBox/NewSessionButton" to="ChatSide/Margin/Split/Split/HistorySide/ScrollContainer/MarginContainer/SideBox/NewSessionButton" method="_on_button_up"]
+[connection signal="mouse_entered" from="ChatSide/Margin/Split/Split/HistorySide/ScrollContainer/MarginContainer/SideBox/NewSessionButton" to="ChatSide/Margin/Split/Split/HistorySide/ScrollContainer/MarginContainer/SideBox/NewSessionButton" method="_on_mouse_entered"]
