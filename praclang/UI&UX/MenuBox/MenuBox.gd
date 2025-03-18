@@ -44,7 +44,6 @@ func on_button_pressed(button: Control) -> void:
 	button_pressed.emit(button)
 func on_remove_button_pressed(button: Control) -> void:
 	remove_button_pressed.emit(button)
-
 func clear_buttons() -> void:
 	for i in box.get_children():
 		i.queue_free()

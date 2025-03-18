@@ -13,17 +13,18 @@ func BOB(node):
 
 
 func Shacke(node, power:float, time:float):
+	var last_pos = node.position
 	if node is Control:
 		node.add_theme_color_override("font_placeholder_color",Color(1.0, 0.0, 0.0))
 	
 	var tween = create_tween().set_ease(Tween.EASE_IN)
-	tween.tween_property(node, "position", Vector2(power, 0), time)
+	tween.tween_property(node, "position.x", Vector2(power, last_pos.y), time)
 	tween.chain()
-	tween.tween_property(node, "position", Vector2(-power, 0), time)
+	tween.tween_property(node, "position", Vector2(-power, last_pos.y), time)
 	tween.chain()
-	tween.tween_property(node, "position", Vector2(power, 0), time)
+	tween.tween_property(node, "position", Vector2(power, last_pos.y), time)
 	tween.chain()
-	tween.tween_property(node, "position", Vector2(0, 0), time)
+	tween.tween_property(node, "position", last_pos, time)
 	
 	
 	if node is Control:
