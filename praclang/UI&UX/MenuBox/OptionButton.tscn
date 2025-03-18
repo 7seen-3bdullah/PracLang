@@ -1,25 +1,19 @@
-[gd_scene load_steps=6 format=3 uid="uid://d37xq02tholh4"]
+[gd_scene load_steps=7 format=3 uid="uid://d37xq02tholh4"]
 
+[ext_resource type="StyleBox" uid="uid://cabmtpccru3ux" path="res://UI&UX/Style/NormalBG.tres" id="1_awj68"]
 [ext_resource type="Script" uid="uid://bwnanjwktmi0i" path="res://UI&UX/MenuBox/OptionButton.gd" id="1_ymiua"]
 [ext_resource type="StyleBox" uid="uid://vfo2ttl7nvl0" path="res://UI&UX/Style/Focus.tres" id="2_x5aai"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ymiua"]
-bg_color = Color(0.09, 0.114, 0.18, 0.588235)
+[ext_resource type="StyleBox" uid="uid://b5qidexx0ged0" path="res://UI&UX/Style/NormalHovered.tres" id="3_6qpbh"]
+[ext_resource type="Texture2D" uid="uid://cbojd0hx0bjk6" path="res://UI&UX/Icon/remove.svg" id="5_3t4gp"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bipeb"]
 content_margin_left = 10.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_md1nf"]
-bg_color = Color(0.0918, 0.11238, 0.18, 1)
-border_width_left = 4
-border_color = Color(0.231373, 0.282353, 0.45098, 1)
-expand_margin_left = 10.0
-
-[node name="MenuButton" type="PanelContainer"]
+[node name="OptionButton" type="PanelContainer"]
 custom_minimum_size = Vector2(0, 50)
 offset_right = 340.0
 offset_bottom = 50.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_ymiua")
+theme_override_styles/panel = ExtResource("1_awj68")
 script = ExtResource("1_ymiua")
 
 [node name="Split" type="HSplitContainer" parent="."]
@@ -31,10 +25,11 @@ dragger_visibility = 2
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_filter = 1
 theme_override_styles/focus = SubResource("StyleBoxEmpty_bipeb")
-theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_md1nf")
-theme_override_styles/hover = SubResource("StyleBoxFlat_md1nf")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_md1nf")
+theme_override_styles/hover_pressed = ExtResource("3_6qpbh")
+theme_override_styles/hover = ExtResource("3_6qpbh")
+theme_override_styles/pressed = ExtResource("3_6qpbh")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_bipeb")
 toggle_mode = true
 alignment = 0
@@ -42,6 +37,10 @@ text_overrun_behavior = 3
 
 [node name="RemoveButton" type="Button" parent="Split"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
+mouse_filter = 1
 theme_override_styles/focus = ExtResource("2_x5aai")
-text = "Delete"
+icon = ExtResource("5_3t4gp")
+icon_alignment = 1
+expand_icon = true

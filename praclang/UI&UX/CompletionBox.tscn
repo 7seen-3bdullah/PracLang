@@ -1,0 +1,75 @@
+[gd_scene load_steps=8 format=3 uid="uid://blibe0hq17gki"]
+
+[ext_resource type="Script" uid="uid://b0bioaujlkok6" path="res://UI&UX/CompletionBox.gd" id="1_0mlby"]
+[ext_resource type="Texture2D" uid="uid://bkpuugt4xyiw7" path="res://UI&UX/Icon/Close_Icon-512.webp" id="2_8sr1x"]
+[ext_resource type="Texture2D" uid="uid://bnsrymrgldw08" path="res://UI&UX/Icon/icon-correct-24-1.png" id="2_hlmic"]
+[ext_resource type="Texture2D" uid="uid://rph4svjimnuf" path="res://UI&UX/Icon/white-star-icon-13.png" id="3_8sr1x"]
+[ext_resource type="Script" uid="uid://vjj86spceuoj" path="res://Build/TweenPlus.gd" id="3_ur803"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hlmic"]
+resource_local_to_scene = true
+bg_color = Color(0.09, 0.114, 0.18, 0.588235)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8sr1x"]
+bg_color = Color(0.231373, 0.282353, 0.45098, 1)
+
+[node name="CompletionBox" type="PanelContainer"]
+offset_right = 80.0
+offset_bottom = 31.0
+size_flags_horizontal = 3
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_hlmic")
+script = ExtResource("1_0mlby")
+completion_texture = ExtResource("2_hlmic")
+
+[node name="Margin" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="Box" type="HBoxContainer" parent="Margin"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="CountLabel" type="Label" parent="Margin/Box"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+mouse_filter = 1
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ProgressBar" type="ProgressBar" parent="Margin/Box"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+mouse_filter = 1
+theme_override_styles/fill = SubResource("StyleBoxFlat_8sr1x")
+show_percentage = false
+
+[node name="CompletedImage" type="TextureRect" parent="Margin/Box"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(23, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("2_8sr1x")
+expand_mode = 1
+
+[node name="Star" type="TextureRect" parent="Margin/Box"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(23, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("3_8sr1x")
+expand_mode = 1
+
+[node name="TweenPlus" type="Node" parent="Margin/Box"]
+unique_name_in_owner = true
+script = ExtResource("3_ur803")
+metadata/_custom_type_script = "uid://vjj86spceuoj"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]

@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://leniqhvlxga"]
+[gd_scene load_steps=6 format=3 uid="uid://leniqhvlxga"]
 
 [ext_resource type="Script" uid="uid://c7wjh68cvk2wk" path="res://UI&UX/MenuBox/MenuBox.gd" id="1_jg2io"]
 [ext_resource type="StyleBox" uid="uid://vfo2ttl7nvl0" path="res://UI&UX/Style/Focus.tres" id="2_dae4j"]
+[ext_resource type="Texture2D" uid="uid://bb01u3ra357fx" path="res://UI&UX/Icon/Expand.png" id="3_yb3qc"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jg2io"]
 
@@ -39,15 +40,26 @@ theme_override_constants/separation = 10
 
 [node name="CollapseButton" type="Button" parent="Margin/Split/TitleBox/HBoxContainer"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
 theme_override_styles/focus = ExtResource("2_dae4j")
-text = "Collapse"
+icon = ExtResource("3_yb3qc")
+expand_icon = true
 
 [node name="Title" type="Label" parent="Margin/Split/TitleBox/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 1
 text = "Title"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Count" type="Label" parent="Margin/Split/TitleBox/HBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_vertical = 1
+text = "Count"
 horizontal_alignment = 1
 vertical_alignment = 1
 

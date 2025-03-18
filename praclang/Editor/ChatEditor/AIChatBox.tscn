@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://d0seep5v1bevm"]
+[gd_scene load_steps=16 format=3 uid="uid://d0seep5v1bevm"]
 
 [ext_resource type="Script" uid="uid://brhkyw0lxvanf" path="res://Build/AIInterface.gd" id="1_2nv34"]
 [ext_resource type="Script" uid="uid://it6uyg8k6kbl" path="res://Editor/ChatEditor/AIChatBox.gd" id="1_ac3mo"]
@@ -6,8 +6,27 @@
 [ext_resource type="Script" uid="uid://bl2url5a7jbhm" path="res://Build/UI/FlexControl/FocusOutliner.gd" id="2_up6qp"]
 [ext_resource type="PackedScene" uid="uid://leniqhvlxga" path="res://UI&UX/MenuBox/MenuBox.tscn" id="3_0wjpb"]
 [ext_resource type="Script" uid="uid://bdmf8incb2n6p" path="res://Build/UI/ProcessingControl.gd" id="3_2pecy"]
+[ext_resource type="Texture2D" uid="uid://cbgf74apdqtrd" path="res://UI&UX/Icon/info.svg" id="4_dicb0"]
+[ext_resource type="Texture2D" uid="uid://di8u8dncq3iow" path="res://UI&UX/Icon/Note.png" id="4_l0uda"]
 [ext_resource type="Script" uid="uid://bau0otx77bmty" path="res://Editor/ChatEditor/ChatBoxShortcut.gd" id="4_y485s"]
+[ext_resource type="Texture2D" uid="uid://kg3l6iic6o5" path="res://UI&UX/Icon/76-768762_pen-paper-camera-e-mail-spreadsheets-and-presentations.png" id="5_dicb0"]
+[ext_resource type="Script" uid="uid://bqn2vtoqd7th5" path="res://Build/UI/CopiedCodeEdit.gd" id="6_4c2pl"]
 [ext_resource type="Script" uid="uid://vjj86spceuoj" path="res://Build/TweenPlus.gd" id="6_8uo5l"]
+[ext_resource type="Texture2D" uid="uid://dgylskboyhg4e" path="res://UI&UX/Icon/sned.png" id="6_88tw3"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3s4cm"]
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.6, 0.6, 0.6, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dicb0"]
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.234702, 0.280116, 0.408131, 1)
 
 [node name="AIChatBox" type="Control"]
 clip_contents = true
@@ -20,7 +39,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ac3mo")
 languages = Array[String](["Arabic", "English", "French", "German", "Hindi", "Italian", "Japanese", "Mandarin Chinese", "Russian", "Spanish"])
-levels = Array[String](["Very Beginner", "Beginner", "Intermediate", "Advanced", "Expert", "Master"])
+levels = Array[String](["Very Beginner", "Beginner", "Intermediate", "Advanced", "Expert", "Master", "Monster Level"])
 
 [node name="FocusOutliner" type="ColorRect" parent="." node_paths=PackedStringArray("_owner")]
 z_index = 1
@@ -65,16 +84,38 @@ theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 4
 
 [node name="ChoicesBox" type="HBoxContainer" parent="ChatSide/Header/Margin"]
-unique_name_in_owner = true
 layout_mode = 2
+
+[node name="AboutButton" type="Button" parent="ChatSide/Header/Margin/ChoicesBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 40)
+layout_mode = 2
+mouse_filter = 1
+theme_override_styles/focus = ExtResource("2_tyr3i")
+text = "About"
+icon = ExtResource("4_dicb0")
+expand_icon = true
 
 [node name="ShowSessionInfoButton" type="Button" parent="ChatSide/Header/Margin/ChoicesBox"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(170, 0)
+visible = false
+custom_minimum_size = Vector2(200, 40)
 layout_mode = 2
 mouse_filter = 1
 theme_override_styles/focus = ExtResource("2_tyr3i")
 text = "Show Session Info"
+icon = ExtResource("4_l0uda")
+expand_icon = true
+
+[node name="CodeEditorButton" type="Button" parent="ChatSide/Header/Margin/ChoicesBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 40)
+layout_mode = 2
+mouse_filter = 1
+theme_override_styles/focus = ExtResource("2_tyr3i")
+text = "Show Code Editor"
+icon = ExtResource("5_dicb0")
+expand_icon = true
 
 [node name="Margin" type="MarginContainer" parent="ChatSide"]
 layout_mode = 2
@@ -86,6 +127,7 @@ theme_override_constants/margin_bottom = 4
 
 [node name="Split" type="HSplitContainer" parent="ChatSide/Margin"]
 layout_mode = 2
+dragging_enabled = false
 dragger_visibility = 2
 
 [node name="Split" type="HSplitContainer" parent="ChatSide/Margin/Split"]
@@ -95,7 +137,7 @@ size_flags_vertical = 3
 dragger_visibility = 2
 
 [node name="HistorySide" type="ColorRect" parent="ChatSide/Margin/Split/Split"]
-custom_minimum_size = Vector2(300, 0)
+custom_minimum_size = Vector2(350, 0)
 layout_mode = 2
 mouse_filter = 1
 color = Color(0, 0, 0, 1)
@@ -126,6 +168,8 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 mouse_filter = 1
+theme_override_colors/font_outline_color = Color(0.87451, 0.87451, 0.87451, 1)
+theme_override_constants/outline_size = 2
 theme_override_font_sizes/font_size = 20
 theme_override_styles/focus = ExtResource("2_tyr3i")
 text = "New Session"
@@ -174,7 +218,7 @@ layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 0.392157)
 theme_override_font_sizes/font_size = 20
 text = "No Session here, choose anyone from left side
-or create a new one by pressing 'Control + A'"
+or create a new one by pressing 'Control + N'"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -231,16 +275,122 @@ layout_mode = 2
 mouse_filter = 1
 theme_override_styles/focus = ExtResource("2_tyr3i")
 text = "Send"
+icon = ExtResource("6_88tw3")
+expand_icon = true
 
 [node name="SessionInfoSide" type="ColorRect" parent="ChatSide/Margin/Split"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(300, 0)
+visible = false
+custom_minimum_size = Vector2(350, 0)
 layout_mode = 2
+mouse_filter = 1
 color = Color(0, 0, 0, 1)
+
+[node name="ScrollContainer" type="ScrollContainer" parent="ChatSide/Margin/Split/SessionInfoSide"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_scroll_mode = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="ChatSide/Margin/Split/SessionInfoSide/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="SideBox" type="VBoxContainer" parent="ChatSide/Margin/Split/SessionInfoSide/ScrollContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="SessionInfoPreview" type="PanelContainer" parent="ChatSide/Margin/Split/SessionInfoSide/ScrollContainer/MarginContainer/SideBox"]
+layout_mode = 2
+mouse_filter = 1
+
+[node name="Margin" type="MarginContainer" parent="ChatSide/Margin/Split/SessionInfoSide/ScrollContainer/MarginContainer/SideBox/SessionInfoPreview"]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="SessionPreview" type="CodeEdit" parent="ChatSide/Margin/Split/SessionInfoSide/ScrollContainer/MarginContainer/SideBox/SessionInfoPreview/Margin"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 1
+theme_override_colors/font_readonly_color = Color(0.5, 0.5, 0.5, 1)
+theme_override_colors/selection_color = Color(0, 0, 0, 0.784314)
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = ExtResource("2_tyr3i")
+theme_override_styles/focus = ExtResource("2_tyr3i")
+theme_override_styles/read_only = ExtResource("2_tyr3i")
+theme_override_styles/panel = ExtResource("2_tyr3i")
+editable = false
+wrap_mode = 1
+scroll_fit_content_height = true
+script = ExtResource("6_4c2pl")
+metadata/main_zoom = 18
+
+[node name="CompletionsLabel" type="Label" parent="ChatSide/Margin/Split/SessionInfoSide/ScrollContainer/MarginContainer/SideBox"]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0.87451, 0.87451, 0.87451, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 20
+text = "Completions"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CompletionPanel" type="PanelContainer" parent="ChatSide/Margin/Split/SessionInfoSide/ScrollContainer/MarginContainer/SideBox"]
+layout_mode = 2
+mouse_filter = 1
+
+[node name="Margin" type="MarginContainer" parent="ChatSide/Margin/Split/SessionInfoSide/ScrollContainer/MarginContainer/SideBox/CompletionPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 20
+
+[node name="CompletionsBox" type="VBoxContainer" parent="ChatSide/Margin/Split/SessionInfoSide/ScrollContainer/MarginContainer/SideBox/CompletionPanel/Margin"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="CertificatePanel" type="PanelContainer" parent="ChatSide/Margin/Split/SessionInfoSide/ScrollContainer/MarginContainer/SideBox"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_3s4cm")
+
+[node name="Panel3" type="PanelContainer" parent="ChatSide/Margin/Split/SessionInfoSide/ScrollContainer/MarginContainer/SideBox/CertificatePanel"]
+layout_mode = 2
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_dicb0")
+
+[node name="Margin" type="MarginContainer" parent="ChatSide/Margin/Split/SessionInfoSide/ScrollContainer/MarginContainer/SideBox/CertificatePanel/Panel3"]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="CertificateLabel" type="Label" parent="ChatSide/Margin/Split/SessionInfoSide/ScrollContainer/MarginContainer/SideBox/CertificatePanel/Panel3/Margin"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "بسم الله الرحمن الرحيم
+الحمد لله الذي بنعمته تتم الصالحات"
+horizontal_alignment = 1
+autowrap_mode = 3
 
 [node name="ShortcutNode" type="Node" parent="." node_paths=PackedStringArray("gui_control")]
 unique_name_in_owner = true
 script = ExtResource("4_y485s")
+current_zoom = 1.2
 gui_control = NodePath("..")
 metadata/_custom_type_script = "uid://q1avmlqq8hos"
 

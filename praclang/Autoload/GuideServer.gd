@@ -14,7 +14,7 @@ var message_history: Array[Dictionary]
 func push_guides(guides: Array[Dictionary] = []) -> void:
 	if not guides:
 		guides = [
-			{"": ""}
+			{"": "PracLang is a program for learning natural languages through an engaging conversation with artificial intelligence."}
 		]
 	var result_guide: String
 	var guide_labels = get_tree().get_nodes_in_group(GUIDE_GROUP)

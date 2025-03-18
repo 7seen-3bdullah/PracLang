@@ -14,25 +14,20 @@ const DIRECTIONS = [
 	"ستضع في الsim_message حوارك مع المستخدم بالشخصية المطلوبة منك",
 	"ستضع في الmistake تصحيحات لأخطاء المستخدم اللغوية على شكل Array, إذا لم يكن لديه أخطاء أتركها فارغة",
 	"ستضع في الnote تفضيلات أو ملاحظات لكلام اللاعب, كمثال: لو أجاب اللاعب: I am Ok, تعطيه جملة أصح, وهي I am Fine, إذا كان كلام اللاعب سليم تماما أتركها فارغة",
+	"اجعل جميع التصحيحات باللغة الأم {mother_language}",
 	"إذا أغضبك المستخدم عدة مرات أو أساء للإسلام مرة واحدة ضع في الcommand: CLOSE_PROGRAM",
 	"- إذا طلب إغلاق البرنامج، ضع `command` على: CLOSE_PROGRAM",
 	"- إذا طلب تحريك النافذة، ضع `command` على: MOVE_WINDOW",
 	"- إذا طلب تصغير النافذة، ضع `command` على: MINIMIZE",
 	"- إذا طلب تكبير النافذة، ضع `command` على: MAXIMIZE",
 	"- إذا طلب حذف الجلسة أو المحادثة، ضع `command` على: DELETE_SESSION",
-	"اجعل رسالتك عبارة عن عدة أسطر متساوية الطول في كل من sim_missage و mistake و note, ولا تجعلها سطرا واحدا طويلا",
+	"اجعل رسالتك عبارة عن عدة أسطر متساوية الطول في كل من sim_missage و mistake و note, ولا تجعلها سطرا واحدا طويلا, يجب أن يتألف السطر الواحد على 8 كلمات أو أقل, لا تزد عن 8",
 	"التزم بهذه التعليمات بدقة ولا تضف أي شيء إضافي"
 ]
 
 @export var languages: Array[String]
 @export var levels: Array[String]
 @export var ai_characters: Array[String] = [
-	# Academic & Educational
-	"Patient Teacher",
-	"Specialized Professor",
-	"Personal Trainer",
-	"Storytelling Historian",
-	"Curious Scientist",
 	# Technical & Programming
 	"Software Engineer",
 	"AI Expert",
@@ -116,15 +111,34 @@ var ai_character: String
 @onready var side_box: VBoxContainer = %SideBox
 @onready var sessions_box: Control = %SessionsBox
 
-@onready var choices_box: HBoxContainer = %ChoicesBox
+@onready var about_button: Button = %AboutButton
 @onready var show_session_info_button: Button = %ShowSessionInfoButton
+@onready var code_editor_button: Button = %CodeEditorButton
+
+@onready var completions_box: VBoxContainer = %CompletionsBox
+@onready var session_info_side: ColorRect = %SessionInfoSide
+@onready var session_preview: CopiedCodeEdit = %SessionPreview
+@onready var certificate_panel: PanelContainer = %CertificatePanel
+@onready var certificate_label: Label = %CertificateLabel
 
 
 
 var mistakes_menues: Dictionary[String, Control]
 var user_current_message: Control
 
+var completion_index: int
+
+var can_change_session:= true
+
 const MENU_BOX = preload("res://UI&UX/MenuBox/MenuBox.tscn")
+const COMPLETION_BOX = preload("res://UI&UX/CompletionBox.tscn")
+
+
+
+
+
+
+
 
 
 
@@ -143,10 +157,11 @@ func _ready() -> void:
 	message_interface.error_result_pushed.connect(on_message_interface_error_result_pushed)
 	message_interface.error_pushed.connect(on_message_interface_error_pushed)
 	
+	about_button.pressed.connect(on_about_button_pressed)
 	show_session_info_button.pressed.connect(on_show_session_info_button_pressed)
+	code_editor_button.pressed.connect(on_code_editor_button_pressed)
 	
 	message_line.set_editable(false)
-	choices_box.hide()
 	
 	for language in languages:
 		var mistakes_menu = MENU_BOX.instantiate()
@@ -163,13 +178,26 @@ func _ready() -> void:
 	load_session_buttons()
 
 
-func _process(delta: float) -> void:
-	if Input.is_action_just_pressed("ui_cancel"):
-		print(SaveServer.load_session("res://Save/Sessions/session_9hgiRO49zn.res").session_history)
+
+
+
+
+
+
+
 
 
 
 # -------------------------------
+
+
+
+
+
+
+
+
+
 
 
 func on_focus_changed(is_focus: bool) -> void:
@@ -190,7 +218,25 @@ func on_child_entered_tree(node: Node) -> void:
 	scroll_container.set_deferred("scroll_vertical", max_scroll_value)
 
 
+
+
+
+
+
+
+
+
+
 # -------------------------------
+
+
+
+
+
+
+
+
+
 
 
 func send_message() -> void:
@@ -208,7 +254,7 @@ func send_message() -> void:
 func on_session_button_pressed(button: Control) -> void:
 	var session_path = button.get_meta("session_path")
 	var session_res = SaveServer.load_session(session_path)
-	load_session(session_res)
+	preview_session(session_res)
 
 func on_session_remove_button_pressed(button: Control) -> void:
 	var session_path = button.get_meta("session_path")
@@ -224,6 +270,17 @@ func on_mistake_remove_button_pressed(button: Control, language_for: String) -> 
 	SaveServer.delete_mistake(button.get_meta("mistake_path"))
 	load_mistake_buttons(language_for)
 
+
+func on_about_button_pressed() -> void:
+	var window = WindowManager.popup_window(get_owner(), Vector2(900, 150))
+	var label: Label = window.expand_control(window.add_label("PracLang is a program for learning natural languages through an engaging conversation with artificial intelligence.
+	This program offers a free solution for learning languages practically and interactively by conversing with the character of your choice.
+	-----------------------------------------------------------------
+	In this program, we used the Gemini 2.0 Experimental Pro model."))
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	window.unresizable = true
+
+
 func on_show_session_info_button_pressed() -> void:
 	var info = str(get_session_data()).replace(",", ",\n\n")
 	var window = WindowManager.popup_window(get_owner(), Vector2i(300, 300))
@@ -231,8 +288,36 @@ func on_show_session_info_button_pressed() -> void:
 	info_edit.set_editable(false)
 	window.unresizable = true
 
+const CODE_EDITOR = preload("res://Editor/CodeEditor/CodeEditor.tscn")
+func on_code_editor_button_pressed() -> void:
+	var window_size = Vector2i(800, 500)
+	var window = WindowManager.popup_window(get_owner(), window_size)
+	window.add_label("The AI-powered text editor was the initial goal of this project\nbut when the idea changed, we kept it here for display purposes only.")
+	window.expand_control(window.add_scene(CODE_EDITOR))
+	window.min_size = window_size
+
+
+
+
+
+
+
+
+
+
 
 # -------------------------------
+
+
+
+
+
+
+
+
+
+
+
 
 
 func on_message_interface_result_pushed(error: int, response: Dictionary) -> void:
@@ -246,12 +331,15 @@ func on_message_interface_result_pushed(error: int, response: Dictionary) -> voi
 		current_session = SaveServer.save_session(
 			message_interface.chat_history,
 			get_session_data(),
+			current_session.completions,
 			current_session.resource_path
 		)
+		if result.mistake: level_append(-4.0)
+		else: level_append(8.0)
 		SaveServer.save_mistakes(result.mistake, result.note, learning_language)
 		load_mistake_buttons()
 	else:
-		GuideServer.push_message("مشكلة في الAI", 2)
+		GuideServer.push_message("problem with AI", 2)
 		processing_control.hide()
 	message_line.set_editable(true)
 	processing_control.hide()
@@ -268,7 +356,30 @@ func on_message_interface_error_pushed() -> void:
 	processing_control.hide()
 
 
+
+
+
+
+
+
+
+
+
+
+
 # -------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 var MESSAGE_BOX = preload("res://Editor/ChatEditor/MessageBox/MessageBox.tscn")
@@ -334,23 +445,49 @@ func get_message_content_from_ai_parsed_message(parsed_message: Dictionary) -> A
 	return messages_content
 
 
+
+
+
+
+
+
+
+
+
 # -------------------------------
+
+
+
+
+
+
+
+
+
+
 
 func create_new_session() -> void:
 	
 	if processing_control.visible:
 		push_wait_message()
 		return
+	if not can_change_session:
+		return
 	
-	var window = WindowManager.popup_window(get_owner(), Vector2(500, 210))
-	var user_name_line = window.add_line("your Name", user_name)
+	var window = WindowManager.popup_window(get_owner(), Vector2(500, 230))
+	var session_name_line = window.add_line("Session Name", "")
+	var user_name_line = window.add_line("Your Name", user_name)
 	var mother_lang_button = window.add_options_button(languages); window.add_name_split(mother_lang_button, "Mother Language")
 	var learning_lang_button = window.add_options_button(languages); window.add_name_split(learning_lang_button, "Learning Language")
 	var user_level_button = window.add_options_button(levels); window.add_name_split(user_level_button, "Your Level")
 	var ai_character_button = window.add_options_button(ai_characters); window.add_name_split(ai_character_button, "AI Simulation Character")
 	window.add_button("Accept", func():
 		
-		if not user_name_line.text:
+		var session_filenames = SaveServer.get_sessions_filenames()
+		if session_filenames.has(session_name_line.text + ".res"):
+			GuideServer.push_message("This session name has been used", 1)
+			return
+		if not session_name_line.text or not user_name_line.text:
 			GuideServer.push_message("You must provide your name.", 1)
 			return
 		user_name = user_name_line.text
@@ -370,18 +507,20 @@ func create_new_session() -> void:
 		message_interface.chat_history.clear()
 		remove_session_messages()
 		message_interface.setup_directions(directions)
-		current_session = SaveServer.save_session(message_interface.chat_history, get_session_data())
+		current_session = SaveServer.save_session(message_interface.chat_history, get_session_data(), null, "", session_name_line.text)
+		preview_session_info(current_session)
 		load_session_buttons()
-		choices_box.show()
 		window.close_requested.emit()
 	)
-	user_name_line.text_changed.connect(
-		func(new_text: String):
-			var regex = RegEx.new()
-			regex.compile("^[\\p{L}\\s]+$")
-			if not regex.search(new_text):
-				user_name_line.text = ""
-	)
+	var valid_line_text = func(line: LineEdit, new_text: String):
+		var regex = RegEx.new()
+		regex.compile("^[\\p{L}\\d\\s]+$")  # أضفنا \d لتشمل الأرقام
+		if not regex.search(new_text):
+			line.text = ""
+	
+	session_name_line.text_changed.connect(func(new_text: String): valid_line_text.call(session_name_line, new_text))
+	user_name_line.text_changed.connect(func(new_text: String): valid_line_text.call(user_name_line, new_text))
+	
 	learning_lang_button.select(1)
 	window.unresizable = true
 
@@ -398,10 +537,15 @@ func load_session_buttons() -> void:
 			if session_path == current_session.resource_path:
 				button.button_pressed = true
 
-func load_session(session_res: SessionsRes) -> void:
+func preview_session(session_res: SessionsRes) -> void:
 	
+	if current_session:
+		if session_res.resource_path == current_session.resource_path:
+			return
 	if processing_control.visible:
 		push_wait_message()
+		return
+	if not can_change_session:
 		return
 	
 	message_line.set_editable(true)
@@ -428,7 +572,34 @@ func load_session(session_res: SessionsRes) -> void:
 				add_message_box("AI", messages_content)
 			_:
 				add_message_box(user_name, [{"text": content[0].text}])
-	choices_box.show()
+	
+	preview_session_info(session_res)
+
+
+
+func preview_session_info(session_res: SessionsRes) -> void:
+	session_info_side.show()
+	certificate_panel.hide()
+	session_preview.text = str(get_session_data()).replace(",", ",\n")
+	var completions = session_res.completions
+	for i in completions_box.get_children(): i.queue_free()
+	can_change_session = false
+	completion_index = -1
+	for index: int in completions:
+		var completion = completions[index]
+		var completed = completion.completed
+		var color = completion.color
+		var completion_box = COMPLETION_BOX.instantiate()
+		var current = completion_index < 0 and completed < 100.0
+		completions_box.add_child(completion_box)
+		completion_box.setup(index + 1, completed, color, current)
+		if current:
+			completion_index = index
+		if index % 2:
+			await get_tree().create_timer(.1).timeout
+	if completion_index == -1:
+		show_certificate()
+	can_change_session = true
 
 
 func get_session_data() -> Dictionary:
@@ -460,6 +631,7 @@ func remove_session(session_path: String) -> void:
 		if current_session:
 			if session_path == current_session.resource_path:
 				no_session_message.show()
+				session_info_side.hide()
 				remove_session_messages()
 		window.close_requested.emit()
 	)
@@ -486,7 +658,27 @@ func load_mistake_buttons(language:= learning_language) -> void:
 
 
 
+
+
+
+
+
+
+
+
 # -------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -511,7 +703,48 @@ func move_window() -> void:
 		await get_tree().process_frame
 
 func push_wait_message() -> void:
-	GuideServer.push_message("الرجاء الإنتظار حتى إنتهاء الطلب الحالي.", 1)
+	GuideServer.push_message("Please wait until the current request is completed.", 1)
+
+
+func level_append(append: float) -> void:
+	if certificate_panel.visible:
+		return
+	var res_completions = current_session.completions
+	res_completions[completion_index].completed += append
+	var curr_completion_box = completions_box.get_children()[completion_index]
+	curr_completion_box.append_completion(append)
+	curr_completion_box.notificate(Color.GREEN_YELLOW if append > 0 else Color.ORANGE)
+	if res_completions[completion_index].completed >= 100.0:
+		if completion_index < res_completions.size() - 1:
+			completion_index += 1
+			completions_box.get_children()[completion_index].current = true
+		else:
+			var window = WindowManager.popup_window(get_owner(), Vector2i(200, 100))
+			window.add_label("Congratulations! You have completed the session")
+			window.unresizable = true
+			show_certificate()
+
+
+func show_certificate() -> void:
+	certificate_panel.show()
+	certificate_label.set_text(
+		"بسم الله الرحمن الرحيم\nAll praise is due to Allah, by whose grace good deeds are completed\nA session has been completed at level {user_level} in the language: {learning_language}"
+		.format(get_session_data())
+	)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

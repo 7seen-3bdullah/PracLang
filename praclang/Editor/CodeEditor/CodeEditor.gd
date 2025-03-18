@@ -73,7 +73,7 @@ func on_trans_language_button_pressed() -> void:
 
 func generate_code() -> void:
 	shortcut_node.set_enabled(false)
-	var window = WindowManager.popup_window(get_owner(), Vector2(500, 200), "Generate New Code")
+	var window = WindowManager.popup_window(self, Vector2(500, 200), "Generate New Code")
 	var description_edit = window.expand_control(window.add_text("What code do you want to generate?", ""))
 	var accept_button = window.add_button("Accept",
 		func():
@@ -102,7 +102,7 @@ func edit_code() -> void:
 		return
 	
 	shortcut_node.set_enabled(false)
-	var window = WindowManager.popup_window(get_owner(), Vector2i(400, 400), "Edit Code")
+	var window = WindowManager.popup_window(self, Vector2i(400, 400), "Edit Code")
 	var display_text: TextEdit = window.expand_control(window.add_text("", selected_text))
 	var description_edit = window.add_line("What do you want to Edit ?", "")
 	var accept_button = window.add_button("Accept",
@@ -141,7 +141,7 @@ func generate_command() -> void:
 
 func translate_language() -> void:
 	shortcut_node.set_enabled(false)
-	var window = WindowManager.popup_window(get_owner(), Vector2i(300, 110), "Translate Language")
+	var window = WindowManager.popup_window(self, Vector2i(300, 110), "Translate Language")
 	var source_lang_edit = window.add_line("Source Language ...", source_language)
 	var target_lang_edit = window.add_line("Target Language ...", "")
 	var accept_button = window.add_button("Accept",
@@ -183,7 +183,7 @@ func imagine_code() -> void:
 	var prediction_times:= 5
 	var window_pos = get_window().position + Vector2i(get_global_mouse_position())
 	var window_size = Vector2i(300, 80)
-	var window = WindowManager.popup_window(get_owner(), window_size, "Predictive code")
+	var window = WindowManager.popup_window(self, window_size, "Predictive code")
 	var predict_button = window.add_button("Predict")
 	var close_button = window.add_button("Close")
 	var menu_box = window.add_scene(MENU_BOX)
@@ -327,7 +327,7 @@ func push_process_problem() -> void:
 func add_ai_processing_rect() -> void:
 	var processing_rect = WindowManager.create_processing_rect()
 	ai_processing_rect = processing_rect
-	get_owner().add_child(processing_rect)
+	self.add_child(processing_rect)
 
 func remove_ai_processing_rect() -> void:
 	if is_instance_valid(ai_processing_rect):

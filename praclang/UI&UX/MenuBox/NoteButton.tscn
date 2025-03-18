@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://cpc4yf7lyv7x6"]
+[gd_scene load_steps=7 format=3 uid="uid://cpc4yf7lyv7x6"]
 
 [ext_resource type="StyleBox" uid="uid://y6d355j76ijv" path="res://UI&UX/Style/NoteBG.tres" id="1_fbpy3"]
 [ext_resource type="Script" uid="uid://bwnanjwktmi0i" path="res://UI&UX/MenuBox/OptionButton.gd" id="2_frpua"]
 [ext_resource type="StyleBox" uid="uid://d04k3qkq4685a" path="res://UI&UX/Style/NoteHovered.tres" id="3_frpua"]
 [ext_resource type="StyleBox" uid="uid://vfo2ttl7nvl0" path="res://UI&UX/Style/Focus.tres" id="4_ony6i"]
+[ext_resource type="Texture2D" uid="uid://cbojd0hx0bjk6" path="res://UI&UX/Icon/remove.svg" id="5_frpua"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bipeb"]
 content_margin_left = 10.0
@@ -24,6 +25,7 @@ dragger_visibility = 2
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_filter = 1
 theme_override_styles/focus = SubResource("StyleBoxEmpty_bipeb")
 theme_override_styles/hover_pressed = ExtResource("3_frpua")
 theme_override_styles/hover = ExtResource("3_frpua")
@@ -34,6 +36,10 @@ text_overrun_behavior = 3
 
 [node name="RemoveButton" type="Button" parent="Split"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
+mouse_filter = 1
 theme_override_styles/focus = ExtResource("4_ony6i")
-text = "Delete"
+icon = ExtResource("5_frpua")
+icon_alignment = 1
+expand_icon = true

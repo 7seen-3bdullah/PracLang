@@ -24,8 +24,8 @@ func add_line(placeholder: String, text: String, on_edit = null) -> LineEdit:
 	box.add_child(line)
 	return line
 
-func add_text(placeholder: String, text: String, on_edit = null) -> TextEdit:
-	var text_edit = TextEdit.new()
+func add_text(placeholder: String, text: String, on_edit = null) -> CopiedCodeEdit:
+	var text_edit = CopiedCodeEdit.new()
 	text_edit.placeholder_text = placeholder
 	text_edit.text = text
 	if on_edit:

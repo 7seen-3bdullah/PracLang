@@ -10,7 +10,9 @@
 		{
 			"uuid": "b1a44a8b-8682-4f41-841c-90a1ff6d6c63",
 			"title": "Todo",
-			"tasks": []
+			"tasks": [
+				"6c7ee834-d178-40d4-97c7-de07f59f5110"
+			]
 		},
 		{
 			"uuid": "3f4ca832-5010-45f3-a706-9ef4c826833c",
@@ -23,7 +25,44 @@
 			"tasks": []
 		}
 	],
-	"tasks": [],
+	"tasks": [
+		{
+			"uuid": "6c7ee834-d178-40d4-97c7-de07f59f5110",
+			"title": "Tasks",
+			"description": "",
+			"category": "7703002c-7288-495d-b211-17b47550adfa",
+			"steps": [
+				{
+					"details": "قائمة \"حول\" للبرنامج, تتضمن شرح له والصانعين",
+					"done": true
+				},
+				{
+					"details": "إكمال نظام الcompletion وتحسين مظهره العام",
+					"done": true
+				},
+				{
+					"details": "إضافة الSplash Sreen الأولى",
+					"done": true
+				},
+				{
+					"details": "إضافة الأيقونات كاملة",
+					"done": false
+				},
+				{
+					"details": "إضافة الأصوات كاملة",
+					"done": false
+				},
+				{
+					"details": "تضمين الcode editor في المحرر كشيء جانبي",
+					"done": true
+				},
+				{
+					"details": "تفخيم خطوط الTitle",
+					"done": true
+				}
+			]
+		}
+	],
 	"layout": {
 		"columns": [
 			[

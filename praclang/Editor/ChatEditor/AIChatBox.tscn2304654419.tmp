@@ -1,0 +1,359 @@
+[gd_scene load_steps=12 format=3 uid="uid://d0seep5v1bevm"]
+
+[ext_resource type="Script" uid="uid://brhkyw0lxvanf" path="res://Build/AIInterface.gd" id="1_2nv34"]
+[ext_resource type="Script" uid="uid://it6uyg8k6kbl" path="res://Editor/ChatEditor/AIChatBox.gd" id="1_ac3mo"]
+[ext_resource type="StyleBox" uid="uid://vfo2ttl7nvl0" path="res://UI&UX/Style/Focus.tres" id="2_tyr3i"]
+[ext_resource type="Script" uid="uid://bl2url5a7jbhm" path="res://Build/UI/FlexControl/FocusOutliner.gd" id="2_up6qp"]
+[ext_resource type="PackedScene" uid="uid://leniqhvlxga" path="res://UI&UX/MenuBox/MenuBox.tscn" id="3_0wjpb"]
+[ext_resource type="Script" uid="uid://bdmf8incb2n6p" path="res://Build/UI/ProcessingControl.gd" id="3_2pecy"]
+[ext_resource type="Script" uid="uid://bau0otx77bmty" path="res://Editor/ChatEditor/ChatBoxShortcut.gd" id="4_y485s"]
+[ext_resource type="Script" uid="uid://bqn2vtoqd7th5" path="res://Build/UI/CopiedCodeEdit.gd" id="6_4c2pl"]
+[ext_resource type="Script" uid="uid://vjj86spceuoj" path="res://Build/TweenPlus.gd" id="6_8uo5l"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_l0uda"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.190673, 0.229765, 0.34021, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_88tw3"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.0901961, 0.113725, 0.180392, 1)
+
+[node name="AIChatBox" type="Control"]
+clip_contents = true
+custom_minimum_size = Vector2(400, 400)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ac3mo")
+languages = Array[String](["Arabic", "English", "French", "German", "Hindi", "Italian", "Japanese", "Mandarin Chinese", "Russian", "Spanish"])
+levels = Array[String](["Very Beginner", "Beginner", "Intermediate", "Advanced", "Expert", "Master", "Monster Level"])
+ai_characters = null
+test = null
+enabled = null
+
+[node name="FocusOutliner" type="ColorRect" parent="." node_paths=PackedStringArray("_owner")]
+z_index = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 1, 1, 0)
+script = ExtResource("2_up6qp")
+_owner = NodePath("..")
+focus_color = Color(0.192157, 0.235294, 0.376471, 1)
+metadata/_custom_type_script = "uid://bl2url5a7jbhm"
+
+[node name="ChatSide" type="VBoxContainer" parent="."]
+clip_contents = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Header" type="ColorRect" parent="ChatSide"]
+clip_contents = true
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+mouse_filter = 1
+color = Color(0.054902, 0.054902, 0.054902, 1)
+
+[node name="Margin" type="MarginContainer" parent="ChatSide/Header"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="ChoicesBox" type="HBoxContainer" parent="ChatSide/Header/Margin"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="ShowSessionInfoButton" type="Button" parent="ChatSide/Header/Margin/ChoicesBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(170, 0)
+layout_mode = 2
+mouse_filter = 1
+theme_override_styles/focus = ExtResource("2_tyr3i")
+text = "Show Session Info"
+
+[node name="Margin" type="MarginContainer" parent="ChatSide"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="Split" type="HSplitContainer" parent="ChatSide/Margin"]
+layout_mode = 2
+dragging_enabled = false
+dragger_visibility = 2
+
+[node name="Split" type="HSplitContainer" parent="ChatSide/Margin/Split"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+dragger_visibility = 2
+
+[node name="HistorySide" type="ColorRect" parent="ChatSide/Margin/Split/Split"]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+mouse_filter = 1
+color = Color(0, 0, 0, 1)
+
+[node name="ScrollContainer" type="ScrollContainer" parent="ChatSide/Margin/Split/Split/HistorySide"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_scroll_mode = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="ChatSide/Margin/Split/Split/HistorySide/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="SideBox" type="VBoxContainer" parent="ChatSide/Margin/Split/Split/HistorySide/ScrollContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="NewSessionButton" type="Button" parent="ChatSide/Margin/Split/Split/HistorySide/ScrollContainer/MarginContainer/SideBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+mouse_filter = 1
+theme_override_font_sizes/font_size = 20
+theme_override_styles/focus = ExtResource("2_tyr3i")
+text = "New Session"
+
+[node name="SessionsBox" parent="ChatSide/Margin/Split/Split/HistorySide/ScrollContainer/MarginContainer/SideBox" instance=ExtResource("3_0wjpb")]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 1
+show_title = true
+title = "Sessions"
+
+[node name="ChatBox" type="Panel" parent="ChatSide/Margin/Split/Split"]
+clip_contents = true
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 1
+
+[node name="VSplitContainer" type="VSplitContainer" parent="ChatSide/Margin/Split/Split/ChatBox"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+dragging_enabled = false
+
+[node name="ScrollContainer" type="ScrollContainer" parent="ChatSide/Margin/Split/Split/ChatBox/VSplitContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="Margin" type="MarginContainer" parent="ChatSide/Margin/Split/Split/ChatBox/VSplitContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="NoSessionMessage" type="Label" parent="ChatSide/Margin/Split/Split/ChatBox/VSplitContainer/ScrollContainer/Margin"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0.392157)
+theme_override_font_sizes/font_size = 20
+text = "No Session here, choose anyone from left side
+or create a new one by pressing 'Control + N'"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MessagesBox" type="VBoxContainer" parent="ChatSide/Margin/Split/Split/ChatBox/VSplitContainer/ScrollContainer/Margin"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 10
+
+[node name="ProcessingControl" type="ColorRect" parent="ChatSide/Margin/Split/Split/ChatBox/VSplitContainer/ScrollContainer/Margin/MessagesBox"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+size_flags_horizontal = 0
+color = Color(0, 0, 0, 1)
+script = ExtResource("3_2pecy")
+radius = 10.0
+
+[node name="MessageBox" type="PanelContainer" parent="ChatSide/Margin/Split/Split/ChatBox/VSplitContainer"]
+layout_mode = 2
+mouse_filter = 1
+
+[node name="Margin" type="MarginContainer" parent="ChatSide/Margin/Split/Split/ChatBox/VSplitContainer/MessageBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="Split" type="HSplitContainer" parent="ChatSide/Margin/Split/Split/ChatBox/VSplitContainer/MessageBox/Margin"]
+layout_mode = 2
+dragging_enabled = false
+
+[node name="MessageLine" type="TextEdit" parent="ChatSide/Margin/Split/Split/ChatBox/VSplitContainer/MessageBox/Margin/Split"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+theme_override_font_sizes/font_size = 20
+theme_override_styles/focus = ExtResource("2_tyr3i")
+placeholder_text = "Type your Message ..."
+wrap_mode = 1
+scroll_fit_content_height = true
+caret_blink = true
+
+[node name="SendMessageButton" type="Button" parent="ChatSide/Margin/Split/Split/ChatBox/VSplitContainer/MessageBox/Margin/Split"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+mouse_filter = 1
+theme_override_styles/focus = ExtResource("2_tyr3i")
+text = "Send"
+
+[node name="SessionInfoSide" type="ColorRect" parent="ChatSide/Margin/Split"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+mouse_filter = 1
+color = Color(0, 0, 0, 1)
+
+[node name="ScrollContainer" type="ScrollContainer" parent="ChatSide/Margin/Split/SessionInfoSide"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_scroll_mode = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="ChatSide/Margin/Split/SessionInfoSide/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="SideBox" type="VBoxContainer" parent="ChatSide/Margin/Split/SessionInfoSide/ScrollContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="Panel" type="PanelContainer" parent="ChatSide/Margin/Split/SessionInfoSide/ScrollContainer/MarginContainer/SideBox"]
+layout_mode = 2
+mouse_filter = 1
+
+[node name="Margin" type="MarginContainer" parent="ChatSide/Margin/Split/SessionInfoSide/ScrollContainer/MarginContainer/SideBox/Panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="SessionPreview" type="CodeEdit" parent="ChatSide/Margin/Split/SessionInfoSide/ScrollContainer/MarginContainer/SideBox/Panel/Margin"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 1
+theme_override_colors/font_readonly_color = Color(0.5, 0.5, 0.5, 1)
+theme_override_colors/selection_color = Color(0, 0, 0, 0.784314)
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = ExtResource("2_tyr3i")
+theme_override_styles/focus = ExtResource("2_tyr3i")
+theme_override_styles/read_only = ExtResource("2_tyr3i")
+theme_override_styles/panel = ExtResource("2_tyr3i")
+editable = false
+wrap_mode = 1
+scroll_fit_content_height = true
+script = ExtResource("6_4c2pl")
+metadata/main_zoom = 18
+
+[node name="CompletionsLabel" type="Label" parent="ChatSide/Margin/Split/SessionInfoSide/ScrollContainer/MarginContainer/SideBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Completions"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Panel2" type="PanelContainer" parent="ChatSide/Margin/Split/SessionInfoSide/ScrollContainer/MarginContainer/SideBox"]
+layout_mode = 2
+mouse_filter = 1
+
+[node name="Margin" type="MarginContainer" parent="ChatSide/Margin/Split/SessionInfoSide/ScrollContainer/MarginContainer/SideBox/Panel2"]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 20
+
+[node name="CompletionsBox" type="VBoxContainer" parent="ChatSide/Margin/Split/SessionInfoSide/ScrollContainer/MarginContainer/SideBox/Panel2/Margin"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="CompleteSessionButton" type="Button" parent="ChatSide/Margin/Split/SessionInfoSide/ScrollContainer/MarginContainer/SideBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+mouse_filter = 1
+theme_override_styles/focus = ExtResource("2_tyr3i")
+theme_override_styles/hover = SubResource("StyleBoxFlat_l0uda")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_88tw3")
+theme_override_styles/normal = SubResource("StyleBoxFlat_88tw3")
+text = "Complete Session"
+
+[node name="ShortcutNode" type="Node" parent="." node_paths=PackedStringArray("gui_control")]
+unique_name_in_owner = true
+script = ExtResource("4_y485s")
+current_zoom = 1.2
+gui_control = NodePath("..")
+metadata/_custom_type_script = "uid://q1avmlqq8hos"
+
+[node name="MessageInterface" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("1_2nv34")
+try_again_on_failed = true
+metadata/_custom_type_script = "uid://brhkyw0lxvanf"
+
+[node name="TweenPlus" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("6_8uo5l")

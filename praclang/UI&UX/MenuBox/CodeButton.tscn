@@ -1,19 +1,12 @@
 [gd_scene load_steps=6 format=3 uid="uid://cte65xnmrr4rl"]
 
+[ext_resource type="StyleBox" uid="uid://cabmtpccru3ux" path="res://UI&UX/Style/NormalBG.tres" id="1_i630t"]
 [ext_resource type="Script" uid="uid://cucsmtfx406fn" path="res://UI&UX/MenuBox/CodeButton.gd" id="1_sxw08"]
 [ext_resource type="PackedScene" uid="uid://ddcom0a5rlk4e" path="res://UI&UX/CodePreview.tscn" id="2_v3koa"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v3koa"]
-bg_color = Color(0.09, 0.114, 0.18, 0.588235)
+[ext_resource type="StyleBox" uid="uid://b5qidexx0ged0" path="res://UI&UX/Style/NormalHovered.tres" id="3_mgvwk"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_v3koa"]
 content_margin_left = 10.0
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n3624"]
-bg_color = Color(0.0918, 0.11238, 0.18, 1)
-border_width_left = 4
-border_color = Color(0.231373, 0.282353, 0.45098, 1)
-expand_margin_left = 10.0
 
 [node name="MenuButton" type="PanelContainer"]
 custom_minimum_size = Vector2(0, 50)
@@ -22,16 +15,16 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_v3koa")
+theme_override_styles/panel = ExtResource("1_i630t")
 script = ExtResource("1_sxw08")
 
 [node name="Button" type="Button" parent="."]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_styles/focus = SubResource("StyleBoxEmpty_v3koa")
-theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_n3624")
-theme_override_styles/hover = SubResource("StyleBoxFlat_n3624")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_n3624")
+theme_override_styles/hover_pressed = ExtResource("3_mgvwk")
+theme_override_styles/hover = ExtResource("3_mgvwk")
+theme_override_styles/pressed = ExtResource("3_mgvwk")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_v3koa")
 
 [node name="CodePreview" parent="." instance=ExtResource("2_v3koa")]

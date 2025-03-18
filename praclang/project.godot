@@ -13,7 +13,9 @@ config_version=5
 config/name="PracLang"
 run/main_scene="uid://dn1p21ab6dfx6"
 config/features=PackedStringArray("4.4", "Forward Plus")
-config/icon="res://icon.svg"
+boot_splash/fullsize=false
+boot_splash/image="uid://c4hnsduc37v2w"
+config/icon="uid://c4hnsduc37v2w"
 
 [autoload]
 
@@ -24,6 +26,7 @@ SaveServer="*res://Autoload/SaveServer.gd"
 
 [display]
 
+window/size/borderless=true
 window/subwindows/embed_subwindows=false
 
 [editor_plugins]

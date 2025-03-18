@@ -22,6 +22,7 @@ source_language = "GDScript"
 
 [node name="FocusOutliner" type="ColorRect" parent="." node_paths=PackedStringArray("_owner")]
 unique_name_in_owner = true
+z_index = 1
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -31,7 +32,6 @@ grow_vertical = 2
 color = Color(0, 0, 0, 0)
 script = ExtResource("2_e28dc")
 _owner = NodePath("..")
-width = 4.0
 focus_color = Color(0.193492, 0.237013, 0.378105, 1)
 
 [node name="Box" type="VBoxContainer" parent="."]

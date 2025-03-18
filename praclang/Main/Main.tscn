@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://dtoes7dka15g" path="res://Main/Main.gd" id="1_u2i7p"]
 [ext_resource type="Script" uid="uid://bkedurlcru1e4" path="res://Build/UI/NotificationLabel.gd" id="2_83ytx"]
 [ext_resource type="PackedScene" uid="uid://d0seep5v1bevm" path="res://Editor/ChatEditor/AIChatBox.tscn" id="2_amygn"]
-[ext_resource type="Script" uid="uid://hi855lfy2o6k" path="res://particles.gd" id="3_hh5pf"]
+[ext_resource type="Script" path="res://Build/UI/particles.gd" id="3_hh5pf"]
 [ext_resource type="PackedScene" uid="uid://di7tvn5g3aomf" path="res://Editor/CodeEditor/CodeEditor.tscn" id="3_ps1la"]
 
 [sub_resource type="SystemFont" id="SystemFont_0wjpb"]

@@ -29,6 +29,10 @@ var button_group: ButtonGroup:
 func _ready() -> void:
 	button.pressed.connect(on_button_pressed)
 	remove_button.pressed.connect(on_remove_button_pressed)
+	mouse_entered.connect(remove_button.show)
+	mouse_exited.connect(remove_button.hide)
+	remove_button.hide()
+
 
 func on_button_pressed() -> void:
 	pressed.emit(self)
