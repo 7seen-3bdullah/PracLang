@@ -416,7 +416,7 @@ func add_message_box(role: String, messages_content: Array) -> void:
 	var message_box = MESSAGE_BOX.instantiate()
 	messages_box.add_child(message_box)
 	
-	GlobalTween.Scosh(message_box, Vector2(1.5,0.7), 0.1)
+	GlobalTween.Scosh(message_box, Vector2(1.2,0.8), 0.1)
 	
 	match role:
 		user_name:

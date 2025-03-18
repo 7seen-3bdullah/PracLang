@@ -31,6 +31,7 @@ func _ready() -> void:
 	remove_button.pressed.connect(on_remove_button_pressed)
 	mouse_entered.connect(remove_button.show)
 	mouse_exited.connect(remove_button.hide)
+	button.mouse_entered.connect(_mouse_entered)
 	remove_button.hide()
 
 
