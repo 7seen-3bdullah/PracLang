@@ -25,5 +25,6 @@ const D:= Color.MEDIUM_AQUAMARINE
 	7: {"completed": .0, "color": D},
 }
 
+@export var level_up_speed:= 50.0
 
 
