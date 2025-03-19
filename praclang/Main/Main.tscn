@@ -8,7 +8,6 @@
 [ext_resource type="PackedScene" uid="uid://di7tvn5g3aomf" path="res://Editor/CodeEditor/CodeEditor.tscn" id="3_ps1la"]
 
 [sub_resource type="SystemFont" id="SystemFont_0wjpb"]
-font_names = PackedStringArray("Segoe UI Historic", "Segoe UI Symbol")
 subpixel_positioning = 0
 multichannel_signed_distance_field = true
 
@@ -70,9 +69,6 @@ layout_mode = 2
 [node name="Learning Lang" parent="MarginContainer/Box" instance=ExtResource("2_amygn")]
 layout_mode = 2
 size_flags_vertical = 3
-ai_characters = null
-test = null
-enabled = null
 
 [node name="Coding" parent="MarginContainer/Box" instance=ExtResource("3_ps1la")]
 visible = false

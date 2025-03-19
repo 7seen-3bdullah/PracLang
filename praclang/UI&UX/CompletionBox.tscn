@@ -14,7 +14,7 @@ bg_color = Color(0.09, 0.114, 0.18, 0.588235)
 bg_color = Color(0.231373, 0.282353, 0.45098, 1)
 
 [node name="CompletionBox" type="PanelContainer"]
-offset_right = 80.0
+offset_right = 110.0
 offset_bottom = 31.0
 size_flags_horizontal = 3
 mouse_filter = 1

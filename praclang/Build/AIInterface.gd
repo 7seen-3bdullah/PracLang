@@ -16,7 +16,8 @@ const API_URL = "https://openrouter.ai/api/v1/chat/completions"
 const API_KEY = "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" # from Omar TOP account
 const API_KEY2 = "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" # from Omar TOP account 2
 const API_KEY3 = "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" # from DMG4 account
-const API_KEY4 = "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" # from Hussain Abdullah
+const API_KEY4 = "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" # from Hussain Abdullah account
+const API_KEY5 = "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" # from Safi account
 
 func _ready() -> void:
 	add_child(http_request)
@@ -40,7 +41,7 @@ func send_message(message: String) -> void:
 
 func request_ai() -> void:
 	var headers = [
-		"Authorization: Bearer " + API_KEY4,
+		"Authorization: Bearer " + API_KEY,
 		"Content-Type: application/json"
 	]
 	var body = {
