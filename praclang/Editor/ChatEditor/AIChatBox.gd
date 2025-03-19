@@ -127,7 +127,7 @@ var mistakes_menues: Dictionary[String, Control]
 var user_current_message: Control
 
 var completion_index: int
-var LevelUpSpeed := 2.0
+var level_up_speed:= 50.0
 var can_change_session:= true
 var previous_text: String = ""
 
@@ -249,9 +249,6 @@ func send_message() -> void:
 	if not message:
 		GuideServer.push_message("Enter the message, then send", 1)
 		
-		
-		GlobalTween.Shacke(message_line, 50, 0.05)
-		
 		return
 	message_line.set_editable(false)
 	await get_tree().process_frame
@@ -354,7 +351,7 @@ func on_message_interface_result_pushed(error: int, response: Dictionary) -> voi
 			current_session.resource_path
 		)
 		if result.mistake: level_append(-4.0)
-		else: level_append(LevelUpSpeed)
+		else: level_append(level_up_speed)
 		SaveServer.save_mistakes(result.mistake, result.note, learning_language)
 		load_mistake_buttons()
 	else:
@@ -416,7 +413,7 @@ func add_message_box(role: String, messages_content: Array) -> void:
 	var message_box = MESSAGE_BOX.instantiate()
 	messages_box.add_child(message_box)
 	
-	GlobalTween.Scosh(message_box, Vector2(1.2,0.8), 0.1)
+	GlobalTween.squish(message_box, Vector2(1.2,0.8), 0.1)
 	
 	match role:
 		user_name:
@@ -745,8 +742,6 @@ func level_append(append: float) -> void:
 	curr_completion_box.notificate(Color.GREEN_YELLOW if append > 0 else Color.ORANGE)
 	if res_completions[completion_index].completed >= 100.0:
 		if completion_index < res_completions.size() - 1:
-			completion_index += 1
-			LevelUpSpeed -= 5
 			
 			Sounds.Error_sound("finsh", 1)
 			

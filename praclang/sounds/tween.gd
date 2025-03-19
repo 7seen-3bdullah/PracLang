@@ -1,30 +1,35 @@
 extends Node
 
-func Scosh(node, scale:Vector2, time:float):
+func squish(object, scale: Vector2, time: float):
 	var tween = create_tween().set_parallel(true)
 	
-	tween.tween_property(node, "scale", Vector2(scale.x, scale.y), time).set_ease(Tween.EASE_IN)
-	tween.chain()
-	tween.tween_property(node, "scale", Vector2(1, 1), time).set_ease(Tween.EASE_OUT)
+	tween.tween_property(object, "scale", Vector2(scale.x, scale.y), time).set_ease(Tween.EASE_IN)
+	tween.tween_property(object, "scale", Vector2(1, 1), time).set_ease(Tween.EASE_OUT)
 
 
 
-func Shacke(node, power:float, time:float):
-	var last_pos = node.position
-	if node is Control:
-		node.add_theme_color_override("font_placeholder_color",Color(1.0, 0.0, 0.0))
+func shake(object, power: float, time: float):
+	var last_pos = object.position
+	if object is Control:
+		object.add_theme_color_override("font_placeholder_color",Color(1.0, 0.0, 0.0))
 	
 	var tween = create_tween().set_ease(Tween.EASE_IN)
-	tween.tween_property(node, "position.x", Vector2(power, last_pos.y), time)
-	tween.chain()
-	tween.tween_property(node, "position", Vector2(-power, last_pos.y), time)
-	tween.chain()
-	tween.tween_property(node, "position", Vector2(power, last_pos.y), time)
-	tween.chain()
-	tween.tween_property(node, "position", last_pos, time)
+	tween.tween_property(object, "position.x", Vector2(power, last_pos.y), time)
+	tween.tween_property(object, "position", Vector2(-power, last_pos.y), time)
+	tween.tween_property(object, "position", Vector2(power, last_pos.y), time)
+	tween.tween_property(object, "position", last_pos, time)
 	
-	
-	if node is Control:
+	if object is Control:
 		await tween.finished
 		await get_tree().create_timer(0.1).timeout
-		node.add_theme_color_override("font_placeholder_color",Color(1.0, 1.0, 1.0))
+		object.add_theme_color_override("font_placeholder_color",Color(1.0, 1.0, 1.0))
+
+
+
+
+
+
+
+
+
+

@@ -42,7 +42,6 @@ func add_text(placeholder: String, text: String, on_edit = null) -> CopiedCodeEd
 	text_edit.placeholder_text = placeholder
 	text_edit.text = text
 	
-	
 	if on_edit:
 		text_edit.text_changed.connect(on_edit)
 	theme_control(text_edit)
@@ -52,16 +51,8 @@ func add_text(placeholder: String, text: String, on_edit = null) -> CopiedCodeEd
 func add_button(text: String, on_pressed = null) -> Button:
 	var button = Button.new()
 	button.text = text
-	button.pressed.connect(func():
-		# التحقق من الحقول الفارغة وإضافة الاهتزاز
-		for child in box.get_children():
-			if child is LineEdit and child.text.strip_edges().is_empty():
-				GlobalTween.Shacke(child, 50, 0.05)
-				Sounds.Click_Sound(1, -10)  # إضافة صوت خطأ إن أردت
-		
-		if on_pressed:
-			on_pressed.call()
-	)
+	if on_pressed:
+		button.pressed.connect(on_pressed)
 	theme_control(button)
 	box.add_child(button)
 	return button
