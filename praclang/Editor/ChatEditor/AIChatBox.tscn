@@ -40,7 +40,8 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ac3mo")
 languages = Array[String](["Arabic", "English", "French", "German", "Hindi", "Italian", "Japanese", "Mandarin Chinese", "Russian", "Spanish"])
-levels = Array[String](["Very Beginner", "Beginner", "Intermediate", "Advanced", "Expert", "Master", "Monster Level"])
+levels = Array[String]([" A1 - Beginner", "A2 - Elementary", "B1 - Intermediate", "B2 - Upper-Intermediate", "C1 - Advanced", "C2 - Proficient (Mastery)"])
+ai_characters = Array[String](["Gentleman", "Wise man", "Adventurer", "Artist", "Philosopher", "Jester", "Hero", "Villain", "Warrior", "Sailor", "Soldier", "Spy", "Pirate"])
 
 [node name="FocusOutliner" type="ColorRect" parent="." node_paths=PackedStringArray("_owner")]
 z_index = 1
