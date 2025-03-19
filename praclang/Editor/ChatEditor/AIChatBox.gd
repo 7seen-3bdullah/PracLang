@@ -27,67 +27,7 @@ const DIRECTIONS = [
 
 @export var languages: Array[String]
 @export var levels: Array[String]
-@export var ai_characters: Array[String] = [
-	# Technical & Programming
-	"Software Engineer",
-	"AI Expert",
-	"Robotics Programmer",
-	"Genius Inventor",
-	"Cybersecurity Specialist",
-	# Literary & Artistic
-	"Creative Writer",
-	"Romantic Poet",
-	"Mysterious Novelist",
-	"Visual Artist",
-	"Film Critic",
-	# Entertainment & Fictional
-	"Wise Storyteller",
-	"Witty Genie",
-	"Adventurous Pirate",
-	"Sharp Detective",
-	"Futuristic Robot",
-	# Historical & Cultural
-	"Ancient Philosopher",
-	"Brave Military Leader",
-	"Bold Explorer",
-	"Wise King",
-	"Pioneer Inventor",
-	# Scientific & Experimental
-	"Theoretical Physicist",
-	"Mad Chemist",
-	"Space Scientist",
-	"Friendly Doctor",
-	"Curious Biologist",
-	# Business & Entrepreneurial
-	"Ambitious Businessman",
-	"Smart Investor",
-	"Marketing Expert",
-	"Financial Analyst",
-	"Startup Founder",
-	# Sports & Health
-	"Athletic Coach",
-	"Psychologist",
-	"Nutritionist",
-	"Chess Strategist",
-	"Mountain Climber",
-	# Humorous & Satirical
-	"Witty Comedian",
-	"Sharp Satirist",
-	"Beloved Clown",
-	"Clever Trickster",
-	"Joke Maker",
-	# Futuristic & Sci-Fi
-	"Advanced AI",
-	"Interactive Android",
-	"Alien Researcher",
-	"Cyber Consultant",
-	"Future Oracle",
-	# Islamic Studies & Spiritual
-	"Islamic Scholar",
-	"Hadith Narrator",
-	"Fiqh Expert",
-	"Ethical Imam"
-]
+@export var ai_characters: Array[String]
 @export var current_session: SessionsRes
 
 var user_name: String
@@ -247,10 +187,7 @@ func send_message() -> void:
 	var message = message_line.get_text()
 	if not message:
 		GuideServer.push_message("Enter the message, then send", 1)
-		
-		
 		GlobalTween.shake(message_line, 50, 0.05)
-		
 		return
 	message_line.set_editable(false)
 	await get_tree().process_frame

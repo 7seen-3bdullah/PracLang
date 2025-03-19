@@ -18,11 +18,11 @@ const D:= Color.MEDIUM_AQUAMARINE
 	0: {"completed": .0, "color": B},
 	1: {"completed": .0, "color": B},
 	2: {"completed": .0, "color": S},
-	3: {"completed": .0, "color": S},
-	4: {"completed": .0, "color": G},
-	5: {"completed": .0, "color": G},
-	6: {"completed": .0, "color": D},
-	7: {"completed": .0, "color": D},
+	#3: {"completed": .0, "color": S},
+	#4: {"completed": .0, "color": G},
+	#5: {"completed": .0, "color": G},
+	#6: {"completed": .0, "color": D},
+	#7: {"completed": .0, "color": D},
 }
 
 @export var level_up_speed:= 50.0
