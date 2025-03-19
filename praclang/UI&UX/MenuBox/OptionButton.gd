@@ -48,4 +48,4 @@ func on_remove_button_pressed() -> void:
 
 func _mouse_entered() -> void:
 	#صوت ضغط الزر
-	Sounds.Click_Sound(2,-15)
+	Sounds.Click_Sound(2.3,-10)

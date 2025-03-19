@@ -127,7 +127,7 @@ var mistakes_menues: Dictionary[String, Control]
 var user_current_message: Control
 
 var completion_index: int
-
+var LevelUpSpeed := 2.0
 var can_change_session:= true
 var previous_text: String = ""
 
@@ -354,7 +354,7 @@ func on_message_interface_result_pushed(error: int, response: Dictionary) -> voi
 			current_session.resource_path
 		)
 		if result.mistake: level_append(-4.0)
-		else: level_append(8.0)
+		else: level_append(LevelUpSpeed)
 		SaveServer.save_mistakes(result.mistake, result.note, learning_language)
 		load_mistake_buttons()
 	else:
@@ -368,7 +368,7 @@ func on_message_interface_result_pushed(error: int, response: Dictionary) -> voi
 		Sounds.Send_Message_Sound(1.9, -10.0)
 	else:
 		#صوت
-		Sounds.Error_sound("mistake")
+		Sounds.Error_sound("mistake",1)
 
 
 func on_message_interface_error_result_pushed(error: int, response: Dictionary) -> void:
@@ -746,6 +746,10 @@ func level_append(append: float) -> void:
 	if res_completions[completion_index].completed >= 100.0:
 		if completion_index < res_completions.size() - 1:
 			completion_index += 1
+			LevelUpSpeed -= 5
+			
+			Sounds.Error_sound("finsh", 1)
+			
 			completions_box.get_children()[completion_index].current = true
 		else:
 			var window = WindowManager.popup_window(get_owner(), Vector2i(200, 100))
