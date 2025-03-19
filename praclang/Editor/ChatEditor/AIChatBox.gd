@@ -249,6 +249,9 @@ func send_message() -> void:
 	if not message:
 		GuideServer.push_message("Enter the message, then send", 1)
 		
+		
+		GlobalTween.shake(message_line, 50, 0.05)
+		
 		return
 	message_line.set_editable(false)
 	await get_tree().process_frame
