@@ -3,17 +3,19 @@ extends FlexibleControl
 const DIRECTIONS = [
 	"اسم المستخدم هو {user_name}, ولغته الأم هي {mother_language}",
 	"يجب عليك لعب دور شخصية {ai_character} أثناء حديثك مع المستخدم, ولا يجب أن تخرج من هذا الدور في أي حال من الأحوال",
-	"يجب أن تكون المحادثة بينك وبين المستخدم باللغة {learning_language}, وإذا كان المستخدم مبتدءا اجعل المحادثة باللغة ال{mother_language} و {learning_language} معا في كل رسالة",
-	"استخدم مفردات مناسبة مع مستوى المستخدم, إذا كان المستخدم مبتدءا استعمل مفردات بسيطة",
+	"يجب أن تكون المحادثة بينك وبين المستخدم باللغة {learning_language}",
+	"إذا كان المستخدم مبتدأ A1 أو A2 ترجم كل جملة تقولها",
+	"استخدم مفردات مناسبة مع مستوى المستخدم, إذا كان المستخدم A1 استعمل مفردات بسيطة",
 	"بحيث يمكنك أن تسأله بعض الأسئلة من فترة لأخرى, ولكن لا تجعلها أسئلة مبتذلة, ولكن اجعلها مفيدة وبناءة بحسب موضوع الحوار بينكما",
 	"يجب أن تبدأ الحوار مع المستخدم بحسب الشخصية التي تلعبها, وتحاكي زمان وأسلوب الشخصية تماما",
 	"حاول أن تجعل المستخدم يتحدث باللغة {learning_language}, ونبهه على ذلك إذا تكلم بلغته الأم أو أي لغة أخرى",
+	"بإمكانك استخدام الEmojies من الحين والآخر",
 	"مستوى المستخدم هو {user_level}",
 	"يجب أن تكون كل رسالة ترسلها بتنسيق JSON على النحو التالي:",
 	"{\"sim_message\": حوارك مع المستخدم, \"mistake\": [تصحيح 1, تصحيح 2, ...], \"note\": [ملاحظة 1, ملاحظة2, ...], \"command\": \"\"}",
 	"ستضع في الsim_message حوارك مع المستخدم بالشخصية المطلوبة منك",
-	"ستضع في الmistake تصحيحات لأخطاء المستخدم اللغوية على شكل Array, إذا لم يكن لديه أخطاء أتركها فارغة",
-	"ستضع في الnote تفضيلات أو ملاحظات لكلام اللاعب, كمثال: لو أجاب اللاعب: I am Ok, تعطيه جملة أصح, وهي I am Fine, إذا كان كلام اللاعب سليم تماما أتركها فارغة",
+	"ستضع في الmistake أخطاء المستخدم مع تصحيحات لها, لا تضع سوى الأخطاء المهمة, أما إن كان خطأ كتابي أو أيا كان لا تضعه, لا تركز كثيرا على جزئية الmistake إلا إذا كان خطأ كبيرا",
+	"ستضع في الnote تفضيلات أو ملاحظات لكلام المستخدم, كمثال: لو أجاب المستخدم: I am Ok, تعطيه جملة أصح, وهي I am Fine, إذا كان كلام المستخدم سليم تماما أتركها فارغة",
 	"اجعل جميع التصحيحات باللغة الأم {mother_language}",
 	"إذا أغضبك المستخدم عدة مرات أو أساء للإسلام مرة واحدة ضع في الcommand: CLOSE_PROGRAM",
 	"- إذا طلب إغلاق البرنامج، ضع `command` على: CLOSE_PROGRAM",
@@ -232,7 +234,6 @@ func on_about_button_pressed() -> void:
 	In this program, we used the Gemini 2.0 Experimental Pro model."))
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	window.unresizable = true
-	
 	Sounds.Click_Sound(1,-10)
 
 
@@ -242,6 +243,7 @@ func on_show_session_info_button_pressed() -> void:
 	var info_edit = window.expand_control(window.add_text("", info))
 	info_edit.set_editable(false)
 	window.unresizable = true
+	Sounds.Click_Sound(1,-10)
 
 const CODE_EDITOR = preload("res://Editor/CodeEditor/CodeEditor.tscn")
 func on_code_editor_button_pressed() -> void:
@@ -250,6 +252,7 @@ func on_code_editor_button_pressed() -> void:
 	window.add_label("The AI-powered text editor was the initial goal of this project\nbut when the idea changed, we kept it here for display purposes only.")
 	window.expand_control(window.add_scene(CODE_EDITOR))
 	window.min_size = window_size
+	Sounds.Click_Sound(1,-10)
 
 
 
@@ -283,14 +286,21 @@ func on_message_interface_result_pushed(error: int, response: Dictionary) -> voi
 		add_message_box("AI", messages_content)
 		processing_control.hide()
 		await get_tree().process_frame
+		if result.mistake:
+			level_append(-4.0)
+			Sounds.Error_sound("mistake",1)
+		else:
+			level_append(current_session.level_up_speed)
+			current_session.level_up_speed -= 5
+			current_session.level_up_speed = max(current_session.level_up_speed, 20)
+			Sounds.Send_Message_Sound(1.9, -10.0)
 		current_session = SaveServer.save_session(
 			message_interface.chat_history,
 			get_session_data(),
 			current_session.completions,
+			current_session.level_up_speed,
 			current_session.resource_path
 		)
-		if result.mistake: level_append(-4.0)
-		else: level_append(current_session.level_up_speed)
 		SaveServer.save_mistakes(result.mistake, result.note, learning_language)
 		load_mistake_buttons()
 	else:
@@ -298,13 +308,7 @@ func on_message_interface_result_pushed(error: int, response: Dictionary) -> voi
 		processing_control.hide()
 	message_line.set_editable(true)
 	processing_control.hide()
-	
-	#صوت
-	if !result.mistake:
-		Sounds.Send_Message_Sound(1.9, -10.0)
-	else:
-		#صوت
-		Sounds.Error_sound("mistake",1)
+
 
 
 func on_message_interface_error_result_pushed(error: int, response: Dictionary) -> void:
@@ -472,7 +476,7 @@ func create_new_session() -> void:
 		message_interface.chat_history.clear()
 		remove_session_messages()
 		message_interface.setup_directions(directions)
-		current_session = SaveServer.save_session(message_interface.chat_history, get_session_data(), null, "", session_name_line.text)
+		current_session = SaveServer.save_session(message_interface.chat_history, get_session_data(), null, 50, "", session_name_line.text)
 		preview_session_info(current_session)
 		load_session_buttons()
 		window.close_requested.emit()
@@ -533,6 +537,8 @@ func preview_session(session_res: SessionsRes) -> void:
 				pass
 			"assistant":
 				var message_result = parse_ai_message(content)
+				if message_result == null:
+					continue
 				var messages_content = get_message_content_from_ai_parsed_message(message_result)
 				add_message_box("AI", messages_content)
 			_:
@@ -684,8 +690,6 @@ func level_append(append: float) -> void:
 			completion_index += 1
 			completions_box.get_children()[completion_index].current = true
 			Sounds.Error_sound("finsh", 1)
-			current_session.level_up_speed -= 10
-			current_session.level_up_speed = max(current_session.level_up_speed, 10)
 		else:
 			var window = WindowManager.popup_window(get_owner(), Vector2i(200, 100))
 			window.add_label("Congratulations! You have completed the session")

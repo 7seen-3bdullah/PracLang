@@ -6,13 +6,14 @@ const MISTAKES_SAVE_PATH:= "res://Save/Mistakes/"
 
 
 
-func save_session(history: Array, data: Dictionary, completions = null, file_path:= "", file_name:= "") -> SessionsRes:
+func save_session(history: Array, data: Dictionary, completions = null, level_up_speed:= 50.0, file_path:= "", file_name:= "") -> SessionsRes:
 	var sessions_filenames = get_sessions_filenames()
 	var save_path = (SESSION_SAVE_PATH + file_name + ".res") if not file_path else file_path
 	var session_res = SessionsRes.new()
 	session_res.session_history = history
 	if completions != null:
 		session_res.completions = completions
+	session_res.level_up_speed = level_up_speed
 	session_res.user_name = data.user_name
 	session_res.mother_language = data.mother_language
 	session_res.learning_language = data.learning_language
