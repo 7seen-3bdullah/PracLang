@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://b4h0dceaqgv0p"]
+[gd_scene load_steps=6 format=3 uid="uid://b4h0dceaqgv0p"]
 
 [ext_resource type="Script" uid="uid://c5i2qvdkuii3e" path="res://Editor/ChatEditor/MessageBox/MessageBox.gd" id="1_ifyp0"]
 [ext_resource type="StyleBox" uid="uid://bpjw1sl02te54" path="res://UI&UX/Style/UserMessageStyle.tres" id="1_iophh"]
 [ext_resource type="Script" uid="uid://vjj86spceuoj" path="res://Build/TweenPlus.gd" id="3_c76fe"]
+[ext_resource type="AudioStream" uid="uid://d0r3df66jp0i6" path="res://sounds/Hover.mp3" id="4_ya3ce"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_iophh"]
 
@@ -57,6 +58,11 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="TweenPlus" type="Node" parent="Split"]
+[node name="TweenPlus" type="Node" parent="."]
 unique_name_in_owner = true
 script = ExtResource("3_c76fe")
+
+[node name="HoverAudio" type="AudioStreamPlayer" parent="."]
+unique_name_in_owner = true
+stream = ExtResource("4_ya3ce")
+volume_db = -10.0
