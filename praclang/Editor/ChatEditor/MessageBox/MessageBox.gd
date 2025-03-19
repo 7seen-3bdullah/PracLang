@@ -66,11 +66,3 @@ func setup(panel_style: StyleBox, role_color: Color, role_name: String, messages
 func _ready() -> void:
 	tween.tween(split, "position:y", [[50.0, .0], [.0, .4]], Tween.EASE_OUT, Tween.TRANS_QUAD)
 	tween.tween(self, "modulate:a", [[.0, 1.0], [.0, .4]], Tween.EASE_OUT, Tween.TRANS_QUAD)
-
-
-
-
-
-
-
-

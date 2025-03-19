@@ -35,8 +35,8 @@ const ai_send = preload("res://sounds/Send/bubble_iMw0wu6.ogg")
 
 const ERROR_1 = preload("res://sounds/errors/error1.ogg")
 const ERROR_2 = preload("res://sounds/errors/error2.ogg")
-
-
+const COPE = preload("res://sounds/errors/cope.ogg")
+const M = preload("res://sounds/errors/m.ogg")
 # -------------------------------
 
 
@@ -92,14 +92,20 @@ func Typing_Sound(volume :float= -10):
 # -------------------------------
 
 
-func Error_sound(errortype:String):
+func Error_sound(errortype:String, pitch_scale):
 	var audio_player_error = AudioStreamPlayer.new()
 	add_child(audio_player_error)
+	
+	audio_player_error.pitch_scale = pitch_scale
 	
 	if errortype == "error":
 		audio_player_error.stream = ERROR_1
 	elif errortype == "mistake":
 		audio_player_error.stream = ERROR_2
+	elif errortype == "cope":
+		audio_player_error.stream = COPE
+	elif errortype == "finsh":
+		audio_player_error.stream = M
 	
 	audio_player_error.volume_db = -5
 	audio_player_error.play()

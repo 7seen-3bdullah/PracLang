@@ -8,9 +8,6 @@ func Scosh(node, scale:Vector2, time:float):
 	tween.tween_property(node, "scale", Vector2(1, 1), time).set_ease(Tween.EASE_OUT)
 
 
-func BOB(node):
-	pass
-
 
 func Shacke(node, power:float, time:float):
 	var last_pos = node.position

@@ -37,20 +37,11 @@ func on_mouse_exited() -> void:
 	copy_button.hide()
 
 func on_copy_button_pressed() -> void:
+	Sounds.Error_sound("cope", 2.2)
+	
 	DisplayServer.clipboard_set(get_text())
 	copy_button.set_text(copied_text)
 	copy_button.icon = copied_icon
 	await get_tree().create_timer(.5).timeout
 	copy_button.set_text(copy_text)
 	copy_button.icon = copy_icon
-
-
-
-
-
-
-
-
-
-
-
