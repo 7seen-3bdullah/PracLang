@@ -189,6 +189,8 @@ func send_message() -> void:
 	var message = message_line.get_text()
 	if not message:
 		GuideServer.push_message("Enter the message, then send", 1)
+		
+		GlobalTween.shake(message_line, 50, 0.15)
 		return
 	message_line.set_editable(false)
 	await get_tree().process_frame
@@ -450,8 +452,15 @@ func create_new_session() -> void:
 	var user_level_button = window.add_options_button(levels); window.add_name_split(user_level_button, "Your Level")
 	var ai_character_button = window.add_options_button(ai_characters); window.add_name_split(ai_character_button, "AI Simulation Character")
 	window.add_button("Accept", func():
-		
 		var session_filenames = SaveServer.get_sessions_filenames()
+		
+		if session_name_line.text.is_empty():
+			print(session_name_line)
+			GlobalTween.shake(session_name_line, 50, .15)
+		if user_name_line.text.is_empty():
+			GlobalTween.shake(user_name_line, 50, .15)
+			print(user_name_line)
+		
 		if session_filenames.has(session_name_line.text + ".res"):
 			GuideServer.push_message("This session name has been used", 1)
 			return

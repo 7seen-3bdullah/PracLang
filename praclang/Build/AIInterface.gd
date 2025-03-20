@@ -77,12 +77,3 @@ func push_connection_error() -> void:
 		request_ai()
 	else:
 		GuideServer.push_message("An error occurred while connecting to the AI model. Please try again.", 2)  
-
-
-
-
-
-
-
-
-
