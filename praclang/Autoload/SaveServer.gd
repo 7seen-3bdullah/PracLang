@@ -1,9 +1,12 @@
 extends Node
 
-const SESSION_SAVE_PATH:= "res://Save/Sessions/"
-const MISTAKES_SAVE_PATH:= "res://Save/Mistakes/"
+const SESSION_SAVE_PATH:= "user://Save/Sessions/"
+const MISTAKES_SAVE_PATH:= "user://Save/Mistakes/"
 
 
+func _ready() -> void:
+	DirAccess.make_dir_recursive_absolute(SESSION_SAVE_PATH)
+	DirAccess.make_dir_recursive_absolute(MISTAKES_SAVE_PATH)
 
 
 func save_session(history: Array, data: Dictionary, completions = null, level_up_speed:= 50.0, file_path:= "", file_name:= "") -> SessionsRes:

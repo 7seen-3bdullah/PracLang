@@ -65,7 +65,7 @@ theme_override_constants/margin_bottom = 4
 [node name="Box" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 
-[node name="Learning Lang" parent="MarginContainer/Box" instance=ExtResource("2_amygn")]
+[node name="AIChatBox" parent="MarginContainer/Box" instance=ExtResource("2_amygn")]
 layout_mode = 2
 size_flags_vertical = 3
 

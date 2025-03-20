@@ -16,6 +16,7 @@ config/features=PackedStringArray("4.4", "Forward Plus")
 boot_splash/fullsize=false
 boot_splash/image="uid://c4hnsduc37v2w"
 config/icon="uid://c4hnsduc37v2w"
+config/windows_native_icon="res://UI&UX/Logo/praclang logo.ico"
 
 [autoload]
 
